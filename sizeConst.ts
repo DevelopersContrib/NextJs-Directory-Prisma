@@ -1,13 +1,13 @@
-import { SizeConstType } from '@/types/sizeconst.type';
+import { SizeConstType } from "@/types/sizeconst.type";
 
 function sizeConst() {
-	let res: SizeConstType = {};
+  let res: SizeConstType = {};
 
-	for (let i = 0; i < 3000; i++) {
-		res[`${i}`] = `${i}px`;
-	}
+  for (let i = 0; i < 3000; i++) {
+    res[`${i}`] = `${i}px`;
+  }
 
-	return res;
+  return res;
 }
 
 export default sizeConst;
