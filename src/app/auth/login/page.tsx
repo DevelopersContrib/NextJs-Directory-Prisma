@@ -6,7 +6,7 @@ import React from "react";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
-  if (session) redirect("/(admin)/dashboard");
+  if (session) redirect("/dashboard");
 
   return (
     <div className="p-30 rounded-3 bg-white shadow flex flex-col space-y-15 w-400">
