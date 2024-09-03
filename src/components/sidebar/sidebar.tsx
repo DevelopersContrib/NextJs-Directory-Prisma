@@ -53,7 +53,7 @@ const Sidebar = ({ folders, recents, userId, domain, logo }: Props) => {
         {logo ? (
           <Image
             src={logo}
-            alt={domain}
+            alt={domain ?? ""}
             width={101}
             height={38}
             className="w-101 h-38"
