@@ -17,7 +17,7 @@ because I use a hobby plan from railway, the performance presented by my website
 
 ## Key Features
 
-- Authentication with NextAuth v4
+- Authentication with NextAuth v4.....
 - Authorization
 - Realtime Edit - Debouncing
 - Soft Delete
