@@ -36,14 +36,8 @@ const Sidebar = ({ folders, recents, userId, domain, logo }: Props) => {
     signOut();
   };
 
-  const createNewNote = () => {
-    if (folderId && postId) {
-      router.push(`/?folderId=${folderId}&postId=${postId}&modal=open`);
-    } else if (folderId) {
-      router.push(`/?folderId=${folderId}&modal=open`);
-    } else {
-      router.push(`/?modal=open`);
-    }
+  const createNewListing = () => {
+    router.push(`/dashboard?modal=open`);
   };
 
   return (
@@ -67,7 +61,7 @@ const Sidebar = ({ folders, recents, userId, domain, logo }: Props) => {
       <div className="px-20">
         <button
           className="rounded-3 bg-white/5 text-white w-full h-40 p-20 flex items-center justify-center gap-x-8 font-sans font-semibold text-16"
-          onClick={createNewNote}
+          onClick={createNewListing}
         >
           <FaPlus className="w-20 h-20" />
           New Listing
