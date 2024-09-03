@@ -6,7 +6,7 @@ import { FaSearch } from "react-icons/fa";
 
 const Homepage = () => {
   return (
-    <main className="flex w-full flex-wrap">
+    <>
       <header className="flex w-full ">
         <div className="container items-center justify-between flex py-4">
           <div>
@@ -36,7 +36,36 @@ const Homepage = () => {
           </div>
         </div>
       </header>
-    </main>
+      <main className="flex w-full flex-wrap">
+        {/* Start:: Hero Section */}
+        <div className="container text-center py-14">
+          <h1 className="text-6xl mb-4 font-bold text-gray-800">
+            Curated Resources <br /> In One Directory
+          </h1>
+          <p className="text-base text-gray-400">
+            Resources that will boost your workflow and save you time and money.
+          </p>
+        </div>
+        {/* End:: Hero Section */}
+
+        {/* Start:: Discover Section */}
+        <div className="container mb-8 flex flex-col">
+          <div className="mb-4 flex">
+            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
+              <input
+                type="search"
+                className="bg-transparent h-[50px] lg:mx-auto w-full px-4 py-1 focus:outline-none focus:ring-0 focus:border-none"
+                placeholder="Search"
+              />
+              <span className="flex items-center justify-center px-4 text-[#777]">
+                <FaSearch />
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* End:: Discover Section */}
+      </main>
+    </>
   );
 };
 
