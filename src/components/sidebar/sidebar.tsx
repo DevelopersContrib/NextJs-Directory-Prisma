@@ -8,28 +8,30 @@ import { FaPlus } from "react-icons/fa6";
 import { FaRegFileAlt, FaRegStar } from "react-icons/fa";
 import { FiTrash, FiArchive } from "react-icons/fi";
 import { IoIosLogOut } from "react-icons/io";
+import Subtitle from '../sidebar/subtitle';
 
-import Subtitle from "./subtitle";
 import List from "./list";
 import { signOut } from "next-auth/react";
 import FolderType from "@/types/folder.type";
+import CategoryType from "@/types/category.type";
+import LinkType from "@/types/link.type";
 import Folders from "./folders";
 import PostType from "@/types/post.type";
 import { useSearchParams, useRouter } from "next/navigation";
 
 type Props = {
   userId: string;
-  folders: FolderType[];
-  recents: PostType[];
+  categories: CategoryType[];
+  recents: LinkType[];
   domain?: string;
   logo: string;
 };
 
-const Sidebar = ({ folders, recents, userId, domain, logo }: Props) => {
+const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const folderId = searchParams.get("folderId");
-  const postId = searchParams.get("postId");
+  const categoryId = searchParams.get("categoryId");
+  const linkId = searchParams.get("linkId");
   const category = searchParams.get("category");
 
   const logoutHandler = () => {
@@ -68,58 +70,9 @@ const Sidebar = ({ folders, recents, userId, domain, logo }: Props) => {
         </button>
       </div>
       {/* Recents */}
-      <div>
-        <div className="px-20 mb-10">
-          <Subtitle title="Recents" />
-        </div>
-        <div className="flex flex-col gap-y-5">
-          {recents.length ? (
-            recents.map((recent) => (
-              <List
-                key={recent.id}
-                folderId={recent.folderId}
-                postId={recent.id}
-                title={recent.title}
-                icon={<FaRegFileAlt className="w-20 h-20 text-white" />}
-                active={folderId === recent.folderId && postId === recent.id}
-                activeColor={
-                  folderId === recent.folderId && postId === recent.id
-                    ? "bg-[#312EB5]"
-                    : ""
-                }
-              />
-            ))
-          ) : (
-            <h3 className="subheading px-20">There are no recent posts</h3>
-          )}
-        </div>
-      </div>
+      
 
-      <div>
-        <div className="px-20 mb-10">
-          <Subtitle title="More" />
-        </div>
-        <div className="flex flex-col gap-y-5">
-          <List
-            title="Favorites"
-            icon={<FaRegStar className="w-20 h-20 text-white" />}
-            active={category === "favorites"}
-            activeColor={category === "favorites" ? "bg-white/5" : ""}
-          />
-          <List
-            title="Trash"
-            icon={<FiTrash className="w-20 h-20 text-white" />}
-            active={category === "trash"}
-            activeColor={category === "trash" ? "bg-white/5" : ""}
-          />
-          <List
-            title="Archived Notes"
-            icon={<FiArchive className="w-20 h-20 text-white" />}
-            active={category === "archived-notes"}
-            activeColor={category === "archived-notes" ? "bg-white/5" : ""}
-          />
-        </div>
-      </div>
+      
       {/* Settings */}
       <div>
         <div className="px-20 mb-10">
