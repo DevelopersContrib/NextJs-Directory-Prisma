@@ -3,21 +3,38 @@
 import { createLinkAction } from "@/actions/link.action";
 import FolderType from "@/types/folder.type";
 import CategoryType from "@/types/category.type";
-import { createPostSchema } from "@/validations/post.validation";
+import { createLinkSchema } from "@/validations/link.validation";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
+/*
+type Errors = {
+    title: string | null | undefined;
+	description: string | null | undefined;
+	userId: string | null | undefined;
+	categoryId: string | null | undefined;
+	company_name: string | null | undefined;
+	company_logo: string | null | undefined;
+	screenshot: string | null | undefined;
+	url: string | null | undefined;
+} | null*/
 
 type Errors = {
     title?: string;
     categoryId?: string;
+    description?: string;
+    url?: string;
+    company_name?: string;
+    company_logo?: string;
+    screenshot?: string;
 } | null
+
 
 type Props = {
     categories: CategoryType[];
     userId: string;
 }
 
-const CreateNewNoteModal = ({ categories, userId }: Props) => {
+const CreateNewListingModal = ({ categories, userId }: Props) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const modal = searchParams.get('modal');
@@ -34,17 +51,22 @@ const CreateNewNoteModal = ({ categories, userId }: Props) => {
         try {
             const data = {
                 userId,
-                folderId: formData.get('folderId') as string || "",
+                categoryId: formData.get('categoryId') as string || "",
                 title: formData.get('title') as string || "",
+                description : formData.get('description') as string || "",
+                url: formData.get('url') as string || "",
+                company_name: formData.get('company_name') as string || "",
+                company_logo: formData.get('company_logo') as string || "",
+                screenshot: formData.get('screenshot') as string || "",
                 path: window.location.pathname
             };
 
-            const validations = createPostSchema.safeParse(data);
+            const validations = createLinkSchema.safeParse(data);
             if (!validations.success) {
                 let newErrors: Errors = {};
 
                 validations.error.issues.forEach(issue => {
-                    newErrors = { ...newErrors, [issue.path[0]]: issue.message };
+                    newErrors = {  [issue.path[0]]: issue.message };
                 });
 
                 setErrors(newErrors);
@@ -53,9 +75,9 @@ const CreateNewNoteModal = ({ categories, userId }: Props) => {
                 setErrors(null);
             }
 
-            const res = await createPostAction(data);
-            if (res.message === "Post created successfully.") {
-                router.push(`/?folderId=${res?.data?.folderId}&postId=${res?.data?.id}`);
+            const res = await createLinkAction(data);
+            if (res.message === "Listing created successfully.") {
+                router.push(`/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`);
             }
         } catch (error) {
             console.info(["[ERROR_CLIENT_ACTION]"], error);
@@ -90,13 +112,52 @@ const CreateNewNoteModal = ({ categories, userId }: Props) => {
                     </div>
                     <div className="flex flex-col gap-y-3">
                         <label htmlFor="folderId" className="label">Select Category</label>
-                        <select className={`input ${errors?.folderId ? 'input-error' : null}`} name="folderId" id="folderId">
+                        <select className={`input ${errors?.categoryId ? 'input-error' : null}`} name="categoryId" id="categoryId">
                             {categories.map(category => (
                                 <option key={category.category_id} value={category.category_id}>{category.category_name}</option>
                             ))}
                         </select>
 
-                        {errors?.folderId && <p className="text-red-500 font-sans">{errors?.folderId}</p>}
+                        {errors?.categoryId && <p className="text-red-500 font-sans">{errors?.categoryId}</p>}
+                    </div>
+
+                    <div className="flex flex-col gap-y-3">
+                        <label htmlFor="title" className="label">Description</label>
+                        <textarea placeholder="Description" id="description" name="description" className={`input ${errors?.description ? 'input-error' : null}`} />
+                        
+                        {errors?.description && <p className="text-red-500 font-sans">{errors?.description}</p>}
+                    </div>
+
+                    <div className="flex flex-col gap-y-3">
+                        <label htmlFor="title" className="label">URL</label>
+                        <input type="text" placeholder="URL" id="url" name="url" className={`input ${errors?.url ? 'input-error' : null}`} />
+
+                        {errors?.url && <p className="text-red-500 font-sans">{errors?.url}</p>}
+                        
+                    </div>
+
+                    <div className="flex flex-col gap-y-3">
+                        <label htmlFor="title" className="label">Screenshot URL</label>
+                        <input type="text" placeholder="Screenshot" id="screenshot" name="screenshot" className={`input ${errors?.screenshot ? 'input-error' : null}`} />
+
+                        {errors?.screenshot && <p className="text-red-500 font-sans">{errors?.screenshot}</p>}
+                        
+                    </div>
+
+                    <div className="flex flex-col gap-y-3">
+                        <label htmlFor="title" className="label">Company Name</label>
+                        <input type="text" placeholder="Company Name" id="company_name" name="company_name" className={`input ${errors?.company_name ? 'input-error' : null}`} />
+
+                        {errors?.company_name   && <p className="text-red-500 font-sans">{errors?.company_name}</p>}
+                        
+                    </div>
+
+                    <div className="flex flex-col gap-y-3">
+                        <label htmlFor="title" className="label">Company Logo URL</label>
+                        <input type="text" placeholder="Company Logo" id="company_logo" name="company_logo" className={`input ${errors?.company_logo ? 'input-error' : null}`} />
+
+                        {errors?.company_logo   && <p className="text-red-500 font-sans">{errors?.company_logo}</p>}
+                        
                     </div>
 
                     {/* Button Submit & Cancel */}
@@ -116,4 +177,4 @@ const CreateNewNoteModal = ({ categories, userId }: Props) => {
     ) : null;
 }
 
-export default CreateNewNoteModal
+export default CreateNewListingModal
