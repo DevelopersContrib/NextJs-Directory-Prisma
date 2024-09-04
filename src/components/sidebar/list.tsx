@@ -9,30 +9,22 @@ type Props = {
     icon: JSX.Element;
     active: boolean;
     activeColor?: string;
-    folderId?: string;
-    postId?: string;
+    categoryId?: string;
+    linkId?: string;
+    
 }
 
-const List = ({ title, icon, active, activeColor, folderId, postId }: Props) => {
+const List = ({ title, icon, active, activeColor, categoryId, linkId }: Props) => {
     const router = useRouter();
 
     const redirectTo = () => {
-        const option: ICategoryOption = {
-            "Favorites": "/?category=favorites",
-            "Trash": "/?category=trash",
-            "Archived Notes": "/?category=archived-notes"
-        }
+        
 
-        const url: string | null = option[title] || null;
-        if (url) {
-            router.push(option[title]);
-            return null;
-        }
-
-        if (folderId && postId) {
-            router.push(`/?folderId=${folderId}&postId=${postId}`);
+        
+        if (categoryId && linkId) {
+            router.push(`/?categoryId=${categoryId}&linkId=${linkId}`);
         } else {
-            router.push(`/?folderId=${folderId}`);
+            router.push(`/?categoryId=${categoryId}`);
         }
     }
 
@@ -41,7 +33,7 @@ const List = ({ title, icon, active, activeColor, folderId, postId }: Props) => 
     return (
         <div onClick={redirectTo} className={`py-10 px-20 h-40 w-full flex items-center gap-x-15 cursor-pointer ${active ? activeColor : "opacity-60"}`}>
             {icon}
-            <h3 className="font-sans text-16 font-semibold text-white">{trimmedTitle}</h3>
+            <h3 className="font-sans text-16 font-semibold text-white">{trimmedTitle} - {linkId}</h3>
         </div>
     )
 }

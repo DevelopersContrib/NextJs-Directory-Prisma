@@ -84,16 +84,7 @@ const Folders = ({ folders, userId }: Props) => {
             )}
           </form>
         ) : null}
-        {folders.length ? folders.map(folder => (
-          <List
-            key={folder.id}
-            title={folder.name}
-            folderId={folder.id}
-            icon={<LuFolderOpen className="w-20 h-20 text-white" />}
-            active={folderId === folder.id}
-            activeColor={folderId === folder.id ? "bg-white/5" : ""}
-          />
-        )) : <h3 className="subheading px-20">There Are No Folders</h3>}
+       <h3 className="subheading px-20">There Are No Folders</h3>
       </div>
     </div>
   )

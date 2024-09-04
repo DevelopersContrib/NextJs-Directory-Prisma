@@ -39,11 +39,7 @@ export default async function Dashboard({
     },
   });
   const recents: LinkType[] = await prismadb.link.findMany({
-    where: {
-      userId: session.user.userId,
-      archivedAt: null,
-    },
-    take: 5,
+   
     orderBy: {
       createdAt: "desc",
     },
