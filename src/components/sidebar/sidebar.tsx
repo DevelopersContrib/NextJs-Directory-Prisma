@@ -30,8 +30,8 @@ type Props = {
 const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const folderId = searchParams.get("folderId");
-  const postId = searchParams.get("postId");
+  const categoryId = searchParams.get("categoryId");
+  const linkId = searchParams.get("linkId");
   const category = searchParams.get("category");
 
   const logoutHandler = () => {

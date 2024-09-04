@@ -76,7 +76,7 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
             }
 
             const res = await createLinkAction(data);
-            if (res.message === "Listing created successfully.") {
+            if (res.message === "Link created successfully.") {
                 router.push(`/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`);
             }
         } catch (error) {
