@@ -13,7 +13,7 @@ import List from "../sidebar/list";
 import { FaRegFileAlt, FaRegStar } from "react-icons/fa";
 
 type Props = {
-    recents: LinkType | null;
+    recents: LinkType[] | null;
 }
 
 const Main = ({ recents }: Props) => {

@@ -10,3 +10,7 @@ export interface ICreate {
 export interface ICategoryWithLinks extends CategoryType {
 	links: LinkType[];
 }
+
+export interface ICategoryOption {
+	[key: string]: string;
+}
