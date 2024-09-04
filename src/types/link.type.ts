@@ -7,6 +7,7 @@ type LinkType = {
 	company_name: string;
 	company_logo: string;
 	screenshot: string;
+	url: string;
 	approved: boolean;
 	featured: boolean;
 	from_vnoc: boolean;

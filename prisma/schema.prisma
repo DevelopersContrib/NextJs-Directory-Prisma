@@ -49,6 +49,7 @@ model Link {
   company_name String @default("")
   company_logo String @default("")
   screenshot String @default("")
+  url String @default("")
   approved Boolean @default(false)
   featured Boolean @default(false)
   from_vnoc Boolean @default(false)
