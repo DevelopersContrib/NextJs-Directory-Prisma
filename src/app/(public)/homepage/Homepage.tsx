@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
+import ListCategories from "./components/ListCategories";
 
 const Homepage = () => {
   return (
@@ -48,8 +49,8 @@ const Homepage = () => {
         </div>
         {/* End:: Hero Section */}
 
-        {/* Start:: Discover Section */}
-        <div className="container mb-8 flex flex-col">
+        {/* Start:: Search Section */}
+        <div className="container mb-10 flex flex-col">
           <div className="mb-4 flex">
             <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
               <input
@@ -62,8 +63,61 @@ const Homepage = () => {
               </span>
             </div>
           </div>
+          <ul className="flex w-full flex-wrap justify-center mb-4">
+            <li className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1">
+              <a href="#" className="capitalize block font-light px-3 py-2">
+                all
+              </a>
+            </li>
+            {Array(6)
+              .fill(0)
+              .map((_, index) => (
+                <li
+                  key={index}
+                  className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1"
+                >
+                  <a href="#" className="capitalize block font-light px-3 py-2">
+                    category {index + 1}
+                  </a>
+                </li>
+              ))}
+          </ul>
         </div>
-        {/* End:: Discover Section */}
+        {/* End:: Search Section */}
+
+        {/* Start:: Categories Section */}
+        <ListCategories />
+        {/* End:: Categories Section */}
+
+        <footer className="py-8 w-full border-t border-[#ddd]">
+          <div className="container flex justify-between text-sm text-[#777]">
+            <div>&copy; 2024 Domaindirectory.com. All rights reserved.</div>
+            <div className="flex lg:justify-end">
+              <ul className="flex space-x-2">
+                <li>
+                  <a href="#" className="inline-flex">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="inline-flex">
+                    Contact Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="inline-flex">
+                    Terms
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="inline-flex">
+                    Privacy
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </footer>
       </main>
     </>
   );
