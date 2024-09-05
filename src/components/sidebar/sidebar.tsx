@@ -79,7 +79,7 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
         <div className="flex flex-col gap-y-5">
           <div
             onClick={logoutHandler}
-            className="py-10 px-5 h-[40px] w-full flex items-center gap-x-15 cursor-pointer opacity-60 hover:opacity-100 hover:bg-white/5 transition"
+            className="py-3 px-5 h-[40px] w-full flex items-center gap-x-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-white/5 transition"
           >
             <IoIosLogOut className="w-5 h-5 text-white" />
             <h3 className="font-sans text-base font-semibold text-white">
