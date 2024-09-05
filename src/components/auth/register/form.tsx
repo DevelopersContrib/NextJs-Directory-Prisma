@@ -25,7 +25,8 @@ const Form = () => {
                 name: formData.get('name') as string,
                 email: formData.get('email') as string,
                 password: formData.get('password') as string,
-                path: window.location.pathname
+                path: window.location.pathname,
+                domain: window.location.hostname.replace('www.','')
             };
 
             const validations = registerSchema.safeParse(data);

@@ -10,6 +10,7 @@ export const authRegisterAction = async ({
 	email,
 	password,
 	path,
+	domain,
 }: IRegister) => {
 	try {
 		const emailAlreadyExists = await prismadb.user.findFirst({
@@ -30,6 +31,7 @@ export const authRegisterAction = async ({
 				name,
 				email,
 				password: await hash(password, 10),
+				domain
 			},
 		});
 

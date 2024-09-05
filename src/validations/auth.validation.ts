@@ -13,6 +13,8 @@ export const registerSchema = z.object({
 		.string({ required_error: 'Password is required' })
 		.min(8, { message: 'Password must be at least 8 characters' })
 		.max(100, { message: 'Password must be less than 100 characters' }),
+	domain: z
+		.string({ required_error: 'Domain is required' }),
 });
 
 export const loginSchema = z.object({
