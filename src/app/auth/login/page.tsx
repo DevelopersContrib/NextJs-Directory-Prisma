@@ -9,8 +9,8 @@ const Page = async () => {
   if (session) redirect("/dashboard");
 
   return (
-    <div className="p-30 rounded-3 bg-white shadow flex flex-col space-y-15 w-400">
-      <h1 className="font-sans text-34 font-semibold text-center text-primary">
+    <div className="p-8 rounded-3 bg-white shadow flex flex-col space-y-4 w-[400px]">
+      <h1 className="font-sans text-4xl font-semibold text-center text-primary">
         Login
       </h1>
       <Form />
