@@ -3,4 +3,5 @@ export interface IRegister {
 	email: string;
 	password: string;
 	path: string;
+	domain: string;
 }
