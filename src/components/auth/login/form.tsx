@@ -66,9 +66,9 @@ const Form = () => {
   };
 
   return (
-    <form action={clientAction} className="flex flex-col gap-y-20">
+    <form action={clientAction} className="flex flex-col gap-y-5">
       {/* Email */}
-      <div className="flex flex-col gap-y-3">
+      <div className="flex flex-col gap-y-1">
         <label htmlFor="email" className="label">
           Email
         </label>
@@ -87,7 +87,7 @@ const Form = () => {
       </div>
 
       {/* Password */}
-      <div className="flex flex-col gap-y-3">
+      <div className="flex flex-col gap-y-1">
         <label htmlFor="password" className="label">
           Password
         </label>
