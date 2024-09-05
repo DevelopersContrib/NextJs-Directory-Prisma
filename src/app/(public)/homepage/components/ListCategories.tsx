@@ -2,21 +2,25 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import LinkType from "@/types/link.type";
 
-const ListCategories = () => {
+type Props = {
+  recents: LinkType[];
+};
+
+const ListCategories = ({ recents }: Props) => {
   return (
     <>
       <div className="container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-8 mb-14">
-        {Array(8)
-          .fill(0)
-          .map((_, index) => (
-            <div key={index} className="flex flex-col w-full">
+      {recents.length ? (
+            recents.map((recent, index) => (
+              <div key={index} className="flex flex-col w-full">
               <a href="#" className="mb-8">
                 <Image
-                  src={"https://cdn.vnoc.com/background/contrib/task.jpg"}
+                  src={recent.screenshot}
                   width={0}
                   height={0}
-                  alt=""
+                  alt={recent.title}
                   className="w-full h-full object-contain shadow-[rgb(23_43_99/24%)_0_3px_8px]"
                   sizes="100vw"
                 />
@@ -24,7 +28,7 @@ const ListCategories = () => {
               <div>
                 <h3 className="font-bold text-[#333] text-xl mb-0">
                   <a href="#" className="inline-flex">
-                    Domain Name {index + 1}
+                    {recent.title}
                   </a>
                 </h3>
               </div>
@@ -33,15 +37,11 @@ const ListCategories = () => {
               </div>
               <div className="mb-4">
                 <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
-                  Category {index + 1}
+                  Category Name
                 </div>
               </div>
               <div className="mb-8 font-light text-gray-600/80 text-[14px]">
-                Beehiiv is a rapidly growing newsletter platform with powerful
-                AI features like AI writing assistants and image tools,
-                translator tools, and advanced newsletter personalization.
-                Create content automation workflows and optimize for different
-                audiences.
+                {recent.description}
               </div>
               <div>
                 <Button size={"lg"} className="w-full">
@@ -49,7 +49,11 @@ const ListCategories = () => {
                 </Button>
               </div>
             </div>
-          ))}
+            ))
+          ) : (
+            <h3 className="subheading px-5">There are no recent posts</h3>
+          )}
+       
       </div>
     </>
   );

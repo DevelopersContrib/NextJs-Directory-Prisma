@@ -4,22 +4,36 @@ import Link from "next/link";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import ListCategories from "./components/ListCategories";
+import LinkType from "@/types/link.type";
+import CategoryType from "@/types/category.type";
 
-const Homepage = () => {
+
+type Props = {
+  recents: LinkType[];
+  categories: CategoryType[];
+  data: any | null | undefined;
+  domain: string | null | undefined;
+};
+
+const Homepage = ({ categories, recents, data, domain }: Props) => {
   return (
     <>
       <header className="flex w-full ">
         <div className="container items-center justify-between flex py-4">
           <div>
             <Link href="/">
+            { (data.logo && domain ? 
               <Image
-                src="https://cdn.vnoc.com/logos/logo-StartupChallenge-1.png"
+                src={data.logo}
                 width={0}
                 height={0}
-                alt="domain name"
+                alt={domain}
                 className="w-[200px] h-[34px] object-contain"
                 sizes="100vw"
               />
+              :<div>{domain}</div>
+             )
+            }
             </Link>
           </div>
           <div className="flex space-x-4">
@@ -41,10 +55,10 @@ const Homepage = () => {
         {/* Start:: Hero Section */}
         <div className="container text-center py-14">
           <h1 className="text-6xl mb-4 font-bold text-gray-800">
-            Curated Resources <br /> In One Directory
+            {domain} Resources <br /> In One Directory
           </h1>
           <p className="text-base text-gray-400">
-            Resources that will boost your workflow and save you time and money.
+            {data.description}
           </p>
         </div>
         {/* End:: Hero Section */}
@@ -86,7 +100,7 @@ const Homepage = () => {
         {/* End:: Search Section */}
 
         {/* Start:: Categories Section */}
-        <ListCategories />
+        <ListCategories recents={recents}  />
         {/* End:: Categories Section */}
 
         <footer className="py-8 w-full border-t border-[#ddd]">
