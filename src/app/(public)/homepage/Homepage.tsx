@@ -4,24 +4,37 @@ import Link from "next/link";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import ListCategories from "./components/ListCategories";
+import LinkType from "@/types/link.type";
+import CategoryType from "@/types/category.type";
+
+type Props = {
+  recents: LinkType[];
+  categories: CategoryType[];
+  data: any | null | undefined;
+  domain: string | null | undefined;
+};
 import FeaturedSlider from "./components/FeaturedSlider";
 import "../../public.scss";
 
-const Homepage = () => {
+const Homepage = ({ categories, recents, data, domain }: Props) => {
   return (
     <>
       <header className="flex w-full ">
         <div className="container items-center justify-between flex py-4">
           <div>
             <Link href="/">
-              <Image
-                src="https://cdn.vnoc.com/logos/logo-StartupChallenge-1.png"
-                width={0}
-                height={0}
-                alt="domain name"
-                className="w-[200px] h-[34px] object-contain"
-                sizes="100vw"
-              />
+              {data.logo && domain ? (
+                <Image
+                  src={data.logo}
+                  width={0}
+                  height={0}
+                  alt={domain}
+                  className="w-[200px] h-[34px] object-contain"
+                  sizes="100vw"
+                />
+              ) : (
+                <div>{domain}</div>
+              )}
             </Link>
           </div>
           <div className="flex space-x-4">
@@ -42,12 +55,10 @@ const Homepage = () => {
       <main className="flex w-full flex-wrap">
         {/* Start:: Hero Section */}
         <div className="container text-center py-14">
-          <h1 className="text-6xl mb-4 font-bold text-gray-800">
-            Curated Resources <br /> In One Directory
+          <h1 className="capitalize text-6xl mb-4 font-bold text-gray-800">
+            {domain} Resources <br /> In One Directory
           </h1>
-          <p className="text-base text-gray-400">
-            Resources that will boost your workflow and save you time and money.
-          </p>
+          <p className="text-base text-gray-400">{data.description}</p>
         </div>
         <div className="container mb-14">
           <FeaturedSlider />
@@ -55,7 +66,7 @@ const Homepage = () => {
         {/* End:: Hero Section */}
 
         {/* Start:: Search Section */}
-        <div className="container flex flex-col">
+        <div className="container mb-4 flex flex-col">
           <div className="mb-4 flex">
             {/* <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto"> */}
             <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%]">
@@ -92,7 +103,7 @@ const Homepage = () => {
         {/* End:: Search Section */}
 
         {/* Start:: Categories Section */}
-        <ListCategories />
+        <ListCategories recents={recents} />
         {/* End:: Categories Section */}
 
         <footer className="py-8 w-full border-t border-[#ddd]">
