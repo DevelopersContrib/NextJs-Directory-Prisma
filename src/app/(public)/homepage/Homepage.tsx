@@ -78,7 +78,7 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
         <div className="container mb-4 flex flex-col">
           <div className="mb-4 flex">
             {/* <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto"> */}
-            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%]">
+            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
               <input
                 type="search"
                 className="bg-transparent h-[50px] lg:mx-auto w-full px-4 py-1 focus:outline-none focus:ring-0 focus:border-none"
@@ -89,7 +89,7 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
               </span>
             </div>
           </div>
-          <ul className="flex w-full flex-wrap mb-4">
+          <ul className="flex w-full flex-wrap mb-4 justify-center">
             <li className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1">
               <a href="#" className="capitalize block font-light px-3 py-2">
                 all
