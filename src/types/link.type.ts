@@ -13,6 +13,10 @@ type LinkType = {
 	from_vnoc: boolean;
 	approved_by: string;
 	
+	category: {
+		category_name: string;
+	} 
+	
 	archivedAt: Date | null;
 	deletedAt: Date | null;
 	favoritedAt: Date | null;

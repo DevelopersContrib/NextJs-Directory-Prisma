@@ -27,6 +27,7 @@ export default async function Dashboard({
 }: {
   searchParams: SearchParams;
 }) {
+  
   const session: SessionType = await getServerSession(authOptions);
   if (!session) redirect("/");
 
@@ -43,6 +44,14 @@ export default async function Dashboard({
       userId: session.user.userId,
       archivedAt: null
     },
+    include: {
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
+    },
+    
     orderBy: {
       createdAt: "desc",
     },

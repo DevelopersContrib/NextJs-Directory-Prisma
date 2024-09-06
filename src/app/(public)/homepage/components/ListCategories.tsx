@@ -38,7 +38,7 @@ const ListCategories = ({ recents }: Props) => {
               </div>
               <div className="mb-4">
                 <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
-                  Category Name
+                  {recent.category.category_name}
                 </div>
               </div>
               <div className="mb-4 font-light text-gray-600/80 text-[14px]">
