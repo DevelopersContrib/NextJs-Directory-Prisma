@@ -10,6 +10,8 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
 import CategoryType from "@/types/category.type";
+
+
 type SearchParams = {
   
   keyword?: string;
@@ -33,11 +35,19 @@ export default async function page({
     },
   });
   const recents: LinkType[] = await prismadb.link.findMany({
-    
+    include: {
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
+    },
     orderBy: {
       createdAt: "desc",
     },
   });
+
+  
 
   return (
     <>
