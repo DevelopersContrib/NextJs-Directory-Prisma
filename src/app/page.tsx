@@ -35,6 +35,26 @@ export default async function page({
     },
   });
   const recents: LinkType[] = await prismadb.link.findMany({
+    where: {
+      approved:   true,
+    },
+    include: {
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const featured: LinkType[] = await prismadb.link.findMany({
+    where: {
+      approved:   true,
+      featured:   true,
+    },
     include: {
       category: {
         select: {
@@ -51,7 +71,7 @@ export default async function page({
 
   return (
     <>
-      <Homepage categories={categories} recents={recents} data={c.data} domain={domain} />
+      <Homepage categories={categories} recents={recents} featured={featured} data={c.data} domain={domain} />
     </>
   );
 };
