@@ -4,6 +4,7 @@ import { IRegister } from '@/interfaces/auth.interface';
 import prismadb from '@/lib/prismaDb';
 import { hash } from 'bcrypt';
 import { revalidatePath } from 'next/cache';
+import axios from 'axios'
 
 export const authRegisterAction = async ({
 	name,
@@ -35,9 +36,26 @@ export const authRegisterAction = async ({
 			},
 		});
 
+		let saveLead: string = "";
+
+		const lead_api: string = (process.env.LEAD_API as string);
+		if(lead_api){
+			const params = new URLSearchParams();
+			params.append('domain', domain);
+			params.append('email', email);
+
+			try {
+				const saveLeads = await axios.post(lead_api, params);
+				saveLead = saveLeads.data;
+			} catch (error) {
+				
+			}
+		}
+
 		return {
 			data: user,
 			message: 'User created successfully',
+			saveLead: saveLead
 		};
 	} catch (error) {
 		console.info('[ERROR_AUTH_REGISTER]', error);
