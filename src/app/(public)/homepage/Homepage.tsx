@@ -7,33 +7,37 @@ import ListCategories from "./components/ListCategories";
 import LinkType from "@/types/link.type";
 import CategoryType from "@/types/category.type";
 
-
 type Props = {
   recents: LinkType[];
   categories: CategoryType[];
   data: any | null | undefined;
   domain: string | null | undefined;
 };
+import FeaturedSlider from "./components/FeaturedSlider";
+import "../../public.scss";
 
 const Homepage = ({ categories, recents, data, domain }: Props) => {
+  const capitalizeFirstLetter = (word: string): string => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
   return (
     <>
       <header className="flex w-full ">
         <div className="container items-center justify-between flex py-4">
           <div>
             <Link href="/">
-            { (data.logo && domain ? 
-              <Image
-                src={data.logo}
-                width={0}
-                height={0}
-                alt={domain}
-                className="w-[200px] h-[34px] object-contain"
-                sizes="100vw"
-              />
-              :<div>{domain}</div>
-             )
-            }
+              {data.logo && domain ? (
+                <Image
+                  src={data.logo}
+                  width={0}
+                  height={0}
+                  alt={domain}
+                  className="w-[200px] h-[34px] object-contain"
+                  sizes="100vw"
+                />
+              ) : (
+                <div>{domain}</div>
+              )}
             </Link>
           </div>
           <div className="flex space-x-4">
@@ -54,19 +58,27 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
       <main className="flex w-full flex-wrap">
         {/* Start:: Hero Section */}
         <div className="container text-center py-14">
-          <h1 className="capitalize text-6xl mb-4 font-bold text-gray-800">
-            {domain} Resources <br /> In One Directory
+          <h1 className="text-6xl mb-4 font-bold text-gray-800">
+            {domain ? capitalizeFirstLetter(domain) : ""}{" "}
+            <span className="capitalize">
+              {" "}
+              Resources <br /> In One Directory
+            </span>
           </h1>
-          <p className="text-base text-gray-400">
+          <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
             {data.description}
           </p>
+        </div>
+        <div className="container mb-14">
+          <FeaturedSlider />
         </div>
         {/* End:: Hero Section */}
 
         {/* Start:: Search Section */}
-        <div className="container mb-10 flex flex-col">
+        <div className="container mb-4 flex flex-col">
           <div className="mb-4 flex">
-            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
+            {/* <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto"> */}
+            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%]">
               <input
                 type="search"
                 className="bg-transparent h-[50px] lg:mx-auto w-full px-4 py-1 focus:outline-none focus:ring-0 focus:border-none"
@@ -77,7 +89,7 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
               </span>
             </div>
           </div>
-          <ul className="flex w-full flex-wrap justify-center mb-4">
+          <ul className="flex w-full flex-wrap mb-4">
             <li className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1">
               <a href="#" className="capitalize block font-light px-3 py-2">
                 all
@@ -100,7 +112,7 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
         {/* End:: Search Section */}
 
         {/* Start:: Categories Section */}
-        <ListCategories recents={recents}  />
+        <ListCategories recents={recents} />
         {/* End:: Categories Section */}
 
         <footer className="py-8 w-full border-t border-[#ddd]">
