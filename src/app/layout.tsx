@@ -21,6 +21,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const c = await getData();
+  const domain = getDomain();
   return (
     <html lang="en">
       <head>
