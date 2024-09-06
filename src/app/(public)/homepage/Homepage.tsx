@@ -58,7 +58,9 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
           <h1 className="capitalize text-6xl mb-4 font-bold text-gray-800">
             {domain} Resources <br /> In One Directory
           </h1>
-          <p className="text-base text-gray-400">{data.description}</p>
+          <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
+            {data.description}
+          </p>
         </div>
         <div className="container mb-14">
           <FeaturedSlider />
