@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { BiDislike, BiLike } from "react-icons/bi";
 
 const ListCategories = () => {
   return (
@@ -36,12 +37,20 @@ const ListCategories = () => {
                   Category {index + 1}
                 </div>
               </div>
-              <div className="mb-8 font-light text-gray-600/80 text-[14px]">
+              <div className="mb-4 font-light text-gray-600/80 text-[14px]">
                 Beehiiv is a rapidly growing newsletter platform with powerful
                 AI features like AI writing assistants and image tools,
                 translator tools, and advanced newsletter personalization.
                 Create content automation workflows and optimize for different
                 audiences.
+              </div>
+              <div className="w-full flex justify-center space-x-2 pb-4">
+                <Button variant={"secondary"}>
+                  <BiLike />
+                </Button>
+                <Button variant={"secondary"}>
+                  <BiDislike />
+                </Button>
               </div>
               <div>
                 <Button size={"lg"} className="w-full">

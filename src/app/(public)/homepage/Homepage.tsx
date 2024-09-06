@@ -4,6 +4,8 @@ import Link from "next/link";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import ListCategories from "./components/ListCategories";
+import FeaturedSlider from "./components/FeaturedSlider";
+import "../../public.scss";
 
 const Homepage = () => {
   return (
@@ -47,12 +49,16 @@ const Homepage = () => {
             Resources that will boost your workflow and save you time and money.
           </p>
         </div>
+        <div className="container mb-14">
+          <FeaturedSlider />
+        </div>
         {/* End:: Hero Section */}
 
         {/* Start:: Search Section */}
-        <div className="container mb-10 flex flex-col">
+        <div className="container flex flex-col">
           <div className="mb-4 flex">
-            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
+            {/* <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto"> */}
+            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%]">
               <input
                 type="search"
                 className="bg-transparent h-[50px] lg:mx-auto w-full px-4 py-1 focus:outline-none focus:ring-0 focus:border-none"
@@ -63,7 +69,7 @@ const Homepage = () => {
               </span>
             </div>
           </div>
-          <ul className="flex w-full flex-wrap justify-center mb-4">
+          <ul className="flex w-full flex-wrap mb-4">
             <li className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1">
               <a href="#" className="capitalize block font-light px-3 py-2">
                 all
