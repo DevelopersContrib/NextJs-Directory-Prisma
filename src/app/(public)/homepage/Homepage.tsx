@@ -17,6 +17,9 @@ import FeaturedSlider from "./components/FeaturedSlider";
 import "../../public.scss";
 
 const Homepage = ({ categories, recents, data, domain }: Props) => {
+  const capitalizeFirstLetter = (word: string): string => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
   return (
     <>
       <header className="flex w-full ">
@@ -55,8 +58,12 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
       <main className="flex w-full flex-wrap">
         {/* Start:: Hero Section */}
         <div className="container text-center py-14">
-          <h1 className="capitalize text-6xl mb-4 font-bold text-gray-800">
-            {domain} Resources <br /> In One Directory
+          <h1 className="text-6xl mb-4 font-bold text-gray-800">
+            {domain ? capitalizeFirstLetter(domain) : ""}{" "}
+            <span className="capitalize">
+              {" "}
+              Resources <br /> In One Directory
+            </span>
           </h1>
           <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
             {data.description}
