@@ -54,7 +54,7 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
       <main className="flex w-full flex-wrap">
         {/* Start:: Hero Section */}
         <div className="container text-center py-14">
-          <h1 className="text-6xl mb-4 font-bold text-gray-800">
+          <h1 className="capitalize text-6xl mb-4 font-bold text-gray-800">
             {domain} Resources <br /> In One Directory
           </h1>
           <p className="text-base text-gray-400">
