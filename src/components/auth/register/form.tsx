@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { registerSchema } from "@/validations/auth.validation";
 import { authRegisterAction } from "@/actions/auth.action";
+import { historyAction } from "@/actions/history.action";
+
 import { toast } from "sonner";
 
 type Errors = {
@@ -48,6 +50,15 @@ const Form = () => {
         setErrors({ email: "Email already exists" });
       }
       if (res.message === "User created successfully") {
+        const userId  =  res.id?.toString();
+        const historydata = {
+          message: "has registered",
+          userId: userId,
+          link: window.location.href,
+          path: window.location.pathname,
+        };
+        
+        const hres = await historyAction(historydata);
         window.location.href = "/auth/login";
       }
     } catch (error) {

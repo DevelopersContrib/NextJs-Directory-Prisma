@@ -118,7 +118,7 @@ model LinkClicks {
 model History {
   id       String @id @default(uuid())
   message     String @db.LongText
-  userId   String
+  userId   String @default("")
   link String @default("")
   
   createdAt DateTime @default(now())

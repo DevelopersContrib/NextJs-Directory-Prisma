@@ -54,6 +54,7 @@ export const authRegisterAction = async ({
 
 		return {
 			data: user,
+			id: user.id,
 			message: 'User created successfully',
 			saveLead: saveLead
 		};
