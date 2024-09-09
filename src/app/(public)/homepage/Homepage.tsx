@@ -10,12 +10,13 @@ import CategoryType from "@/types/category.type";
 type Props = {
   recents: LinkType[];
   categories: CategoryType[];
+  featured: LinkType[];
   data: any | null | undefined;
   domain: string | null | undefined;
 };
 import FeaturedSlider from "./components/FeaturedSlider";
 
-const Homepage = ({ categories, recents, data, domain }: Props) => {
+const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
   const capitalizeFirstLetter = (word: string): string => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
@@ -69,7 +70,7 @@ const Homepage = ({ categories, recents, data, domain }: Props) => {
           </p>
         </div>
         <div className="container mb-14">
-          <FeaturedSlider />
+          <FeaturedSlider featured={featured} />
         </div>
         {/* End:: Hero Section */}
 
