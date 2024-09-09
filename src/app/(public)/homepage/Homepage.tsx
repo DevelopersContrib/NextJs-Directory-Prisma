@@ -15,7 +15,6 @@ type Props = {
   domain: string | null | undefined;
 };
 import FeaturedSlider from "./components/FeaturedSlider";
-import "../../public.scss";
 
 const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
   const capitalizeFirstLetter = (word: string): string => {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "./globals.scss";
 import { getDomain, getData } from "@/lib/data";
 import Script from 'next/script';
 
@@ -11,9 +11,9 @@ export async function generateMetadata() {
   const c = await getData();
 
   return {
-      title: c.data.title,
-      description: c.data.description
-  }
+    title: c.data.title,
+    description: c.data.description,
+  };
 }
 
 export default async function RootLayout({
