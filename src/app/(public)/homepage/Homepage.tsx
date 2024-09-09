@@ -20,6 +20,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
   const capitalizeFirstLetter = (word: string): string => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
+  const currentYear = new Date().getFullYear();
   return (
     <>
       <header className="flex w-full ">
@@ -117,26 +118,26 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
 
         <footer className="py-8 w-full border-t border-[#ddd]">
           <div className="container flex justify-between text-sm text-[#777]">
-            <div>&copy; 2024 Domaindirectory.com. All rights reserved.</div>
+            <div>&copy; {currentYear} Domaindirectory.com. All rights reserved.</div>
             <div className="flex lg:justify-end">
               <ul className="flex space-x-2">
                 <li>
-                  <a href="#" className="inline-flex">
+                  <a href="/about" className="inline-flex">
                     About Us
                   </a>
-                </li>
+                </li> 
                 <li>
-                  <a href="#" className="inline-flex">
+                  <a href="/contact" className="inline-flex">
                     Contact Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="inline-flex">
+                  <a href="/terms" className="inline-flex">
                     Terms
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="inline-flex">
+                  <a href="/privacy" className="inline-flex">
                     Privacy
                   </a>
                 </li>
