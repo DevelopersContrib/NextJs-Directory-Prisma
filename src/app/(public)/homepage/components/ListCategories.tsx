@@ -22,7 +22,7 @@ const ListCategories = ({ recents }: Props) => {
                   width={0}
                   height={0}
                   alt={recent.title}
-                  className="w-full h-full object-cover shadow-[rgb(23_43_99/24%)_0_3px_8px]"
+                  className="w-full h-[200px] object-cover object-top shadow-[rgb(23_43_99/24%)_0_3px_8px]"
                   sizes="100vw"
                 />
               </a>

@@ -67,6 +67,8 @@
   }
 }
 
+@import "/public/pages/scss/public/featured-slider";
+
 * {
   scroll-behavior: smooth;
 }
@@ -92,7 +94,7 @@
 }
 
 .input-error {
-  @apply !border-red-500 !border-2;
+  @apply border-red-500 border-2;
 }
 
 .btn {

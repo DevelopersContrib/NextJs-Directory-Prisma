@@ -20,7 +20,6 @@ const FeaturedSlider = () => {
           clickable: true,
         }}
         loop={true}
-        centeredSlides={true}
         modules={[Pagination]}
         className="mySwiper main-featured-slider !mb-14"
       >
