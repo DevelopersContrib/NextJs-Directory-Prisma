@@ -102,8 +102,10 @@ const DatatableListing = ({ recents }: Props) => {
     if (!globalFilter) {
       return recents; // Use the recents prop data
     }
-    return recents.filter((link) =>
-      link.title.toLowerCase().includes(globalFilter.toLowerCase())
+    return recents.filter(
+      (link) =>
+        link.title.toLowerCase().includes(globalFilter.toLowerCase()) ||
+        link.id.toLowerCase().includes(globalFilter.toLowerCase())
     );
   }, [recents, globalFilter]);
 
