@@ -132,7 +132,7 @@ model History {
 
 model Payment {
   id       String @id @default(uuid())
-  userId   String
+  userId   String @default("")
   amount   Float  @default(0)
   payment_type String @default("")
   stripe_charge_id String @default("")

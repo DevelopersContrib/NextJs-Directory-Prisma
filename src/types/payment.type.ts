@@ -8,7 +8,7 @@ type PaymentType = {
 	description: string;
 	result_json: string;
     other_info: string;
-    userId: string;
+    userId: string | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 };
