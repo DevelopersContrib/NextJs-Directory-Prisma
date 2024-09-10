@@ -14,7 +14,7 @@ import SessionType from "@/types/session.type";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
-import CategoryType from "@/types/category.type";
+import PaymentType from "@/types/payment.type";
 import StripeWrapper from '@/components/checkout/StripeWrapper';
 
 type SearchParams = {
@@ -28,7 +28,20 @@ interface Checkout {
   }
 const App: React.FC<Checkout> = async ({ params  }) => {
    const session: SessionType = await getServerSession(authOptions);
+
    if (!session) redirect("/");
+
+   const paymentAlreadyExists = await prismadb.payment.findFirst({
+    where: {
+      userId: session.user.userId
+    }
+    
+  });
+    
+
+  if (paymentAlreadyExists) redirect("/dashboard");
+
+   
 
     const pack = {
         id: 1,

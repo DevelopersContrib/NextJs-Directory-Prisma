@@ -34,6 +34,17 @@ export default async function Dashboard({
   const c = await getData();
   const domain = getDomain();
 
+
+  const paymentAlreadyExists = await prismadb.payment.findFirst({
+    where: {
+      userId: session.user.userId
+    }
+    
+  });
+    
+  if (!paymentAlreadyExists) redirect("/checkout");
+
+
   const categories: CategoryType[] = await prismadb.category.findMany({
     orderBy: {
       category_name: "asc",
