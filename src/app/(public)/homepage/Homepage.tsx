@@ -9,7 +9,7 @@ import CategoryType from "@/types/category.type";
 
 type Props = {
   recents: LinkType[];
-  categories: CategoryType[];
+  categories: LinkType[];
   featured: LinkType[];
   data: any | null | undefined;
   domain: string | null | undefined;
@@ -96,18 +96,16 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
                 all
               </a>
             </li>
-            {Array(6)
-              .fill(0)
-              .map((_, index) => (
-                <li
-                  key={index}
+            {categories.map(cat => {
+                return <li
+                  key={cat.id}
                   className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1"
-                >
-                  <a href="#" className="capitalize block font-light px-3 py-2">
-                    category {index + 1}
-                  </a>
-                </li>
-              ))}
+                  >
+                    <a href="#" className="capitalize block font-light px-3 py-2">
+                      {cat.category.category_name}
+                    </a>
+                  </li>
+              })}
           </ul>
         </div>
         {/* End:: Search Section */}

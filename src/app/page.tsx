@@ -29,9 +29,13 @@ export default async function page({
   const c = await getData();
   const domain = getDomain();
 
-  const categories: CategoryType[] = await prismadb.category.findMany({
+  const categories: LinkType[] = await prismadb.link.findMany({
+    distinct: ['categoryId'],
+    include:{
+      category:true
+    },
     orderBy: {
-      category_name: "asc",
+      title: "asc",
     },
   });
   const recents: LinkType[] = await prismadb.link.findMany({
