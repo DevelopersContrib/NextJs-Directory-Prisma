@@ -25,6 +25,7 @@ import {
 import { debounce } from "lodash";
 import Link from "next/link";
 import LinkType from "@/types/link.type";
+import { FaSearch } from "react-icons/fa";
 
 // Table props
 type Props = {
@@ -86,8 +87,12 @@ const DatatableListing = ({ recents }: Props) => {
                     ? `/?categoryId=${categoryId}&linkId=${linkId}`
                     : `/?categoryId=${categoryId}`
                 }
+                className="flex items-center"
               >
-                View
+                <span className="mr-2">
+                  <FaSearch />
+                </span>
+                <span>View</span>
               </Link>
             </Button>
           );
