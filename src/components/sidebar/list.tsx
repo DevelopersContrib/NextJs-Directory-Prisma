@@ -42,7 +42,7 @@ const List = ({
       }`}
     >
       {icon}
-      <h3 className="font-sans text-base font-semibold text-white">
+      <h3 className="font-sans text-base font-semibold">
         {trimmedTitle} - {linkId}
       </h3>
     </div>
