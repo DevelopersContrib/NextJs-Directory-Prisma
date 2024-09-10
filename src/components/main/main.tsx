@@ -21,7 +21,7 @@ type Props = {
 const Main = ({ recents }: Props) => {
   return (
     <div className="p-[50px] flex flex-col gap-y-8 w-full">
-      <div>
+      {/* <div>
         <div className="px-5 mb-3">
           <h4 className="font-sans font-semibold text-sm text-black/60">{`Your Listings`}</h4>
         </div>
@@ -42,9 +42,15 @@ const Main = ({ recents }: Props) => {
             <h3 className="subheading px-5">There are no recent posts</h3>
           )}
         </div>
-      </div>
+      </div> */}
       <div>
-        <DataTableListing />
+        <h2 className="font-sans font-semibold text-2xl text-black/60 flex items-center">
+          <span className="mr-2">
+            <FaRegFileAlt />
+          </span>
+          {`Your Listings`}
+        </h2>
+        <DataTableListing recents={recents} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { CgSpinner } from "react-icons/cg";
 import {
@@ -22,40 +22,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { IoSearchSharp } from "react-icons/io5";
-import Link from "next/link";
 import { debounce } from "lodash";
+import Link from "next/link";
+import LinkType from "@/types/link.type";
 
-// Placeholder type for data
-type TLinkData = {
-  title: string;
-  linkId: string;
+// Table props
+type Props = {
+  recents: LinkType[];
 };
 
-// Sample data
-const SAMPLE_LINKS: TLinkData[] = [
-  { title: "Google", linkId: "1" },
-  { title: "Facebook", linkId: "2" },
-  { title: "Twitter", linkId: "3" },
-];
-
-const useLinks = () => {
-  const [links, setLinks] = useState<TLinkData[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate data fetch
-    setTimeout(() => {
-      setLinks(SAMPLE_LINKS);
-      setLoading(false);
-    }, 1000);
-  }, []);
-
-  return { links, loading };
-};
-
-const DatatableListing = () => {
-  const { links, loading } = useLinks();
+const DatatableListing = ({ recents }: Props) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
@@ -64,7 +40,8 @@ const DatatableListing = () => {
     pageSize: 10,
   });
 
-  const columns = useMemo<ColumnDef<TLinkData>[]>(
+  // Define the columns for the table (without categoryId)
+  const columns = useMemo<ColumnDef<LinkType>[]>(
     () => [
       {
         accessorKey: "title",
@@ -81,7 +58,7 @@ const DatatableListing = () => {
         cell: ({ row }) => <div>{row.getValue("title") as string}</div>,
       },
       {
-        accessorKey: "linkId",
+        accessorKey: "id",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -92,23 +69,46 @@ const DatatableListing = () => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("linkId") as string}</div>,
+        cell: ({ row }) => <div>{row.getValue("id") as string}</div>,
       },
       {
         id: "actions",
         header: "Actions",
-        cell: ({ row }) => (
-          <Button size="sm" className="bg-primary text-white">
-            <Link href={`/view/${row.getValue("linkId")}`}>View</Link>
-          </Button>
-        ),
+        cell: ({ row }) => {
+          const linkId = row.getValue("id");
+          const categoryId = row.original.categoryId; // You can still access categoryId here if needed
+
+          return (
+            <Button size="sm" className="bg-primary text-white" asChild>
+              <Link
+                href={
+                  categoryId && linkId
+                    ? `/?categoryId=${categoryId}&linkId=${linkId}`
+                    : `/?categoryId=${categoryId}`
+                }
+              >
+                View
+              </Link>
+            </Button>
+          );
+        },
       },
     ],
     []
   );
 
+  // Filter the data based on the global search input
+  const filteredData = useMemo(() => {
+    if (!globalFilter) {
+      return recents; // Use the recents prop data
+    }
+    return recents.filter((link) =>
+      link.title.toLowerCase().includes(globalFilter.toLowerCase())
+    );
+  }, [recents, globalFilter]);
+
   const table = useReactTable({
-    data: links,
+    data: filteredData,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -118,14 +118,9 @@ const DatatableListing = () => {
     state: {
       sorting,
       columnVisibility,
-      globalFilter,
       pagination,
     },
     onPaginationChange: setPagination,
-    globalFilterFn: (row, columnId, filterValue) =>
-      String(row.getValue(columnId))
-        .toLowerCase()
-        .includes(filterValue.toLowerCase()),
   });
 
   const handleFilterChange = debounce(
@@ -167,7 +162,7 @@ const DatatableListing = () => {
 
       {/* Table Data */}
       <div className="rounded-md border">
-        {loading ? (
+        {!recents.length ? (
           <div className="flex items-center justify-center h-48 w-full">
             <CgSpinner className="fa-spin text-4xl" />
           </div>
