@@ -27,17 +27,20 @@ interface Checkout {
     params: { id: string };
   }
 const App: React.FC<Checkout> = async ({ params  }) => {
+   const session: SessionType = await getServerSession(authOptions);
+   if (!session) redirect("/");
+
     const pack = {
         id: 1,
         name: "Lifetime Membership",
         start_limit: 1,
         end_limit: 10,
-        price: "9",
+        price: "900",
         userPlanId: 1
     }
     
       return (
-        <StripeWrapper id={params.id} pack={pack} />
+        <StripeWrapper id={params.id} pack={pack} userId={session.user.userId}  />
       );
   };
   

@@ -3,6 +3,9 @@ import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/utils/auth-options";
+import { paymentAction } from "@/actions/payment.action";
+import { historyAction } from "@/actions/history.action";
+
 import axios from "axios";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -16,6 +19,8 @@ export const POST = async (req: Request) => {
 
     const data = await req.json();
     const amount = Math.round(data.pack_price);
+    const userId = data.userId;
+    console.log('data', data);
 
     try {
       const paymentIntent = await stripe.paymentIntents.create({
@@ -24,23 +29,34 @@ export const POST = async (req: Request) => {
       });
 
       const data = {
-        email: session?.user?.email,
-        amount: amount,
-        price: amount,
-        client_secret: paymentIntent.client_secret,
-        return_url: process.env.BASE_URL + "/pricing",
+        userId: userId,
+        amount: 9,
+        payment_type: "stripe",
+        stripe_charge_id: paymentIntent.id,
+        stripe_payment_status: paymentIntent.status,
+        stripe_receipt_url:"",
+        description: "Lifetime Subscription",
+        result_json: JSON.stringify(paymentIntent),
+        other_info: JSON.stringify(paymentIntent),
+        path: '/checkout',
       };
 
-      // call payment api...
-      const apiUrl =
-        process.env.API_URL + "/payment/charge?api_key=" + process.env.API_KEY;
+      const res = await paymentAction(data);
+      if (res.message === "Payment created successfully") {
 
-      const res = await axios.post(apiUrl, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + session?.user?.email,
-        },
-      });
+        const historydata = {
+          message: "has subscribed to lifetime plan",
+          userId: userId,
+          link: '/checkout',
+          path: '/checkout',
+        };
+        
+        const hres = await historyAction(historydata);
+        return NextResponse.json(res.data, { status: 200 });
+      }
+
+
+      
 
       return NextResponse.json(res.data, { status: 200 });
     } catch (error: any) {

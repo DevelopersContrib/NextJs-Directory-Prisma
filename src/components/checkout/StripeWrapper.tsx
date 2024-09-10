@@ -10,10 +10,11 @@ import { StripePackage } from "@/types/stripe";
 // recreating the `Stripe` object on every render.
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
-const StripeWrapper: React.FC<StripePackage> = ({ pack }) => {
+const StripeWrapper: React.FC<StripePackage> = ({ pack,userId }) => {
+ 
   return (
     <Elements stripe={stripePromise}>
-      <CheckoutForm pack={pack} />
+      <CheckoutForm pack={pack} userId={userId} />
     </Elements>
   );
 };

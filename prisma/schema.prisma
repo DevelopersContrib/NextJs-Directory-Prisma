@@ -15,7 +15,7 @@ model User {
   avatar String     @default("")
   domain String     @default("")
   links    Link[]
-  payments    Payment[]
+  payment    Payment[]
   votes_up    LinkVotesUp[]
   votes_down    LinkVotesDown[]
   history    History[]
@@ -147,7 +147,7 @@ model Payment {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  
 }
 
 model Folder {

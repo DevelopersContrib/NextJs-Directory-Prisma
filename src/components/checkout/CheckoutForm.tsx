@@ -4,11 +4,13 @@ import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import CardSection from '@/components/checkout/CardSection';
 import { FaCircleNotch } from 'react-icons/fa6';
 import { PackagesProps } from '@/types/packages';
+import { redirect } from "next/navigation";
+import { set } from 'lodash';
 
 // Docs:: https://stripe.com/docs/payments/accept-a-payment-charges?client=react
 
-async function stripeTokenHandler(token: any, pack_price: string) {
-  const paymentData = { token: token.id, pack_price: pack_price };
+async function stripeTokenHandler(token: any, pack_price: string, userId: string) {
+  const paymentData = { token: token.id, pack_price: pack_price, userId: userId };
 
   // Use fetch to send the token ID and any other payment data to your server.
   // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
@@ -28,9 +30,10 @@ async function stripeTokenHandler(token: any, pack_price: string) {
 
 interface pack {
   pack: PackagesProps;
+  userId: string;
 }
 
-const CheckoutForm: React.FC<pack> = ({ pack }) => {
+const CheckoutForm: React.FC<pack> = ({ pack, userId }) => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const stripe = useStripe();
@@ -58,10 +61,14 @@ const CheckoutForm: React.FC<pack> = ({ pack }) => {
         // Send the token to your server.
         // This function does not exist yet; we will define it in the next step.
         setLoading(true);
-        const res = await stripeTokenHandler(result.token, pack.price.toString());
-        if (res.success) {
+        
+        const res = await stripeTokenHandler(result.token, pack.price.toString(), userId);
+        if (res.id) {
           setLoading(false);
           setSuccess(true);
+          setTimeout(() => {
+            redirect('/dashboard');
+          },5000);
          
         } else {
           console.log(res);

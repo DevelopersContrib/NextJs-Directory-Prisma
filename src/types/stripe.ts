@@ -3,7 +3,8 @@ import  PaymentType  from "@/types/payment.type";
 
 export type StripePackage = {
     id: string;
-    pack:PackagesProps
+    pack:PackagesProps;
+    userId: string;
 };
 
 export type StripeInvoice = {
