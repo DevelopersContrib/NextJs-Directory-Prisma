@@ -18,7 +18,7 @@ export async function generateMetadata() {
   };
 }
 
-export default async function RootLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,9 +26,5 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
   if (!session) redirect("/");
 
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+  return <>{children}</>;
 }
