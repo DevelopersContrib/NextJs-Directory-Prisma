@@ -16,20 +16,20 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-primary`}>
+    <>
+      <div className={` bg-primary`}>
         <Toaster position="top-center" richColors />
 
         <main className="w-full h-screen grid place-items-center">
           {children}
         </main>
-      </body>
-    </html>
+      </div>
+    </>
   );
 }

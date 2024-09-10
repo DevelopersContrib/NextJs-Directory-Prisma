@@ -43,7 +43,7 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
   };
 
   return (
-    <nav className="min-w-[300px] max-w-[300px] bg-[#1b1b1b] h-screen py-8 flex flex-col gap-y-8 overflow-y-auto">
+    <nav className="min-w-[300px] max-w-[300px] bg-[#1b1b1b] min-h-screen py-8 flex flex-col gap-y-8 overflow-y-auto">
       {/* Logo & Search Buttonn */}
       <div className="px-5 flex items-center justify-between">
         {logo ? (
