@@ -47,7 +47,7 @@ const FeaturedSlider = ({ featured }: Props) => {
         {featured.length ? (
           featured.map((feature, index) => (
             <SwiperSlide key={index}>
-              <Link
+              <a
                 href="#"
                 target="_blank"
                 className="w-full flex flex-col space-y-4"
@@ -65,12 +65,10 @@ const FeaturedSlider = ({ featured }: Props) => {
                 </div>
                 <div>
                   <h3 className="font-bold text-[#333] text-xl mb-0">
-                    <a href="#" className="inline-flex">
-                      {feature.title}
-                    </a>
+                    <div className="inline-flex">{feature.title}</div>
                   </h3>
                 </div>
-              </Link>
+              </a>
             </SwiperSlide>
           ))
         ) : (
