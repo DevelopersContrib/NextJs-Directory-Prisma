@@ -16,32 +16,29 @@ import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
 import PaymentType from "@/types/payment.type";
 import CategoryType from "@/types/category.type";
-import StripeWrapper from '@/components/checkout/StripeWrapper';
+import StripeWrapper from "@/components/checkout/StripeWrapper";
 
 type SearchParams = {
-  
   linkId?: string;
   categoryId?: string;
 };
 
 interface Checkout {
-    params: { id: string };
-  }
-const App: React.FC<Checkout> = async ({ params  }) => {
-   const session: SessionType = await getServerSession(authOptions);
+  params: { id: string };
+}
+const App: React.FC<Checkout> = async ({ params }) => {
+  const session: SessionType = await getServerSession(authOptions);
 
-   if (!session) redirect("/");
+  if (!session) redirect("/");
 
-   const c = await getData();
-   const domain = getDomain();
+  const c = await getData();
+  const domain = getDomain();
 
-   const paymentAlreadyExists = await prismadb.payment.findFirst({
+  const paymentAlreadyExists = await prismadb.payment.findFirst({
     where: {
-      userId: session.user.userId
-    }
-    
+      userId: session.user.userId,
+    },
   });
-    
 
   if (paymentAlreadyExists) redirect("/dashboard");
 
@@ -53,7 +50,7 @@ const App: React.FC<Checkout> = async ({ params  }) => {
   const recents: LinkType[] = await prismadb.link.findMany({
     where: {
       userId: session.user.userId,
-      archivedAt: null
+      archivedAt: null,
     },
     include: {
       category: {
@@ -62,26 +59,24 @@ const App: React.FC<Checkout> = async ({ params  }) => {
         },
       },
     },
-    
+
     orderBy: {
       createdAt: "desc",
     },
   });
 
-   
+  const pack = {
+    id: 1,
+    name: "Lifetime Membership",
+    start_limit: 1,
+    end_limit: 10,
+    price: "900",
+    userPlanId: 1,
+  };
 
-    const pack = {
-        id: 1,
-        name: "Lifetime Membership",
-        start_limit: 1,
-        end_limit: 10,
-        price: "900",
-        userPlanId: 1
-    }
-    
-      return (
-        <>
-        <main className="flex">
+  return (
+    <>
+      <main className="flex">
         <Sidebar
           recents={recents}
           categories={categories}
@@ -89,11 +84,16 @@ const App: React.FC<Checkout> = async ({ params  }) => {
           domain={domain}
           logo={c.data.logo}
         />
-        <StripeWrapper id={params.id} pack={pack} userId={session.user.userId}  />
-        </main>
-      </>
-        
-      );
-  };
-  
-  export default App;
+        <div className="p-[50px] flex flex-col gap-y-8 w-full">
+          <StripeWrapper
+            id={params.id}
+            pack={pack}
+            userId={session.user.userId}
+          />
+        </div>
+      </main>
+    </>
+  );
+};
+
+export default App;
