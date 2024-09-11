@@ -46,11 +46,17 @@ const ListCategories = ({ recents }: Props) => {
                 {recent.description}
               </div>
               <div className="w-full flex justify-center space-x-2 pb-4 mt-auto">
-                <Button variant={"secondary"}>
-                  <BiLike />
+                <Button variant={"secondary"} className="flex">
+                  <span className="mr-1">
+                    <BiLike />
+                  </span>
+                  <span className="">0</span>
                 </Button>
-                <Button variant={"secondary"}>
-                  <BiDislike />
+                <Button variant={"secondary"} className="flex">
+                  <span className="mr-1">
+                    <BiDislike />
+                  </span>
+                  <span className="">0</span>
                 </Button>
               </div>
               <div>

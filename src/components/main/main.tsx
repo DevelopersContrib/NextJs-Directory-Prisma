@@ -50,7 +50,7 @@ const Main = ({ recents }: Props) => {
           </span>
           {`Your Listings`}
         </h2>
-        <DataTableListing recents={recents} />
+        <DataTableListing />
       </div>
     </div>
   );

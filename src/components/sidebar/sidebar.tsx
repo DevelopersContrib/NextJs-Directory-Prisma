@@ -73,7 +73,7 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
 
       {/* Settings */}
       <div>
-        <div className="px-5 mb-10">
+        <div className="px-5 mb-2">
           <Subtitle title="Settings" />
         </div>
         <div className="flex flex-col gap-y-5">

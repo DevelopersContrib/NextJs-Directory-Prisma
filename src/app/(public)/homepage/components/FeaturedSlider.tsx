@@ -11,6 +11,7 @@ import "swiper/css/pagination";
 import Image from "next/image";
 
 import LinkType from "@/types/link.type";
+import Link from "next/link";
 
 type Props = {
   featured: LinkType[];
@@ -46,7 +47,11 @@ const FeaturedSlider = ({ featured }: Props) => {
         {featured.length ? (
           featured.map((feature, index) => (
             <SwiperSlide key={index}>
-              <div className="w-full flex flex-col space-y-4">
+              <a
+                href="#"
+                target="_blank"
+                className="w-full flex flex-col space-y-4"
+              >
                 <div className="h-[300px] lg:h-[200px]">
                   <Image
                     src={feature.screenshot}
@@ -60,12 +65,10 @@ const FeaturedSlider = ({ featured }: Props) => {
                 </div>
                 <div>
                   <h3 className="font-bold text-[#333] text-xl mb-0">
-                    <a href="#" className="inline-flex">
-                      {feature.title}
-                    </a>
+                    <div className="inline-flex">{feature.title}</div>
                   </h3>
                 </div>
-              </div>
+              </a>
             </SwiperSlide>
           ))
         ) : (
