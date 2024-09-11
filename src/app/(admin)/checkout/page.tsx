@@ -15,6 +15,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
 import PaymentType from "@/types/payment.type";
+import CategoryType from "@/types/category.type";
 import StripeWrapper from '@/components/checkout/StripeWrapper';
 
 type SearchParams = {
@@ -31,6 +32,9 @@ const App: React.FC<Checkout> = async ({ params  }) => {
 
    if (!session) redirect("/");
 
+   const c = await getData();
+   const domain = getDomain();
+
    const paymentAlreadyExists = await prismadb.payment.findFirst({
     where: {
       userId: session.user.userId
@@ -40,6 +44,29 @@ const App: React.FC<Checkout> = async ({ params  }) => {
     
 
   if (paymentAlreadyExists) redirect("/dashboard");
+
+  const categories: CategoryType[] = await prismadb.category.findMany({
+    orderBy: {
+      category_name: "asc",
+    },
+  });
+  const recents: LinkType[] = await prismadb.link.findMany({
+    where: {
+      userId: session.user.userId,
+      archivedAt: null
+    },
+    include: {
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
+    },
+    
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
    
 
@@ -53,7 +80,19 @@ const App: React.FC<Checkout> = async ({ params  }) => {
     }
     
       return (
+        <>
+        <main className="flex">
+        <Sidebar
+          recents={recents}
+          categories={categories}
+          userId={session.user.userId}
+          domain={domain}
+          logo={c.data.logo}
+        />
         <StripeWrapper id={params.id} pack={pack} userId={session.user.userId}  />
+        </main>
+      </>
+        
       );
   };
   
