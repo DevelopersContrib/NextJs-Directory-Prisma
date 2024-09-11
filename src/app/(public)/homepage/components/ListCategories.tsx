@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import LinkType from "@/types/link.type";
+import Likes from "./Likes";
 
 type Props = {
   recents: LinkType[];
@@ -45,20 +46,7 @@ const ListCategories = ({ recents }: Props) => {
               <div className="mb-4 font-light text-gray-600/80 text-[14px]">
                 {recent.description}
               </div>
-              <div className="w-full flex justify-center space-x-2 pb-4 mt-auto">
-                <Button variant={"secondary"} className="flex">
-                  <span className="mr-1">
-                    <BiLike />
-                  </span>
-                  <span className="">0</span>
-                </Button>
-                <Button variant={"secondary"} className="flex">
-                  <span className="mr-1">
-                    <BiDislike />
-                  </span>
-                  <span className="">0</span>
-                </Button>
-              </div>
+              <Likes id={recent.id} />
               <div>
                 <Button size={"lg"} className="w-full">
                   Details
