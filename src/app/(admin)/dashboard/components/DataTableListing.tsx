@@ -23,16 +23,37 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { debounce } from "lodash";
-import Link from "next/link";
-import LinkType from "@/types/link.type";
-import { FaSearch } from "react-icons/fa";
+import Image from "next/image";
 
-// Table props
-type Props = {
-  recents: LinkType[];
-};
+// Example data for the table
+const exampleData = [
+  {
+    image: "https://cdn.vnoc.com/background/contrib/bg-new2.png",
+    title: "Home Repair Services",
+    categoryName: "Home Repair",
+    likes: 120,
+    dislikes: 10,
+    clicks: 300,
+  },
+  {
+    image: "https://cdn.vnoc.com/background/contrib/bg-new2.png",
+    title: "Professional Cleaning",
+    categoryName: "Cleaning",
+    likes: 80,
+    dislikes: 5,
+    clicks: 150,
+  },
+  {
+    image: "https://cdn.vnoc.com/background/contrib/bg-new2.png",
+    title: "Gardening and Landscaping",
+    categoryName: "Gardening",
+    likes: 95,
+    dislikes: 3,
+    clicks: 200,
+  },
+];
 
-const DatatableListing = ({ recents }: Props) => {
+const DatatableListing = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
@@ -41,9 +62,23 @@ const DatatableListing = ({ recents }: Props) => {
     pageSize: 10,
   });
 
-  // Define the columns for the table (without categoryId)
-  const columns = useMemo<ColumnDef<LinkType>[]>(
+  // Define columns for the table
+  const columns = useMemo<ColumnDef<(typeof exampleData)[0]>[]>(
     () => [
+      {
+        accessorKey: "image",
+        header: "Image",
+        cell: ({ row }) => (
+          <Image
+            src={row.getValue("image")}
+            alt="Placeholder"
+            width={50}
+            height={50}
+            className="rounded border shadow"
+            priority
+          />
+        ),
+      },
       {
         accessorKey: "title",
         header: ({ column }) => (
@@ -56,63 +91,89 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("title") as string}</div>,
+        cell: ({ row }) => <div>{row.getValue("title")}</div>,
       },
       {
-        accessorKey: "id",
+        accessorKey: "categoryName",
         header: ({ column }) => (
           <Button
             variant="ghost"
             className="hover:bg-slate-200"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Link ID
+            Category Name
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("id") as string}</div>,
+        cell: ({ row }) => <div>{row.getValue("categoryName")}</div>,
+      },
+      {
+        accessorKey: "likes",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="hover:bg-slate-200"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Likes
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        ),
+        cell: ({ row }) => <div>{row.getValue("likes")}</div>,
+      },
+      {
+        accessorKey: "dislikes",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="hover:bg-slate-200"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Dislikes
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        ),
+        cell: ({ row }) => <div>{row.getValue("dislikes")}</div>,
+      },
+      {
+        accessorKey: "clicks",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="hover:bg-slate-200"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Clicks
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        ),
+        cell: ({ row }) => <div>{row.getValue("clicks")}</div>,
       },
       {
         id: "actions",
         header: "Actions",
-        cell: ({ row }) => {
-          const linkId = row.getValue("id");
-          const categoryId = row.original.categoryId; // You can still access categoryId here if needed
-
-          return (
-            <Button size="sm" className="bg-primary text-white" asChild>
-              <Link
-                href={
-                  categoryId && linkId
-                    ? `/?categoryId=${categoryId}&linkId=${linkId}`
-                    : `/?categoryId=${categoryId}`
-                }
-                className="flex items-center"
-              >
-                <span className="mr-2">
-                  <FaSearch />
-                </span>
-                <span>View</span>
-              </Link>
+        cell: ({ row }) => (
+          <div className="flex space-x-2">
+            <Button size="sm">Edit</Button>
+            <Button size="sm" variant="destructive" color="white">
+              Delete
             </Button>
-          );
-        },
+          </div>
+        ),
       },
     ],
     []
   );
 
-  // Filter the data based on the global search input
+  // Filter the data based on global search input (search across all columns)
   const filteredData = useMemo(() => {
-    if (!globalFilter) {
-      return recents; // Use the recents prop data
-    }
-    return recents.filter(
-      (link) =>
-        link.title.toLowerCase().includes(globalFilter.toLowerCase()) ||
-        link.id.toLowerCase().includes(globalFilter.toLowerCase())
+    if (!globalFilter) return exampleData;
+    return exampleData.filter((item) =>
+      Object.values(item).some((value) =>
+        value.toString().toLowerCase().includes(globalFilter.toLowerCase())
+      )
     );
-  }, [recents, globalFilter]);
+  }, [globalFilter]);
 
   const table = useReactTable({
     data: filteredData,
@@ -169,7 +230,7 @@ const DatatableListing = ({ recents }: Props) => {
 
       {/* Table Data */}
       <div className="rounded-md border">
-        {!recents.length ? (
+        {!filteredData.length ? (
           <div className="flex items-center justify-center h-48 w-full">
             <CgSpinner className="fa-spin text-4xl" />
           </div>
