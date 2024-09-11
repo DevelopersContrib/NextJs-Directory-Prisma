@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import ListCategories from "./components/ListCategories";
+import Search from  "./components/Search";
 import LinkType from "@/types/link.type";
-import CategoryType from "@/types/category.type";
+
 
 type Props = {
   recents: LinkType[];
@@ -75,44 +75,10 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
         </div>
         {/* End:: Hero Section */}
 
-        {/* Start:: Search Section */}
-        <div className="container mb-4 flex flex-col">
-          <div className="mb-4 flex">
-            {/* <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto"> */}
-            <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
-              <input
-                type="search"
-                className="bg-transparent h-[50px] lg:mx-auto w-full px-4 py-1 focus:outline-none focus:ring-0 focus:border-none"
-                placeholder="Search"
-              />
-              <span className="flex items-center justify-center px-4 text-[#777]">
-                <FaSearch />
-              </span>
-            </div>
-          </div>
-          <ul className="flex w-full flex-wrap mb-4 justify-center">
-            <li className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1">
-              <a href="#" className="capitalize block font-light px-3 py-2">
-                all
-              </a>
-            </li>
-            {categories.map(cat => {
-                return <li
-                  key={cat.id}
-                  className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1"
-                  >
-                    <a href="#" className="capitalize block font-light px-3 py-2">
-                      {cat.category.category_name}
-                    </a>
-                  </li>
-              })}
-          </ul>
-        </div>
+         {/* Start:: Search Section */}
+        <Search categories={categories} defaultrecents={recents}/>
         {/* End:: Search Section */}
 
-        {/* Start:: Categories Section */}
-        <ListCategories recents={recents} />
-        {/* End:: Categories Section */}
 
         <footer className="py-8 w-full border-t border-[#ddd]">
           <div className="container flex justify-between text-sm text-[#777]">
