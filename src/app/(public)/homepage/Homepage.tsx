@@ -116,7 +116,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
 
         <footer className="py-8 w-full border-t border-[#ddd]">
           <div className="container flex justify-between text-sm text-[#777]">
-            <div>&copy; {currentYear} Domaindirectory.com. All rights reserved.</div>
+            <div>&copy; {currentYear}  {domain && capitalizeFirstLetter(domain)}. All rights reserved.</div>
             <div className="flex lg:justify-end">
               <ul className="flex space-x-2">
                 <li>
