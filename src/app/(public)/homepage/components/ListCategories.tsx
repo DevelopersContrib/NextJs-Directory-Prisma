@@ -17,7 +17,8 @@ const ListCategories = ({ recents }: Props) => {
         {recents.length ? (
           recents.map((recent, index) => (
             <div key={index} className="flex flex-col w-full">
-              <a href="#" className="mb-8">
+               
+              <a href={`/redirect/${recent.id}`} target="_blank" className="mb-8">
                 <Image
                   src={recent.screenshot}
                   width={0}
