@@ -24,47 +24,13 @@ import {
 } from "@/components/ui/table";
 import { debounce } from "lodash";
 import Image from "next/image";
-import LinkType from "@/types/link.type";
 
-import { likeAction, countLikesAction } from "@/actions/like.action";
-import Likes from "./Likes";
-import UnLikes from "./Unlikes";
-import Clicks from "./Clicks";
-import Category from "./Category";
 import { imageLoader } from "@/helpers/image-helpers";
+import { LinkType } from "@/types/link.type";
 
 type Props = {
   recents: LinkType[];
 };
-
-// Example data for the table
-/*
-const exampleData = [
-  {
-    image: "https://cdn.vnoc.com/background/contrib/bg-new2.png",
-    title: "Home Repair Services",
-    categoryName: "Home Repair",
-    likes: 120,
-    dislikes: 10,
-    clicks: 300,
-  },
-  {
-    image: "https://cdn.vnoc.com/background/contrib/bg-new2.png",
-    title: "Professional Cleaning",
-    categoryName: "Cleaning",
-    likes: 80,
-    dislikes: 5,
-    clicks: 150,
-  },
-  {
-    image: "https://cdn.vnoc.com/background/contrib/bg-new2.png",
-    title: "Gardening and Landscaping",
-    categoryName: "Gardening",
-    likes: 95,
-    dislikes: 3,
-    clicks: 200,
-  },
-];*/
 
 const DatatableListing = ({ recents }: Props) => {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -74,8 +40,6 @@ const DatatableListing = ({ recents }: Props) => {
     pageIndex: 0,
     pageSize: 10,
   });
-
-  
 
   // Define columns for the table
   const columns = useMemo<ColumnDef<(typeof recents)[0]>[]>(
@@ -90,7 +54,7 @@ const DatatableListing = ({ recents }: Props) => {
             alt=""
             width={50}
             height={50}
-            className="rounded border shadow"
+            className="rounded border shadow w-[50px] h-[50px]"
             priority
           />
         ),
@@ -110,7 +74,8 @@ const DatatableListing = ({ recents }: Props) => {
         cell: ({ row }) => <div>{row.getValue("title")}</div>,
       },
       {
-        accessorKey: "categoryId",
+        accessorFn: (row) => row.category?.category_name,
+        id: "categoryName",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -121,10 +86,10 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <Category id={row.getValue("categoryId")} />,
+        cell: ({ row }) => <div>{row.original.category?.category_name}</div>,
       },
       {
-        accessorKey: "id",
+        accessorKey: "likes",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -135,10 +100,10 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <Likes id={row.getValue("id")} />,
+        cell: ({ row }) => {},
       },
       {
-        accessorKey: "id",
+        accessorKey: "dislikes",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -149,10 +114,10 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <UnLikes id={row.getValue("id")} />,
+        cell: ({ row }) => {},
       },
       {
-        accessorKey: "id",
+        accessorKey: "clicks",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -163,7 +128,7 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <Clicks id={row.getValue("id")} />
+        cell: ({ row }) => {},
       },
       {
         id: "actions",
@@ -181,17 +146,18 @@ const DatatableListing = ({ recents }: Props) => {
     []
   );
 
-  // Filter the data based on global search input (search across all columns)
+  // Filter the data based only on the displayed columns
   const filteredData = useMemo(() => {
     if (!globalFilter) return recents;
-    return recents.filter((item) =>
-      Object.values(item).some((value) =>
-        value
-          ? value.toString().toLowerCase().includes(globalFilter.toLowerCase())
-          : ""
-      )
-    );
-  }, [globalFilter]);
+    return recents.filter((item) => {
+      return (
+        item.title?.toLowerCase().includes(globalFilter.toLowerCase()) ||
+        item.category?.category_name
+          ?.toLowerCase()
+          .includes(globalFilter.toLowerCase())
+      );
+    });
+  }, [globalFilter, recents]);
 
   const table = useReactTable({
     data: filteredData,

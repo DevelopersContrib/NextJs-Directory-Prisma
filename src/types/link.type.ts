@@ -1,27 +1,27 @@
-type LinkType = {
-	id: string;
-	title: string;
-	description: string;
-	userId: string;
-	categoryId: string;
-	company_name: string;
-	company_logo: string;
-	screenshot: string;
-	url: string;
-	approved: boolean;
-	featured: boolean;
-	from_vnoc: boolean;
-	approved_by: string;
-	
-	category: {
-		category_name: string;
-	} 
-	
-	archivedAt: Date | null;
-	deletedAt: Date | null;
-	favoritedAt: Date | null;
-	createdAt: Date;
-	updatedAt: Date;
+export type LinkType = {
+  id: string;
+  title: string;
+  description: string;
+  userId: string;
+  categoryId: string;
+  company_name: string;
+  company_logo: string | null;
+  screenshot: string | null;
+  url: string;
+  approved: boolean;
+  featured: boolean;
+  from_vnoc: boolean;
+  approved_by: string | null;
+
+  category: CategoryT;
+
+  archivedAt: Date | null;
+  deletedAt: Date | null;
+  favoritedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
-export default LinkType;
+export type CategoryT = {
+  category_name: string;
+};

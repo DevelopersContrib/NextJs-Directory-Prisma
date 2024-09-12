@@ -3,7 +3,7 @@
 import React from "react";
 
 import { ILinkWithCategory } from "@/interfaces/link.interface";
-import LinkType from "@/types/link.type";
+
 import { Toaster } from "sonner";
 import DisplayPost from "./display-post";
 import ChooseFile from "./choose-file";
@@ -13,12 +13,13 @@ import List from "../sidebar/list";
 import { FaRegFileAlt, FaRegStar } from "react-icons/fa";
 import { CardText } from "react-bootstrap";
 import DataTableListing from "@/app/(admin)/dashboard/components/DataTableListing";
+import { LinkType } from "@/types/link.type";
 
 type Props = {
   recents: LinkType[];
 };
 
-const Main = ({recents}: Props) => {
+const Main = ({ recents }: Props) => {
   return (
     <div className="p-[50px] flex flex-col gap-y-8 w-full">
       {/* <div>
@@ -51,7 +52,6 @@ const Main = ({recents}: Props) => {
           {`Your Listings`}
         </h2>
         <DataTableListing recents={recents} />
-        
       </div>
     </div>
   );

@@ -9,15 +9,14 @@ import prismadb from "@/lib/prismaDb";
 import { authOptions } from "@/lib/utils/auth-options";
 import FolderType from "@/types/folder.type";
 import PostType from "@/types/post.type";
-import LinkType from "@/types/link.type";
 import SessionType from "@/types/session.type";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
 import CategoryType from "@/types/category.type";
+import { LinkType } from "@/types/link.type";
 
 type SearchParams = {
-  
   linkId?: string;
   categoryId?: string;
 };
@@ -27,23 +26,19 @@ export default async function Dashboard({
 }: {
   searchParams: SearchParams;
 }) {
-  
   const session: SessionType = await getServerSession(authOptions);
   if (!session) redirect("/");
 
   const c = await getData();
   const domain = getDomain();
 
-
   const paymentAlreadyExists = await prismadb.payment.findFirst({
     where: {
-      userId: session.user.userId
-    }
-    
+      userId: session.user.userId,
+    },
   });
-    
-  if (!paymentAlreadyExists) redirect("/checkout");
 
+  if (!paymentAlreadyExists) redirect("/checkout");
 
   const categories: CategoryType[] = await prismadb.category.findMany({
     orderBy: {
@@ -53,7 +48,7 @@ export default async function Dashboard({
   const recents: LinkType[] = await prismadb.link.findMany({
     where: {
       userId: session.user.userId,
-      archivedAt: null
+      archivedAt: null,
     },
     include: {
       category: {
@@ -62,15 +57,14 @@ export default async function Dashboard({
         },
       },
     },
-    
+
     orderBy: {
       createdAt: "desc",
     },
   });
 
-  const {  linkId, categoryId } = searchParams;
+  const { linkId, categoryId } = searchParams;
 
-  
   return (
     <>
       <main className="flex">
@@ -81,11 +75,14 @@ export default async function Dashboard({
           domain={domain}
           logo={c.data.logo}
         />
-        
-       <Main recents={recents}  />
+
+        <Main recents={recents} />
 
         {/* components/sidebar/create-new-note-modal.tsx */}
-        <CreateNewListingModal categories={categories} userId={session.user.userId} />
+        <CreateNewListingModal
+          categories={categories}
+          userId={session.user.userId}
+        />
       </main>
     </>
   );
