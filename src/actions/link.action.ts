@@ -318,3 +318,22 @@ export const deleteLinkPermanentAction = async ({
     revalidatePath(path);
   }
 };
+
+export const getLinks = async (userId: string, path: string) => {
+  try {
+    const links = await prismadb.link.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return { data: links, message: "Links fetched successfully." };
+  } catch (error) {
+    console.info(["[ERROR_CREATE_POST_ACTION]"], error);
+
+    return { data: null, message: "Something went wrong." };
+  } finally {
+    revalidatePath(path);
+  }
+};
+  

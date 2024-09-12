@@ -18,7 +18,7 @@ type Props = {
   recents: LinkType[];
 };
 
-const Main = ({ recents }: Props) => {
+const Main = ({recents}: Props) => {
   return (
     <div className="p-[50px] flex flex-col gap-y-8 w-full">
       {/* <div>
@@ -50,7 +50,8 @@ const Main = ({ recents }: Props) => {
           </span>
           {`Your Listings`}
         </h2>
-        <DataTableListing />
+        <DataTableListing recents={recents} />
+        
       </div>
     </div>
   );
