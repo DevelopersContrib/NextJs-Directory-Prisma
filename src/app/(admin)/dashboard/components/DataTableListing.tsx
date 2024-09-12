@@ -25,6 +25,7 @@ import {
 import { debounce } from "lodash";
 import Image from "next/image";
 import LinkType from "@/types/link.type";
+import { imageLoader } from "@/helpers/image-helpers";
 
 type Props = {
   recents: LinkType[];
@@ -59,7 +60,7 @@ const exampleData = [
   },
 ];*/
 
-const DatatableListing = ({recents}: Props) => {
+const DatatableListing = ({ recents }: Props) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
@@ -76,8 +77,9 @@ const DatatableListing = ({recents}: Props) => {
         header: "Image",
         cell: ({ row }) => (
           <Image
+            loader={imageLoader}
             src={row.getValue("screenshot")}
-            alt="Placeholder"
+            alt=""
             width={50}
             height={50}
             className="rounded border shadow"
@@ -176,7 +178,9 @@ const DatatableListing = ({recents}: Props) => {
     if (!globalFilter) return recents;
     return recents.filter((item) =>
       Object.values(item).some((value) =>
-        (value?value.toString().toLowerCase().includes(globalFilter.toLowerCase()):"")
+        value
+          ? value.toString().toLowerCase().includes(globalFilter.toLowerCase())
+          : ""
       )
     );
   }, [globalFilter]);
