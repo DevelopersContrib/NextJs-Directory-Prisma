@@ -7,6 +7,7 @@ import {
   IUpdateLinkBody,
   IUpdateLinkDeletedAt,
   IUpdateLinkFavoritedAt,
+  IGetCategoryName
 } from "@/interfaces/link.interface";
 import prismadb from "@/lib/prismaDb";
 import { revalidatePath } from "next/cache";
@@ -337,3 +338,38 @@ export const getLinks = async (userId: string, path: string) => {
   }
 };
   
+export const getCategoryName = async ({
+  categoryId,
+  path,
+}: IGetCategoryName) => {
+  try {
+    const post = await prismadb.category.findUnique({
+      where: {
+        category_id: categoryId,
+      },
+    });
+
+    
+    if (post) {
+      return {
+        data: post.category_name,
+        message: "Category not found.",
+      };
+    }else {
+      return {
+        data: null,
+        message: "Category not found.",
+      };
+    }
+
+  } catch (error) {
+    console.info("[ERROR_UPDATED_POST_FAVORITED_AT_ACTION]", error);
+
+    return {
+      data: null,
+      message: "Something went wrong.",
+    };
+  } finally {
+    revalidatePath(path);
+  }
+};

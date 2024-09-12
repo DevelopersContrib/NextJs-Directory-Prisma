@@ -47,6 +47,11 @@ export interface IUpdateLinkDeletedAt {
   path: string;
 }
 
+export interface IGetCategoryName {
+  categoryId: string;
+  path: string;
+}
+
 export interface IUpdateLinkFavoritedAt extends IUpdateLinkDeletedAt {
   // ...
 }
