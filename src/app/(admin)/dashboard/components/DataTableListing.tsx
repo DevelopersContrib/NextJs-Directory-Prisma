@@ -25,6 +25,11 @@ import {
 import { debounce } from "lodash";
 import Image from "next/image";
 import LinkType from "@/types/link.type";
+import { likeAction, countLikesAction } from "@/actions/like.action";
+import Likes from "./Likes";
+import UnLikes from "./Unlikes";
+import Clicks from "./Clicks";
+import Category from "./Category";
 
 type Props = {
   recents: LinkType[];
@@ -67,6 +72,8 @@ const DatatableListing = ({recents}: Props) => {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  
 
   // Define columns for the table
   const columns = useMemo<ColumnDef<(typeof recents)[0]>[]>(
@@ -111,10 +118,10 @@ const DatatableListing = ({recents}: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("categoryId")}</div>,
+        cell: ({ row }) => <Category id={row.getValue("categoryId")} />,
       },
       {
-        accessorKey: "likes",
+        accessorKey: "id",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -125,10 +132,10 @@ const DatatableListing = ({recents}: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("likes")}</div>,
+        cell: ({ row }) => <Likes id={row.getValue("id")} />,
       },
       {
-        accessorKey: "dislikes",
+        accessorKey: "id",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -139,10 +146,10 @@ const DatatableListing = ({recents}: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("dislikes")}</div>,
+        cell: ({ row }) => <UnLikes id={row.getValue("id")} />,
       },
       {
-        accessorKey: "clicks",
+        accessorKey: "id",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -153,7 +160,7 @@ const DatatableListing = ({recents}: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("clicks")}</div>,
+        cell: ({ row }) => <Clicks id={row.getValue("id")} />
       },
       {
         id: "actions",
