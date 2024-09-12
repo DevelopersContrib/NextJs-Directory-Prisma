@@ -48,7 +48,7 @@ const FeaturedSlider = ({ featured }: Props) => {
           featured.map((feature, index) => (
             <SwiperSlide key={index}>
               <a
-                href="#"
+                href={`/redirect/${feature.id}`}
                 target="_blank"
                 className="w-full flex flex-col space-y-4"
               >
