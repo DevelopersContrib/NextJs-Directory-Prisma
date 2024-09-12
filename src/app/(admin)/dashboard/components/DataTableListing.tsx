@@ -24,8 +24,14 @@ import {
 } from "@/components/ui/table";
 import { debounce } from "lodash";
 import Image from "next/image";
+import LinkType from "@/types/link.type";
+
+type Props = {
+  recents: LinkType[];
+};
 
 // Example data for the table
+/*
 const exampleData = [
   {
     image: "https://cdn.vnoc.com/background/contrib/bg-new2.png",
@@ -51,9 +57,9 @@ const exampleData = [
     dislikes: 3,
     clicks: 200,
   },
-];
+];*/
 
-const DatatableListing = () => {
+const DatatableListing = ({recents}: Props) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
@@ -63,14 +69,14 @@ const DatatableListing = () => {
   });
 
   // Define columns for the table
-  const columns = useMemo<ColumnDef<(typeof exampleData)[0]>[]>(
+  const columns = useMemo<ColumnDef<(typeof recents)[0]>[]>(
     () => [
       {
-        accessorKey: "image",
+        accessorKey: "screenshot",
         header: "Image",
         cell: ({ row }) => (
           <Image
-            src={row.getValue("image")}
+            src={row.getValue("screenshot")}
             alt="Placeholder"
             width={50}
             height={50}
@@ -94,7 +100,7 @@ const DatatableListing = () => {
         cell: ({ row }) => <div>{row.getValue("title")}</div>,
       },
       {
-        accessorKey: "categoryName",
+        accessorKey: "categoryId",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -105,7 +111,7 @@ const DatatableListing = () => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div>{row.getValue("categoryName")}</div>,
+        cell: ({ row }) => <div>{row.getValue("categoryId")}</div>,
       },
       {
         accessorKey: "likes",
@@ -167,10 +173,10 @@ const DatatableListing = () => {
 
   // Filter the data based on global search input (search across all columns)
   const filteredData = useMemo(() => {
-    if (!globalFilter) return exampleData;
-    return exampleData.filter((item) =>
+    if (!globalFilter) return recents;
+    return recents.filter((item) =>
       Object.values(item).some((value) =>
-        value.toString().toLowerCase().includes(globalFilter.toLowerCase())
+        (value?value.toString().toLowerCase().includes(globalFilter.toLowerCase()):"")
       )
     );
   }, [globalFilter]);
