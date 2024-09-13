@@ -77,7 +77,7 @@ export default async function Dashboard({
         where: { LinkId: recent.id },
       });
 
-      return { ...recent, countLike, countClick, countUnlike }; // Combine all counts with recent object
+      return { ...recent, countLike, countClick, countUnlike };
     })
   );
 
