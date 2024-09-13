@@ -27,6 +27,7 @@ import Image from "next/image";
 
 import { imageLoader } from "@/helpers/image-helpers";
 import { LinkType } from "@/types/link.type";
+import { FaSearch } from "react-icons/fa";
 
 type Props = {
   recents: LinkType[];
@@ -192,114 +193,124 @@ const DatatableListing = ({ recents }: Props) => {
 
   return (
     <div className="w-full">
-      {/* Entries per page and Search */}
-      <div className="flex items-center flex-col lg:flex-row py-4 gap-y-4 lg:gap-0">
-        <div className="flex items-center space-x-2">
-          <span>Entries per page:</span>
-          <select
-            value={pagination.pageSize}
-            onChange={(e) =>
-              setPagination({ ...pagination, pageSize: Number(e.target.value) })
-            }
-            className="border rounded px-2 py-1"
-          >
-            {[10, 20, 50, 100].map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="inline-flex space-x-2 lg:ml-auto">
-          <Input
-            placeholder="Search..."
-            defaultValue={globalFilter}
-            onChange={handleFilterChange}
-            className="w-full lg:w-[350px]"
-          />
-        </div>
-      </div>
-
-      {/* Table Data */}
-      <div className="rounded-md border">
-        {!filteredData.length ? (
-          <div className="flex items-center justify-center h-48 w-full">
-            <CgSpinner className="fa-spin text-4xl" />
+      {filteredData.length === 0 ? (
+        <div className="flex items-center justify-center h-48 w-full border mt-8">
+          <div className="text-lg text-slate-400 flex items-center">
+            <span className="mr-4">
+              <FaSearch />
+            </span>
+            No listing found.
           </div>
-        ) : (
-          <div className="table-no-scroller-x">
-            <Table className="table-responsive-custom">
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
+        </div>
+      ) : (
+        <>
+          {/* Entries per page and Search */}
+          <div className="flex items-center flex-col lg:flex-row py-4 gap-y-4 lg:gap-0">
+            <div className="flex items-center space-x-2">
+              <span>Entries per page:</span>
+              <select
+                value={pagination.pageSize}
+                onChange={(e) =>
+                  setPagination({
+                    ...pagination,
+                    pageSize: Number(e.target.value),
+                  })
+                }
+                className="border rounded px-2 py-1"
+              >
+                {[10, 20, 50, 100].map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
                 ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
+              </select>
+            </div>
+            <div className="inline-flex space-x-2 lg:ml-auto">
+              <Input
+                placeholder="Search..."
+                defaultValue={globalFilter}
+                onChange={handleFilterChange}
+                className="w-full lg:w-[350px]"
+              />
+            </div>
+          </div>
+
+          {/* Table Data */}
+          <div className="rounded-md border">
+            <div className="table-no-scroller-x">
+              <Table className="table-responsive-custom">
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
                       ))}
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        )}
-      </div>
 
-      {/* Pagination and showing results */}
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          Showing {table.getRowModel().rows.length} of{" "}
-          {table.getCoreRowModel().rows.length} results.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+          {/* Pagination and showing results */}
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-muted-foreground">
+              Showing {table.getRowModel().rows.length} of{" "}
+              {table.getCoreRowModel().rows.length} results.
+            </div>
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
