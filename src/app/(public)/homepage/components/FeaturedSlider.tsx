@@ -10,7 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import Image from "next/image";
 
-import LinkType from "@/types/link.type";
+import { LinkType } from "@/types/link.type";
 import Link from "next/link";
 
 type Props = {
@@ -54,7 +54,7 @@ const FeaturedSlider = ({ featured }: Props) => {
               >
                 <div className="h-[300px] lg:h-[200px]">
                   <Image
-                    src={feature.screenshot}
+                    src={feature.screenshot ?? ""}
                     width={0}
                     height={0}
                     alt=""

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import LinkType from "@/types/link.type";
+import { LinkType } from "@/types/link.type";
 import Likes from "./Likes";
 
 type Props = {
@@ -17,10 +17,13 @@ const ListCategories = ({ recents }: Props) => {
         {recents.length ? (
           recents.map((recent, index) => (
             <div key={index} className="flex flex-col w-full">
-               
-              <a href={`/redirect/${recent.id}`} target="_blank" className="mb-8">
+              <a
+                href={`/redirect/${recent.id}`}
+                target="_blank"
+                className="mb-8"
+              >
                 <Image
-                  src={recent.screenshot}
+                  src={recent.screenshot ?? ""}
                   width={0}
                   height={0}
                   alt={recent.title}
