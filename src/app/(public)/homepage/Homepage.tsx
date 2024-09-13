@@ -3,9 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import Search from  "./components/Search";
-import LinkType from "@/types/link.type";
-
+import Search from "./components/Search";
+import { LinkType } from "@/types/link.type";
 
 type Props = {
   recents: LinkType[];
@@ -15,11 +14,9 @@ type Props = {
   domain: string | null | undefined;
 };
 import FeaturedSlider from "./components/FeaturedSlider";
+import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 
 const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
-  const capitalizeFirstLetter = (word: string): string => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  };
   const currentYear = new Date().getFullYear();
   return (
     <>
@@ -37,7 +34,9 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
                   sizes="100vw"
                 />
               ) : (
-                <div>{domain}</div>
+                <h3 className="font-bold text-xl">
+                  {domain && capitalizeFirstLetter(domain)}
+                </h3>
               )}
             </Link>
           </div>
@@ -75,21 +74,23 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
         </div>
         {/* End:: Hero Section */}
 
-         {/* Start:: Search Section */}
-        <Search categories={categories} defaultrecents={recents}/>
+        {/* Start:: Search Section */}
+        <Search categories={categories} defaultrecents={recents} />
         {/* End:: Search Section */}
-
 
         <footer className="py-8 w-full border-t border-[#ddd]">
           <div className="container flex justify-between text-sm text-[#777]">
-            <div>&copy; {currentYear}  {domain && capitalizeFirstLetter(domain)}. All rights reserved.</div>
+            <div>
+              &copy; {currentYear} {domain && capitalizeFirstLetter(domain)}.
+              All rights reserved.
+            </div>
             <div className="flex lg:justify-end">
               <ul className="flex space-x-2">
                 <li>
                   <a href="/about" className="inline-flex">
                     About Us
                   </a>
-                </li> 
+                </li>
                 <li>
                   <a href="/contact" className="inline-flex">
                     Contact Us

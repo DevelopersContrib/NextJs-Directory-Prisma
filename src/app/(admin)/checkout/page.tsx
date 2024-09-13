@@ -9,7 +9,7 @@ import prismadb from "@/lib/prismaDb";
 import { authOptions } from "@/lib/utils/auth-options";
 import FolderType from "@/types/folder.type";
 import PostType from "@/types/post.type";
-import LinkType from "@/types/link.type";
+import { LinkType } from "@/types/link.type";
 import SessionType from "@/types/session.type";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

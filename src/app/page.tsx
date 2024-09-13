@@ -4,16 +4,14 @@ import prismadb from "@/lib/prismaDb";
 import { authOptions } from "@/lib/utils/auth-options";
 import FolderType from "@/types/folder.type";
 import PostType from "@/types/post.type";
-import LinkType from "@/types/link.type";
+import { LinkType } from "@/types/link.type";
 import SessionType from "@/types/session.type";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
 import CategoryType from "@/types/category.type";
 
-
 type SearchParams = {
-  
   keyword?: string;
   categoryId?: string;
 };
@@ -30,9 +28,9 @@ export default async function page({
   const domain = getDomain();
 
   const categories: LinkType[] = await prismadb.link.findMany({
-    distinct: ['categoryId'],
-    include:{
-      category:true
+    distinct: ["categoryId"],
+    include: {
+      category: true,
     },
     orderBy: {
       title: "asc",
@@ -40,7 +38,7 @@ export default async function page({
   });
   const recents: LinkType[] = await prismadb.link.findMany({
     where: {
-      approved:   true,
+      approved: true,
     },
     include: {
       category: {
@@ -56,8 +54,8 @@ export default async function page({
 
   const featured: LinkType[] = await prismadb.link.findMany({
     where: {
-      approved:   true,
-      featured:   true,
+      approved: true,
+      featured: true,
     },
     include: {
       category: {
@@ -71,13 +69,15 @@ export default async function page({
     },
   });
 
-  
-
   return (
     <>
-      <Homepage categories={categories} recents={recents} featured={featured} data={c.data} domain={domain} />
+      <Homepage
+        categories={categories}
+        recents={recents}
+        featured={featured}
+        data={c.data}
+        domain={domain}
+      />
     </>
   );
-};
-
-
+}
