@@ -17,6 +17,11 @@ type Errors = {
 const Form = () => {
   const [errors, setErrors] = useState<Errors>(null);
   const [isMutation, setIsMutation] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleLoading = () => {
+    setLoading(true);
+  }
 
   const clientAction = async (formData: FormData) => {
     if (isMutation) return null;
@@ -45,7 +50,12 @@ const Form = () => {
         setErrors(null);
       }
 
+      setTimeout(function(){
+        handleLoading();
+      },100)
+
       const res = await authRegisterAction(data);
+      setLoading(false);
       if (res.message === "Email already exists") {
         setErrors({ email: "Email already exists" });
       }
@@ -140,7 +150,7 @@ const Form = () => {
 
       {/* Button Submit */}
       <button type="submit" className="btn btn-primary" disabled={isMutation}>
-        Register
+      {loading?'Loading...':'Register'}
       </button>
     </form>
   );
