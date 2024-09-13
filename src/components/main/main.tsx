@@ -15,11 +15,11 @@ import { CardText } from "react-bootstrap";
 import DataTableListing from "@/app/(admin)/dashboard/components/DataTableListing";
 import { LinkType } from "@/types/link.type";
 
-type Props = {
-  recents: LinkType[];
-};
+// type Props = {
+//   recents: LinkType[];
+// };
 
-const Main = ({ recents }: Props) => {
+const Main = ({ recents }: { recents: LinkType[] }) => {
   return (
     <div className="p-[50px] flex flex-col gap-y-8 w-full">
       {/* <div>

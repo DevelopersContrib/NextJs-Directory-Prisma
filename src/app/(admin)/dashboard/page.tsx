@@ -45,6 +45,7 @@ export default async function Dashboard({
       category_name: "asc",
     },
   });
+
   const recents: LinkType[] = await prismadb.link.findMany({
     where: {
       userId: session.user.userId,
@@ -57,11 +58,28 @@ export default async function Dashboard({
         },
       },
     },
-
     orderBy: {
       createdAt: "desc",
     },
   });
+
+  const recentsWithCounts = await Promise.all(
+    recents.map(async (recent) => {
+      const countLike = await prismadb.linkVotesUp.count({
+        where: { LinkId: recent.id },
+      });
+
+      const countClick = await prismadb.linkClicks.count({
+        where: { LinkId: recent.id },
+      });
+
+      const countUnlike = await prismadb.linkVotesDown.count({
+        where: { LinkId: recent.id },
+      });
+
+      return { ...recent, countLike, countClick, countUnlike }; // Combine all counts with recent object
+    })
+  );
 
   const { linkId, categoryId } = searchParams;
 
@@ -76,7 +94,7 @@ export default async function Dashboard({
           logo={c.data.logo}
         />
 
-        <Main recents={recents} />
+        <Main recents={recentsWithCounts} />
 
         {/* components/sidebar/create-new-note-modal.tsx */}
         <CreateNewListingModal

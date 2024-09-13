@@ -20,6 +20,10 @@ export type LinkType = {
   favoritedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
+
+  countLike?: number;
+  countClick?: number;
+  countUnlike?: number;
 };
 
 export type CategoryT = {

@@ -33,6 +33,8 @@ type Props = {
 };
 
 const DatatableListing = ({ recents }: Props) => {
+  console.log(recents);
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
@@ -89,7 +91,7 @@ const DatatableListing = ({ recents }: Props) => {
         cell: ({ row }) => <div>{row.original.category?.category_name}</div>,
       },
       {
-        accessorKey: "likes",
+        accessorKey: "countLike",
         header: ({ column }) => (
           <Button
             variant="ghost"
@@ -100,7 +102,7 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => {},
+        cell: ({ row }) => <div>{row.original.countLike}</div>,
       },
       {
         accessorKey: "dislikes",
@@ -114,7 +116,7 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => {},
+        cell: ({ row }) => <div>{row.original.countUnlike}</div>,
       },
       {
         accessorKey: "clicks",
@@ -128,7 +130,7 @@ const DatatableListing = ({ recents }: Props) => {
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => {},
+        cell: ({ row }) => <div>{row.original.countClick}</div>,
       },
       {
         id: "actions",
@@ -149,13 +151,19 @@ const DatatableListing = ({ recents }: Props) => {
   // Filter the data based only on the displayed columns
   const filteredData = useMemo(() => {
     if (!globalFilter) return recents;
+    const lowerCaseFilter = globalFilter.toLowerCase();
+
     return recents.filter((item) => {
-      return (
-        item.title?.toLowerCase().includes(globalFilter.toLowerCase()) ||
-        item.category?.category_name
-          ?.toLowerCase()
-          .includes(globalFilter.toLowerCase())
-      );
+      const matchesString =
+        item.title?.toLowerCase().includes(lowerCaseFilter) ||
+        item.category?.category_name?.toLowerCase().includes(lowerCaseFilter);
+
+      const matchesNumber =
+        item.countLike?.toString().includes(globalFilter) ||
+        item.countUnlike?.toString().includes(globalFilter) ||
+        item.countClick?.toString().includes(globalFilter);
+
+      return matchesString || matchesNumber;
     });
   }, [globalFilter, recents]);
 
