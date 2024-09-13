@@ -6,6 +6,7 @@ import { FaCircleNotch } from "react-icons/fa6";
 import { PackagesProps } from "@/types/packages";
 import { useRouter } from "next/router";
 import { Button } from "../ui/button";
+import { CgSpinner } from "react-icons/cg";
 
 // Function to handle the token from Stripe
 async function stripeTokenHandler(
@@ -165,10 +166,12 @@ const PaymentForm: React.FC<{
           <CardSection />
         </div>
         <button
-          className="inline-flex w-full items-center justify-center rounded-md bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+          className={`inline-flex w-full items-center justify-center rounded-md bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 ${
+            !stripe || loading ? "opacity-50" : ""
+          }`}
           disabled={!stripe || loading}
         >
-          {loading ? <FaCircleNotch className="fa-spin mr-2" /> : "Pay"}
+          {loading ? <CgSpinner className="animate-spin w-8 h-8" /> : "Pay"}
         </button>
       </form>
     </div>

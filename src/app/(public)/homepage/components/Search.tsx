@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
 import { CgSpinner } from "react-icons/cg";
@@ -14,53 +14,36 @@ type Props = {
 const Search = ({ categories, defaultrecents }: Props) => {
   const [search, setSearch] = useState("");
   const [recents, setRecents] = useState<LinkType[]>(defaultrecents);
-  const [allResults, setAllResults] = useState<LinkType[]>(defaultrecents); // Cached results
   const [loading, setLoading] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<number[]>([]);
 
-  // Initialize the cache on component mount
-  useEffect(() => {
-    setAllResults(defaultrecents);
-    setRecents(defaultrecents);
-  }, [defaultrecents]);
+  const handleClick = (index: number): void => {
+    const updatedActiveCategory = activeCategory.includes(index)
+      ? activeCategory.filter((button) => button !== index)
+      : [...activeCategory, index];
 
-  // Function to perform search
-  const performSearch = useCallback(async () => {
+    setActiveCategory(updatedActiveCategory);
+    handleSearch(updatedActiveCategory.join());
+  };
+
+  const resetActiveCategory = (): void => {
+    setActiveCategory([]);
+    handleSearch("");
+  };
+
+  const handleSearch = async (category: string) => {
     setLoading(true);
     try {
-      if (!search.trim()) {
-        // Show all cached results if the search is empty
-        setRecents(allResults);
-      } else {
-        // Filter search results
-        const filteredResults = allResults.filter((item) =>
-          [
-            item.title,
-            item.description,
-            item.company_name,
-            item.category.category_name,
-          ].some((field) =>
-            field.toLowerCase().includes(search.trim().toLowerCase())
-          )
-        );
-        setRecents(filteredResults);
-      }
+      const { data } = await axios.post("/api/link/search", {
+        search,
+        category,
+      });
+      setRecents(data);
     } catch (error) {
-      console.error("Error filtering search results:", error);
+      console.error("Error fetching items:", error);
     } finally {
       setLoading(false);
     }
-  }, [search, allResults]);
-
-  // Handle search when Enter key is pressed
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      performSearch();
-    }
-  };
-
-  // Handle search when the search input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
   };
 
   return (
@@ -70,47 +53,67 @@ const Search = ({ categories, defaultrecents }: Props) => {
           <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
             <input
               type="search"
-              className="bg-transparent h-[50px] w-full px-4 py-1 focus:outline-none"
+              className="bg-transparent h-[50px] lg:mx-auto w-full px-4 py-1 focus:outline-none focus:ring-0 focus:border-none"
               placeholder="Search"
               value={search}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown} // Handle Enter key press
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && handleSearch(activeCategory.join())
+              }
             />
             <span
-              onClick={performSearch} // Trigger search on click
-              className="flex items-center justify-center px-4 text-[#777] cursor-pointer"
+              onClick={() => handleSearch(activeCategory.join())}
+              className="flex items-center justify-center px-4 text-[#777]"
             >
-              <FaSearch />
+              {loading ? (
+                <CgSpinner className="animate-spin  w-8 h-8" />
+              ) : (
+                <FaSearch />
+              )}
             </span>
           </div>
         </div>
-        {/* Categories Filter */}
         <ul className="flex w-full flex-wrap mb-4 justify-center">
           <li className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1">
-            <button className="capitalize block font-light px-3 py-2">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                resetActiveCategory();
+              }}
+              className="capitalize block font-light px-3 py-2"
+            >
               all
             </button>
           </li>
-          {categories.map((cat) => (
+          {categories.map((cat, index) => (
             <li
-              key={cat.id}
+              key={index}
               className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1"
             >
-              <button className="capitalize block font-light px-3 py-2">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleClick(index);
+                }}
+                className={
+                  activeCategory.includes(index)
+                    ? " capitalize block font-light px-3 py-2 btn-primary rounded"
+                    : "capitalize block font-light px-3 py-2"
+                }
+              >
                 {cat.category.category_name}
               </button>
             </li>
           ))}
         </ul>
+        {loading ? (
+          <div className="flex justify-center items-center">
+            <CgSpinner className="animate-spin w-8 h-8" />
+          </div>
+        ) : (
+          <ListCategories recents={recents} />
+        )}
       </div>
-      {/* Show loading spinner or search results */}
-      {loading ? (
-        <div className="flex items-center justify-center h-48 w-full">
-          <CgSpinner className="fa-spin text-4xl" />
-        </div>
-      ) : (
-        <ListCategories recents={recents} />
-      )}
     </>
   );
 };

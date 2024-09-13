@@ -59,7 +59,11 @@ const ListCategories = ({ recents }: Props) => {
             </div>
           ))
         ) : (
-          <h3 className="subheading px-5">There are no recent posts</h3>
+          <div className="md:col-span-3 lg:col-span-4">
+            <h3 className="text-xl px-5 text-slate-500 text-center w-full">
+              There are no recent posts
+            </h3>
+          </div>
         )}
       </div>
     </>

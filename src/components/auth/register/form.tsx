@@ -8,6 +8,7 @@ import { historyAction } from "@/actions/history.action";
 
 import { toast } from "sonner";
 import { FaSpinner } from "react-icons/fa";
+import { CgSpinner } from "react-icons/cg";
 
 type Errors = {
   [key: string]: string | undefined;
@@ -146,7 +147,7 @@ const Form = () => {
       >
         {isMutation ? (
           <>
-            <FaSpinner className="fa-spin mr-2" />
+            <CgSpinner className="animate-spin w-8 h-8" />
             Loading
           </>
         ) : (

@@ -7,6 +7,7 @@ import { SignInResponse, signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa";
+import { CgSpinner } from "react-icons/cg";
 
 // Define Errors type with an index signature
 type Errors = {
@@ -126,7 +127,7 @@ const Form = () => {
       >
         {isMutation ? (
           <>
-            <FaSpinner className="fa-spin mr-2" />
+            <CgSpinner className="animate-spin w-8 h-8" />
             Loading
           </>
         ) : (
