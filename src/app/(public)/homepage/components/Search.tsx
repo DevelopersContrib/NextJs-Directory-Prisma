@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaSearch } from "react-icons/fa";
 import LinkType from "@/types/link.type";
 import ListCategories from "../components/ListCategories";
+import _ from 'lodash';
 type Props = {
   defaultrecents: LinkType[];
   categories: LinkType[];
@@ -13,12 +14,31 @@ const Search = ({ categories, defaultrecents}: Props) => {
     const [search, setSearch] = useState('');
     const [recents, setRecents] = useState<LinkType[]>(defaultrecents);
     const [loading, setLoading] = useState(false);
+    const [activeCategory, setActiveCategory] = useState<number[]>([]);
 
-    const handleSearch = async () => {
+    const handleClick = (index: number): void => {
+      let updatedActiveCategory;
+      if (activeCategory.includes(index)) {
+        updatedActiveCategory = activeCategory.filter((button) => button !== index);
+      } else {
+        updatedActiveCategory = [...activeCategory, index];
+      }
+      setActiveCategory(updatedActiveCategory);
+      handleSearch(updatedActiveCategory.join());
+    };
+
+    const resetActiveCategory = (): void => {
+      setActiveCategory([]);
+      handleSearch(activeCategory.join());
+    };
+  
+
+    const handleSearch = async (category:string) => {
       setLoading(true);
       try {
         const { data } = await axios.post('/api/link/search', {
             search: search,
+            category: category,
         });
         setRecents(data);
       } catch (error) {
@@ -44,29 +64,39 @@ const Search = ({ categories, defaultrecents}: Props) => {
                     setSearch(e.target.value)
                     // handleSearch() 
                   }}
-                  onKeyDown={e => e.key === 'Enter' ? handleSearch() : ''}
+                  onKeyDown={e => e.key === 'Enter' ? handleSearch(activeCategory.join()) : ''}
               />
-              <span onClick={handleSearch} className="flex items-center justify-center px-4 text-[#777]">
+              <span onClick={(e) => {
+                  handleSearch(activeCategory.join()) 
+                  }} className="flex items-center justify-center px-4 text-[#777]">
                   <FaSearch />
               </span>
             </div>
           </div>
           <ul className="flex w-full flex-wrap mb-4 justify-center">
             <li className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1">
-              <a href="#" className="capitalize block font-light px-3 py-2">
+              <a href="" onClick={(e) => {
+                  e.preventDefault();
+                  resetActiveCategory()
+                }} className="capitalize block font-light px-3 py-2">
                 all
               </a>
             </li>
-            {categories.map(cat => {
-                return <li
-                  key={cat.id}
-                  className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1"
-                  >
-                    <a href="#" className="capitalize block font-light px-3 py-2">
-                      {cat.category.category_name}
-                    </a>
-                  </li>
-              })}
+           {categories.map((cat, index) => (
+              <li
+              key={index}
+              className="bg-[#e9ecef] text-[#444] rounded-sm text-sm inline-flex flex-col mr-1 mb-1"
+              >
+                <a onClick={(e) => {
+                    e.preventDefault();
+                    handleClick(parseInt(cat.categoryId))
+                  }} href="" 
+                  className= {activeCategory.includes(parseInt(cat.categoryId)) ? "active capitalize block font-light px-3 py-2" : 
+                    "capitalize block font-light px-3 py-2"} >
+                  {cat.category.category_name}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         {/* Start:: Categories Section */}
