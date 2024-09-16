@@ -93,10 +93,10 @@ const Search = ({ categories, defaultrecents }: Props) => {
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  handleClick(index);
+                  handleClick(parseInt(cat.categoryId));
                 }}
                 className={
-                  activeCategory.includes(index)
+                  activeCategory.includes(parseInt(cat.categoryId))
                     ? " capitalize block font-light px-3 py-2 btn-primary rounded"
                     : "capitalize block font-light px-3 py-2"
                 }
