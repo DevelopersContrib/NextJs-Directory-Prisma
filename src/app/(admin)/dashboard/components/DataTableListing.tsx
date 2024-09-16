@@ -28,13 +28,16 @@ import Image from "next/image";
 import { imageLoader } from "@/helpers/image-helpers";
 import { LinkType } from "@/types/link.type";
 import { FaSearch } from "react-icons/fa";
+import { deleteLinkPermanentAction } from "@/actions/link.action";
+import { historyAction } from "@/actions/history.action";
+import { toast } from "sonner";
 
 type Props = {
   recents: LinkType[];
 };
 
 const DatatableListing = ({ recents }: Props) => {
-  console.log(recents);
+  
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -43,6 +46,36 @@ const DatatableListing = ({ recents }: Props) => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [isMutation, setIsMutation] = useState<boolean>(false);
+
+
+  const deleteAction = async (id: string) => {
+    if (isMutation) return null;
+    setIsMutation(true);
+
+    const isConfirmed = confirm("re you sure you want to delete this listing ?")
+    if (isConfirmed) {
+        try {
+          const res = await deleteLinkPermanentAction({
+              linkId: id,
+              path: '/dashboard',
+          });
+          
+          if (res.message == "Post deleted permanently.") {
+              toast("Link deleted permanently.");
+          }
+          
+      } catch (error) {
+          console.info("[ERROR_CLIENT_ACTION]", error);
+
+          toast("Something went wrong");
+      } finally {
+          setIsMutation(false);
+      }
+    }
+
+    
+};
 
   // Define columns for the table
   const columns = useMemo<ColumnDef<(typeof recents)[0]>[]>(
@@ -139,7 +172,7 @@ const DatatableListing = ({ recents }: Props) => {
         cell: ({ row }) => (
           <div className="flex space-x-2">
             <Button size="sm">Edit</Button>
-            <Button size="sm" variant="destructive" color="white">
+            <Button size="sm" variant="destructive" color="white" onClick={() => deleteAction(row.original.id)} disabled={isMutation}>
               Delete
             </Button>
           </div>
