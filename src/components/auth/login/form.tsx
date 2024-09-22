@@ -6,10 +6,12 @@ import { loginSchema } from "@/validations/auth.validation";
 import { SignInResponse, signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { FaSpinner } from "react-icons/fa";
+import { CgSpinner } from "react-icons/cg";
 
+// Define Errors type with an index signature
 type Errors = {
-  email?: string;
-  password?: string;
+  [key: string]: string | undefined;
 } | null;
 
 const Form = () => {
@@ -18,7 +20,7 @@ const Form = () => {
   const [isMutation, setIsMutation] = useState<boolean>(false);
 
   const clientAction = async (formData: FormData) => {
-    if (isMutation) return null;
+    if (isMutation) return; // Prevent multiple submissions
     setIsMutation(true);
 
     try {
@@ -29,17 +31,17 @@ const Form = () => {
 
       const validations = loginSchema.safeParse(data);
       if (!validations.success) {
-        let newErrors: Errors = {};
-
+        const newErrors: Errors = {};
         validations.error.issues.forEach((issue) => {
-          newErrors = { ...newErrors, [issue.path[0]]: issue.message };
+          // Using type assertion for dynamic keys
+          newErrors[issue.path[0] as string] = issue.message;
         });
 
         setErrors(newErrors);
-        return null;
-      } else {
-        setErrors(null);
+        return;
       }
+
+      setErrors(null); // Clear previous errors if any
 
       const res: SignInResponse | undefined = await signIn("credentials", {
         ...data,
@@ -51,22 +53,26 @@ const Form = () => {
           email: "Wrong email or password",
           password: "Wrong email or password",
         });
-      }
-
-      if (res && res.ok && res.status === 200) {
+      } else if (res && res.ok && res.status === 200) {
         router.push("/dashboard");
       }
     } catch (error) {
-      console.info("[ERROR_CLIENT_ACTION]", error);
-
+      console.error("[ERROR_CLIENT_ACTION]", error);
       toast.error("Something went wrong");
     } finally {
-      setIsMutation(false);
+      setIsMutation(false); // Reset loading state after completion
     }
   };
 
   return (
-    <form action={clientAction} className="flex flex-col gap-y-5">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        clientAction(formData);
+      }}
+      className="flex flex-col gap-y-5"
+    >
       {/* Email */}
       <div className="flex flex-col gap-y-1">
         <label htmlFor="email" className="label">
@@ -78,9 +84,8 @@ const Form = () => {
           id="email"
           name="email"
           autoFocus
-          className={`input ${errors?.email ? "input-error" : null}`}
+          className={`input ${errors?.email ? "input-error" : ""}`}
         />
-
         {errors?.email && (
           <p className="text-red-500 font-sans">{errors?.email}</p>
         )}
@@ -93,12 +98,11 @@ const Form = () => {
         </label>
         <input
           type="password"
-          placeholder="Name"
+          placeholder="Password"
           id="password"
           name="password"
-          className={`input ${errors?.password ? "input-error" : null}`}
+          className={`input ${errors?.password ? "input-error" : ""}`}
         />
-
         {errors?.password && (
           <p className="text-red-500 font-sans">{errors?.password}</p>
         )}
@@ -116,8 +120,19 @@ const Form = () => {
       </p>
 
       {/* Button Submit */}
-      <button type="submit" className="btn btn-primary" disabled={isMutation}>
-        Login
+      <button
+        type="submit"
+        className={`btn btn-primary ${isMutation ? "opacity-50" : ""}`}
+        disabled={isMutation}
+      >
+        {isMutation ? (
+          <>
+            <CgSpinner className="animate-spin w-8 h-8" />
+            Loading
+          </>
+        ) : (
+          "Login"
+        )}
       </button>
     </form>
   );

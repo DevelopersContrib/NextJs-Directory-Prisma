@@ -14,10 +14,11 @@ import List from "./list";
 import { signOut } from "next-auth/react";
 import FolderType from "@/types/folder.type";
 import CategoryType from "@/types/category.type";
-import LinkType from "@/types/link.type";
+import { LinkType } from "@/types/link.type";
 import Folders from "./folders";
 import PostType from "@/types/post.type";
 import { useSearchParams, useRouter } from "next/navigation";
+import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 
 type Props = {
   userId: string;
@@ -55,7 +56,9 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
             className="w-[101px] h-[38px] object-contain"
           />
         ) : (
-          <span>{domain}</span>
+          <h3 className="font-bold text-xl">
+            {domain && capitalizeFirstLetter(domain)}
+          </h3>
         )}
         <FiSearch className="w-5 h-5 text-white opacity-40 cursor-pointer" />
       </div>
