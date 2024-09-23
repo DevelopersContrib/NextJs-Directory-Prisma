@@ -94,13 +94,13 @@ export default async function Dashboard({
           logo={c.data.logo}
         />
 
-        <Main recents={recentsWithCounts} />
-
+        
+        <Main recents={recentsWithCounts} categories={categories} userId={session.user.userId}  />
         {/* components/sidebar/create-new-note-modal.tsx */}
-        <CreateNewListingModal
+        {/* <CreateNewListingModal
           categories={categories}
           userId={session.user.userId}
-        />
+        /> */}
       </main>
     </>
   );

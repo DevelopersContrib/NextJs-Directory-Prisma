@@ -14,12 +14,19 @@ import { FaRegFileAlt, FaRegStar } from "react-icons/fa";
 import { CardText } from "react-bootstrap";
 import DataTableListing from "@/app/(admin)/dashboard/components/DataTableListing";
 import { LinkType } from "@/types/link.type";
+import CategoryType from "@/types/category.type";
 
 // type Props = {
 //   recents: LinkType[];
 // };
+type Props = {
+  recents: LinkType[];
+  categories: CategoryType[];
+  userId: string;
+};
 
-const Main = ({ recents }: { recents: LinkType[] }) => {
+// const Main = ({ recents }: { recents: LinkType[] }) => {
+  const Main = ({recents, categories, userId}: Props) => {
   return (
     <div className="p-[50px] flex flex-col gap-y-8 w-full">
       {/* <div>
@@ -51,7 +58,7 @@ const Main = ({ recents }: { recents: LinkType[] }) => {
           </span>
           {`Your Listings`}
         </h2>
-        <DataTableListing recents={recents} />
+        <DataTableListing recents={recents} categories={categories} userId={userId} />
       </div>
     </div>
   );

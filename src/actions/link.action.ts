@@ -50,6 +50,7 @@ export const createLinkAction = async ({
 export const updateLinkBodyAction = async ({
   id,
   title,
+  userId,
   categoryId,
   description,
   company_name,
@@ -58,10 +59,11 @@ export const updateLinkBodyAction = async ({
   path,
 }: IUpdateLinkBody) => {
   try {
-    const link = prismadb.link.update({
+    const link = await prismadb.link.update({
       where: { id },
       data: {
         title,
+        userId,
         categoryId,
         description,
         company_name,
@@ -291,9 +293,14 @@ export const deleteLinkPermanentAction = async ({
       };
     }
 
-    
+    if (post.deletedAt === null) {
+      return {
+        data: null,
+        message: "Forbidden",
+      };
+    }
 
-    await prismadb.link.delete({
+    await prismadb.post.delete({
       where: {
         id: post.id,
       },

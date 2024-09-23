@@ -24,20 +24,23 @@ import {
 } from "@/components/ui/table";
 import { debounce } from "lodash";
 import Image from "next/image";
-
+import axios from 'axios';
 import { imageLoader } from "@/helpers/image-helpers";
 import { LinkType } from "@/types/link.type";
 import { FaSearch } from "react-icons/fa";
 import { deleteLinkPermanentAction } from "@/actions/link.action";
 import { historyAction } from "@/actions/history.action";
 import { toast } from "sonner";
-
+import CreateNewListingModal from "@/components/sidebar/create-new-listing-modal";
+import CategoryType from "@/types/category.type";
+import { useRouter } from "next/navigation";
 type Props = {
   recents: LinkType[];
+  categories: CategoryType[];
+  userId: string;
 };
 
-const DatatableListing = ({ recents }: Props) => {
-  
+const DatatableListing = ({ recents, categories, userId }: Props) => { 
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -53,7 +56,7 @@ const DatatableListing = ({ recents }: Props) => {
     if (isMutation) return null;
     setIsMutation(true);
 
-    const isConfirmed = confirm("re you sure you want to delete this listing ?")
+    const isConfirmed = confirm("Are you sure you want to delete this listing ?")
     if (isConfirmed) {
         try {
           const res = await deleteLinkPermanentAction({
@@ -76,6 +79,30 @@ const DatatableListing = ({ recents }: Props) => {
 
     
 };
+
+const [linkData, setLinkData] = useState<LinkType>();
+
+  const router = useRouter();
+  const handleEdit = (id: string) => {
+    const edit = async (id:string) => {    
+      try {
+        const { data } = await axios.post('/api/link', {
+            id: id,
+        });
+        
+        setLinkData(data)
+       
+          router.push(`/dashboard?modal=open&link=${id}`);
+       
+      
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      } finally {
+        
+      }
+    };
+    edit(id);
+  };
 
   // Define columns for the table
   const columns = useMemo<ColumnDef<(typeof recents)[0]>[]>(
@@ -171,7 +198,7 @@ const DatatableListing = ({ recents }: Props) => {
         header: "Actions",
         cell: ({ row }) => (
           <div className="flex space-x-2">
-            <Button size="sm">Edit</Button>
+            <Button onClick={(e) => {handleEdit(row.original.id) }}  size="sm">Edit</Button>
             <Button size="sm" variant="destructive" color="white" onClick={() => deleteAction(row.original.id)} disabled={isMutation}>
               Delete
             </Button>
@@ -225,6 +252,7 @@ const DatatableListing = ({ recents }: Props) => {
   );
 
   return (
+    <>
     <div className="w-full">
       {filteredData.length === 0 ? (
         <div className="flex items-center justify-center h-48 w-full border mt-8">
@@ -345,6 +373,8 @@ const DatatableListing = ({ recents }: Props) => {
         </>
       )}
     </div>
+    <CreateNewListingModal linkData={linkData} categories={categories} userId={userId} />
+    </>
   );
 };
 

@@ -1,11 +1,14 @@
 "use client";
 
-import { createLinkAction } from "@/actions/link.action";
+import { createLinkAction,updateLinkBodyAction } from "@/actions/link.action";
 import FolderType from "@/types/folder.type";
 import CategoryType from "@/types/category.type";
 import { createLinkSchema } from "@/validations/link.validation";
 import { useSearchParams, useRouter } from "next/navigation";
-import React, { useState } from "react";
+//import React, { useState } from "react";
+import axios from 'axios';
+import {LinkType} from "@/types/link.type";
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 /*
 type Errors = {
     title: string | null | undefined;
@@ -31,35 +34,86 @@ type Errors = {
 type Props = {
   categories: CategoryType[];
   userId: string;
+  linkData : LinkType | undefined;
 };
 
-const CreateNewListingModal = ({ categories, userId }: Props) => {
+interface iFData {
+  id: string;
+  categoryId: string;
+  title: string;
+  description: string;
+  url: string;
+  company_name: string;
+  company_logo: string;
+  screenshot: string;
+}
+
+const CreateNewListingModal = ({ linkData, categories, userId }: Props) => {
+ 
   const router = useRouter();
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
+  const link = searchParams.get("link");
+  
   const folderId = searchParams.get("folderId");
   const postId = searchParams.get("postId");
 
   const [errors, setErrors] = useState<Errors>(null);
   const [isMutation, setIsMutation] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  
+  const [fData, setFData] = useState<iFData>({
+    id: "",
+    categoryId: '',
+    title: '',
+    description: '',
+    url: '',
+    company_name: '',
+    company_logo: '',
+    screenshot: '',
+  });
+
+  useEffect(() => {
+    setFData({
+      id: linkData?.id || "",
+      categoryId: linkData?.categoryId || '',
+      title: linkData?.title || '',
+      description: linkData?.description || '',
+      url: linkData?.url || '',
+      company_name: linkData?.company_name || '',
+      company_logo: linkData?.company_logo || '',
+      screenshot: linkData?.screenshot || '',
+    });
+
+  }, [linkData]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement >) => {
+    const { name, value } = e.target;
+    setFData({
+      ...fData,
+      [name]: value,
+    });
+  };
 
   const clientAction = async (formData: FormData) => {
     if (isMutation) return null;
     setIsMutation(true);
 
     try {
+
       const data = {
+        id:fData?.id || "",
         userId,
-        categoryId: (formData.get("categoryId") as string) || "",
-        title: (formData.get("title") as string) || "",
-        description: (formData.get("description") as string) || "",
-        url: (formData.get("url") as string) || "",
-        company_name: (formData.get("company_name") as string) || "",
-        company_logo: (formData.get("company_logo") as string) || "",
-        screenshot: (formData.get("screenshot") as string) || "",
+        categoryId: (fData.categoryId) || "",
+        title: (fData.title) || "",
+        description: (fData.description) || "",
+        url: (fData.url) || "",
+        company_name: (fData.company_name) || "",
+        company_logo: (fData.company_logo) || "",
+        screenshot: (fData.screenshot) || "",
         path: window.location.pathname,
       };
-
+      
       const validations = createLinkSchema.safeParse(data);
       if (!validations.success) {
         let newErrors: Errors = {};
@@ -74,12 +128,34 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
         setErrors(null);
       }
 
-      const res = await createLinkAction(data);
-      if (res.message === "Link created successfully.") {
-        router.push(
-          `/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
-        );
+      if(data.id){
+        const res = await updateLinkBodyAction(data);
+        
+        if (res.message === "Link updated successfully.") {
+          router.push(
+            `/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
+          );
+          setFData({
+            id: "",
+            categoryId: '',
+            title: '',
+            description: '',
+            url: '',
+            company_name: '',
+            company_logo: '',
+            screenshot: '',
+          });
+        }
+      }else{
+        const res = await createLinkAction(data);
+        if (res.message === "Link created successfully.") {
+          router.push(
+            `/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
+          );
+        }
       }
+
+      
     } catch (error) {
       console.info(["[ERROR_CLIENT_ACTION]"], error);
     } finally {
@@ -116,6 +192,8 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
               placeholder="Title"
               id="title"
               name="title"
+              onChange={handleChange}
+              value={fData.title}
               className={`input ${errors?.title ? "input-error" : null}`}
             />
 
@@ -131,6 +209,8 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
               className={`input ${errors?.categoryId ? "input-error" : null}`}
               name="categoryId"
               id="categoryId"
+              onChange={handleChange}
+              value={fData.categoryId}
             >
               {categories.map((category) => (
                 <option key={category.category_id} value={category.category_id}>
@@ -152,6 +232,8 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
               placeholder="Description"
               id="description"
               name="description"
+              onChange={handleChange}
+              value={fData.description}
               className={`input ${errors?.description ? "input-error" : null}`}
             />
 
@@ -169,6 +251,8 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
               placeholder="URL"
               id="url"
               name="url"
+              onChange={handleChange}
+              value={fData.url}
               className={`input ${errors?.url ? "input-error" : null}`}
             />
 
@@ -186,6 +270,8 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
               placeholder="Screenshot"
               id="screenshot"
               name="screenshot"
+              onChange={handleChange}
+              value={fData.screenshot}
               className={`input ${errors?.screenshot ? "input-error" : null}`}
             />
 
@@ -203,6 +289,8 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
               placeholder="Company Name"
               id="company_name"
               name="company_name"
+              onChange={handleChange}
+              value={fData.company_name}
               className={`input ${errors?.company_name ? "input-error" : null}`}
             />
 
@@ -220,6 +308,8 @@ const CreateNewListingModal = ({ categories, userId }: Props) => {
               placeholder="Company Logo"
               id="company_logo"
               name="company_logo"
+              onChange={handleChange}
+              value={fData.company_logo}
               className={`input ${errors?.company_logo ? "input-error" : null}`}
             />
 

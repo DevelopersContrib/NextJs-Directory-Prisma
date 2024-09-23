@@ -13,6 +13,7 @@ export interface ICreateLink {
 export interface IUpdateLinkBody {
   id: string;
   title: string;
+  userId: string;
   categoryId: string;
   description: string;
   company_name: string;
