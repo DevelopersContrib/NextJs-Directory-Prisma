@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { LinkType } from "@/types/link.type";
 import Likes from "./Likes";
+import Link from "next/link";
 
 type Props = {
   recents: LinkType[];
@@ -53,7 +54,7 @@ const ListCategories = ({ recents }: Props) => {
               <Likes id={recent.id} />
               <div>
                 <Button size={"lg"} className="w-full">
-                  Details
+                  <Link href={`/details/${recent.id}/${recent.title}`}>Details</Link>
                 </Button>
               </div>
             </div>
