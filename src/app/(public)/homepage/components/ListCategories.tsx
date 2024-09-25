@@ -19,8 +19,7 @@ const ListCategories = ({ recents }: Props) => {
           recents.map((recent, index) => (
             <div key={index} className="flex flex-col w-full">
               <a
-                href={`/redirect/${recent.id}`}
-                target="_blank"
+                href={`/details/${recent.id}/${recent.title}`}
                 className="mb-8"
               >
                 <Image
