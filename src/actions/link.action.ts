@@ -7,9 +7,11 @@ import {
   IUpdateLinkBody,
   IUpdateLinkDeletedAt,
   IUpdateLinkFavoritedAt,
-  IGetCategoryName
+  IGetCategoryName,
+  ILink
 } from "@/interfaces/link.interface";
 import prismadb from "@/lib/prismaDb";
+import { LinkType } from "@/types/link.type";
 import { revalidatePath } from "next/cache";
 
 export const createLinkAction = async ({
@@ -374,4 +376,42 @@ export const getCategoryName = async ({
   } finally {
     revalidatePath(path);
   }
+};
+
+
+export const getLink = async ({
+  id
+}: ILink) => {
+  
+  const link = await prismadb.link.findUnique({
+    where: {
+      id: id,
+    },
+    include:{
+      category:true
+    }
+  });
+
+  return link;
+  
+};
+
+export const getFeatured = async () => {
+  const featured: LinkType[] = await prismadb.link.findMany({
+    where: {
+      approved: true,
+      featured: true,
+    },
+    include: {
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return featured;
 };

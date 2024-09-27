@@ -6,8 +6,14 @@ import { FaSearch } from "react-icons/fa";
 import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 import { BiDislike, BiLike } from "react-icons/bi";
 import FeaturedSlider from "./FeaturedSlider";
+import { LinkType } from "@/types/link.type";
 
-const Details = () => {
+type Props = {
+  link: LinkType;
+  featured: LinkType[];
+};
+
+const Details =  ({ link, featured }: Props) => {
   return (
     <>
       <header className="flex w-full ">
@@ -44,30 +50,30 @@ const Details = () => {
         <div className="container text-center pt-14 pb-8">
           <div className="inline-flex mx-auto">
             <a href="#" className="inline-flex">
-              <Image
-                src={"https://cdn.vnoc.com/logos/logo-handyman.png"}
+              <img
+                src={link.company_logo??""}
                 alt=""
                 width={0}
                 height={0}
                 sizes="100vw"
                 className="w-full h-auto max-h-[110px] object-contain inline-block mx-auto"
-                priority
+                
               />
             </a>
           </div>
           <h1 className="text-3xl mb-4 font-bold text-gray-800">
             <a href="#" target="_blank" className="text-black">
-              {capitalizeFirstLetter("handyman.com")}
+              {capitalizeFirstLetter(`${link.title}`)}
             </a>
           </h1>
           <p className="text-base font-normal text-black/70 xl:max-w-[50%] xl:mx-auto mb-4">
-            {`Join a vibrant community of developers, influencers, and entrepreneurs on generalpoll.com, all using the versatile CONTRIB token to power their token economies!`}
+            {link.description}
           </p>
           <div className="mb-4 w-full">
             <ul className="inline-flex space-x-2">
               <li className="inline-flex">
                 <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
-                  Business
+                  {link.category.category_name}
                 </div>
               </li>
               <li className="inline-flex">
@@ -91,21 +97,21 @@ const Details = () => {
         </div>
         <div className="container mb-8 text-center">
           <a href="#" target="_blank" className="inline-block w-full">
-            <Image
-              src={"https://domaindirectory.com/images/handyman-2.png"}
+            <img
+              src={link.screenshot??""}
               alt=""
               width={0}
               height={0}
               sizes="100vw"
               className="w-full h-auto object-contain inline-block mx-auto"
-              priority
+              
             />
           </a>
         </div>
         {/* End:: Hero Section */}
 
         <div className="container py-14">
-          <FeaturedSlider />
+        <FeaturedSlider featured={featured} />
         </div>
       </main>
       <footer className="py-8 w-full border-t border-[#ddd]">

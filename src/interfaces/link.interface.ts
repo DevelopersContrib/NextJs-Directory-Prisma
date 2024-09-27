@@ -53,6 +53,10 @@ export interface IGetCategoryName {
   path: string;
 }
 
+export interface ILink {
+  id: string;
+}
+
 export interface IUpdateLinkFavoritedAt extends IUpdateLinkDeletedAt {
   // ...
 }
