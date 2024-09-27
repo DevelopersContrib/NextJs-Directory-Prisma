@@ -17,7 +17,7 @@ type Props = {
   featured: LinkType[];
 };
 
-const FeaturedSlider = () => {
+const FeaturedSlider = ({ featured }: Props) => {
   return (
     <>
       <Swiper
@@ -44,14 +44,17 @@ const FeaturedSlider = () => {
         modules={[Pagination]}
         className="mySwiper main-featured-slider !mb-14"
       >
-        {Array(8)
-          .fill(0)
-          .map((_, index) => (
+        {featured.length ? (
+          featured.map((feature, index) => (
             <SwiperSlide key={index}>
-              <div className="w-full flex flex-col space-y-4">
+              <a
+                href={`/redirect/${feature.id}`}
+                target="_blank"
+                className="w-full flex flex-col space-y-4"
+              >
                 <div className="h-[300px] lg:h-[200px]">
                   <Image
-                    src={"https://domaindirectory.com/images/realtydao-2.png"}
+                    src={feature.screenshot ?? ""}
                     width={0}
                     height={0}
                     alt=""
@@ -62,12 +65,15 @@ const FeaturedSlider = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-[#333] text-xl mb-0">
-                    <a className="inline-flex">domain name</a>
+                    <div className="inline-flex">{feature.title}</div>
                   </h3>
                 </div>
-              </div>
+              </a>
             </SwiperSlide>
-          ))}
+          ))
+        ) : (
+          <h3 className="subheading px-5">There are no recent posts</h3>
+        )}
       </Swiper>
     </>
   );
