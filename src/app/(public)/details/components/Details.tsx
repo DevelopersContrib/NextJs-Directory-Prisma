@@ -11,9 +11,11 @@ import { LinkType } from "@/types/link.type";
 type Props = {
   link: LinkType;
   featured: LinkType[];
+  countLikes:any;
+  countDislikes:any;
 };
 
-const Details =  ({ link, featured }: Props) => {
+const Details =  ({ link, featured, countLikes,countDislikes}: Props) => {
   return (
     <>
       <header className="flex w-full ">
@@ -81,7 +83,7 @@ const Details =  ({ link, featured }: Props) => {
                   <span className="mr-1">
                     <BiLike />
                   </span>
-                  <span className="">32,767</span>
+                  <span className="">{countLikes}</span>
                 </Button>
               </li>
               <li className="inline-flex">
@@ -89,7 +91,7 @@ const Details =  ({ link, featured }: Props) => {
                   <span className="mr-1">
                     <BiDislike />
                   </span>
-                  <span className="">32,767</span>
+                  <span className="">{countDislikes}</span>
                 </Button>
               </li>
             </ul>

@@ -396,6 +396,28 @@ export const getLink = async ({
   
 };
 
+export const getLikeCount = async (id:string) => {
+  const count = await prismadb.linkVotesUp.count({
+    where: {
+      LinkId: id,
+    }
+  });
+
+  return count;
+  
+};
+
+export const getDislikeCount = async (id:string) => {
+  const count = await prismadb.linkVotesDown.count({
+    where: {
+      LinkId: id,
+    }
+  });
+
+  return count;
+  
+};
+
 export const getFeatured = async () => {
   const featured: LinkType[] = await prismadb.link.findMany({
     where: {
