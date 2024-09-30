@@ -11,11 +11,11 @@ import { LinkType } from "@/types/link.type";
 type Props = {
   link: LinkType;
   featured: LinkType[];
-  countLikes:any;
-  countDislikes:any;
+  countLikes: any;
+  countDislikes: any;
 };
 
-const Details =  ({ link, featured, countLikes,countDislikes}: Props) => {
+const Details = ({ link, featured, countLikes, countDislikes }: Props) => {
   return (
     <>
       <header className="flex w-full ">
@@ -52,14 +52,13 @@ const Details =  ({ link, featured, countLikes,countDislikes}: Props) => {
         <div className="container text-center pt-14 pb-8">
           <div className="inline-flex mx-auto">
             <a href="#" className="inline-flex">
-              <img
-                src={link.company_logo??""}
+              <Image
+                src={link.company_logo ?? ""}
                 alt=""
                 width={0}
                 height={0}
                 sizes="100vw"
                 className="w-full h-auto max-h-[110px] object-contain inline-block mx-auto"
-                
               />
             </a>
           </div>
@@ -100,20 +99,19 @@ const Details =  ({ link, featured, countLikes,countDislikes}: Props) => {
         <div className="container mb-8 text-center">
           <a href="#" target="_blank" className="inline-block w-full">
             <img
-              src={link.screenshot??""}
+              src={link.screenshot ?? ""}
               alt=""
               width={0}
               height={0}
               sizes="100vw"
               className="w-full h-auto object-contain inline-block mx-auto"
-              
             />
           </a>
         </div>
         {/* End:: Hero Section */}
 
         <div className="container py-14">
-        <FeaturedSlider featured={featured} />
+          <FeaturedSlider featured={featured} />
         </div>
       </main>
       <footer className="py-8 w-full border-t border-[#ddd]">
