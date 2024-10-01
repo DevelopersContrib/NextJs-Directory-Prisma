@@ -7,29 +7,37 @@ import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 import { BiDislike, BiLike } from "react-icons/bi";
 import FeaturedSlider from "./FeaturedSlider";
 import { LinkType } from "@/types/link.type";
-
+ 
 type Props = {
   link: LinkType;
   featured: LinkType[];
   countLikes:any;
   countDislikes:any;
+  data: any | null | undefined;
+  domain: string | null | undefined;
 };
 
-const Details =  ({ link, featured, countLikes,countDislikes}: Props) => {
+const Details =  ({ link, featured, countLikes,countDislikes,data,domain }: Props) => {
   return (
     <>
       <header className="flex w-full ">
         <div className="container items-center justify-between flex py-4">
           <div>
-            <Link href="/">
-              <Image
-                src={`https://cdn.vnoc.com/logos/logo-GeneralPoll-1.png`}
-                width={0}
-                height={0}
-                alt=""
-                className="w-[200px] h-[34px] object-contain"
-                sizes="100vw"
-              />
+          <Link href="/">
+              {data.logo && domain ? (
+                <Image
+                  src={data.logo}
+                  width={0}
+                  height={0}
+                  alt={domain}
+                  className="w-[200px] h-[34px] object-contain"
+                  sizes="100vw"
+                />
+              ) : (
+                <h3 className="font-bold text-xl">
+                  {domain && capitalizeFirstLetter(domain)}
+                </h3>
+              )}
             </Link>
           </div>
           <div className="flex space-x-4">
@@ -73,6 +81,13 @@ const Details =  ({ link, featured, countLikes,countDislikes}: Props) => {
           </p>
           <div className="mb-4 w-full">
             <ul className="inline-flex space-x-2">
+              <li className="inline-flex">
+                <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
+                  <Link href={link.url}>
+                    Visit Site
+                  </Link>
+                </div>
+              </li>
               <li className="inline-flex">
                 <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
                   {link.category.category_name}
