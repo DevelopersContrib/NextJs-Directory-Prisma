@@ -17,7 +17,9 @@ type Props = {
   domain: string | null | undefined;
 };
 
-const Details =  ({ link, featured, countLikes,countDislikes,data,domain }: Props) => {
+
+
+const Details = ({link, featured, countLikes,countDislikes,data,domain }: Props) => {
   return (
     <>
       <header className="flex w-full ">
@@ -60,14 +62,13 @@ const Details =  ({ link, featured, countLikes,countDislikes,data,domain }: Prop
         <div className="container text-center pt-14 pb-8">
           <div className="inline-flex mx-auto">
             <a href="#" className="inline-flex">
-              <img
-                src={link.company_logo??""}
+              <Image
+                src={link.company_logo ?? ""}
                 alt=""
                 width={0}
                 height={0}
                 sizes="100vw"
                 className="w-full h-auto max-h-[110px] object-contain inline-block mx-auto"
-                
               />
             </a>
           </div>
@@ -115,20 +116,19 @@ const Details =  ({ link, featured, countLikes,countDislikes,data,domain }: Prop
         <div className="container mb-8 text-center">
           <a href="#" target="_blank" className="inline-block w-full">
             <img
-              src={link.screenshot??""}
+              src={link.screenshot ?? ""}
               alt=""
               width={0}
               height={0}
               sizes="100vw"
               className="w-full h-auto object-contain inline-block mx-auto"
-              
             />
           </a>
         </div>
         {/* End:: Hero Section */}
 
         <div className="container py-14">
-        <FeaturedSlider featured={featured} />
+          <FeaturedSlider featured={featured} />
         </div>
       </main>
       <footer className="py-8 w-full border-t border-[#ddd]">
