@@ -7,25 +7,30 @@ import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 import { BiDislike, BiLike } from "react-icons/bi";
 import FeaturedSlider from "./FeaturedSlider";
 import { LinkType } from "@/types/link.type";
- 
+
 type Props = {
   link: LinkType;
   featured: LinkType[];
-  countLikes:any;
-  countDislikes:any;
+  countLikes: any;
+  countDislikes: any;
   data: any | null | undefined;
   domain: string | null | undefined;
 };
 
-
-
-const Details = ({link, featured, countLikes,countDislikes,data,domain }: Props) => {
+const Details = ({
+  link,
+  featured,
+  countLikes,
+  countDislikes,
+  data,
+  domain,
+}: Props) => {
   return (
     <>
       <header className="flex w-full ">
         <div className="container items-center justify-between flex py-4">
           <div>
-          <Link href="/">
+            <Link href="/">
               {data.logo && domain ? (
                 <Image
                   src={data.logo}
@@ -83,11 +88,13 @@ const Details = ({link, featured, countLikes,countDislikes,data,domain }: Props)
           <div className="mb-4 w-full">
             <ul className="inline-flex space-x-2">
               <li className="inline-flex">
-                <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
-                  <Link href={link.url}>
-                    Visit Site
-                  </Link>
-                </div>
+                <Link
+                  href={link.url}
+                  target="_blank"
+                  className="inline-flex py-2 px-3 rounded bg-blue-500 text-white text-sm"
+                >
+                  Visit Site
+                </Link>
               </li>
               <li className="inline-flex">
                 <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
