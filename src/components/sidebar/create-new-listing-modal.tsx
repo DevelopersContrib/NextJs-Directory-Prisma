@@ -178,7 +178,7 @@ const CreateNewListingModal = ({ linkData, categories, userId }: Props) => {
       <div className="p-8 rounded-1 bg-white shadow flex flex-col space-y-4 w-[400px]">
         {/* Title */}
         <h1 className="font-sans text-4xl font-semibold text-center text-primary">
-          New Note
+          New Listing
         </h1>
 
         {/* Title & Folder */}

@@ -32,6 +32,8 @@ import { deleteLinkPermanentAction } from "@/actions/link.action";
 import { historyAction } from "@/actions/history.action";
 import { toast } from "sonner";
 import CreateNewListingModal from "@/components/sidebar/create-new-listing-modal";
+import BulkUploadModal from "@/components/sidebar/bulk-upload-modal";
+
 import CategoryType from "@/types/category.type";
 import { useRouter } from "next/navigation";
 type Props = {
@@ -374,6 +376,8 @@ const [linkData, setLinkData] = useState<LinkType>();
       )}
     </div>
     <CreateNewListingModal linkData={linkData} categories={categories} userId={userId} />
+    <BulkUploadModal linkData={linkData} categories={categories} userId={userId} />
+    
     </>
   );
 };

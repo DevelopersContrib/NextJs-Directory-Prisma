@@ -8,7 +8,8 @@ import {
   IUpdateLinkDeletedAt,
   IUpdateLinkFavoritedAt,
   IGetCategoryName,
-  ILink
+  ILink,
+  IName
 } from "@/interfaces/link.interface";
 import prismadb from "@/lib/prismaDb";
 import { LinkType } from "@/types/link.type";
@@ -436,4 +437,56 @@ export const getFeatured = async () => {
     },
   });
   return featured;
+};
+
+
+export const getIdByTitle = async ({
+  name
+}: IName) => {
+  
+  const post = await prismadb.link.findFirst({
+    where: {
+      title: name.toLowerCase(),
+    },
+    
+  });
+
+  if (post) {
+    return {
+      data: post.id,
+      message: "Link found.",
+    };
+  }else {
+    return {
+      data: null,
+      message: "Link not found.",
+    };
+  }
+  
+};
+
+
+export const getCategoryIdByName = async ({
+  name
+}: IName) => {
+  
+  const category = await prismadb.category.findFirst({
+    where: {
+      category_name: name.toLowerCase(),
+    },
+    
+  });
+
+  if (category) {
+    return {
+      data: category.category_id,
+      message: "Category found.",
+    };
+  }else {
+    return {
+      data: null,
+      message: "Category not found.",
+    };
+  }
+  
 };

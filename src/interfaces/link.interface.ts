@@ -57,6 +57,10 @@ export interface ILink {
   id: string;
 }
 
+export interface IName {
+  name: string;
+}
+
 export interface IUpdateLinkFavoritedAt extends IUpdateLinkDeletedAt {
   // ...
 }

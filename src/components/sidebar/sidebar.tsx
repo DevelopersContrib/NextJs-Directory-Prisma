@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 
 import { FiSearch } from "react-icons/fi";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus,FaUpload } from "react-icons/fa6";
 import { FaRegFileAlt, FaRegStar } from "react-icons/fa";
 import { FiTrash, FiArchive } from "react-icons/fi";
 import { IoIosLogOut } from "react-icons/io";
@@ -43,6 +43,11 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
     router.push(`/dashboard?modal=open`);
   };
 
+
+  const bulkImport = () => {
+    router.push(`/dashboard?modal=bulk-upload`);
+  };
+
   return (
     <nav className="min-w-[300px] max-w-[300px] bg-[#1b1b1b] min-h-screen py-8 flex flex-col gap-y-8 overflow-y-auto">
       {/* Logo & Search Buttonn */}
@@ -70,6 +75,14 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
         >
           <FaPlus className="w-5 h-5" />
           New Listing
+        </button>
+
+        <button
+          className="rounded-1 bg-white/5 text-white w-full h-[40px] p-5 flex items-center justify-center gap-x-8 font-sans font-semibold text-base"
+          onClick={bulkImport}
+        >
+          <FaUpload className="w-5 h-5" />
+          Bulk Import
         </button>
       </div>
       {/* Recents */}
