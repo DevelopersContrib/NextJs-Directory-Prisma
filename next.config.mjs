@@ -57,6 +57,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "domaindirectory.com",
       },
+      {
+        protocol: "https",
+        hostname: "manage.vnoc.com",
+      },
     ],
   },
 };
