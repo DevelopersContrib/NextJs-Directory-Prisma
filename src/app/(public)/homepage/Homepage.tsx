@@ -6,6 +6,9 @@ import { FaSearch } from "react-icons/fa";
 import Search from "./components/Search";
 import { LinkType } from "@/types/link.type";
 
+
+
+
 type Props = {
   recents: LinkType[];
   categories: LinkType[];

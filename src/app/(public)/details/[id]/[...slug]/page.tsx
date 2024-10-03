@@ -3,8 +3,14 @@ import Details from "../../components/Details";
 import { LinkType } from "@/types/link.type";
 import { getLink,getFeatured,getDislikeCount,getLikeCount } from "@/actions/link.action";
 import { getDomain, getData } from "@/lib/data";
+import { clickAction, countClicksAction } from "@/actions/click.action";
 
 const page = async({ params }: { params: { id: string} }) => {
+
+  const res = await clickAction({
+    LinkId: params.id,
+    path: "/",
+  });
   
   const linkType = await getLink({id: params.id,});
   const link = linkType as LinkType;

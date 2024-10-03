@@ -296,14 +296,9 @@ export const deleteLinkPermanentAction = async ({
       };
     }
 
-    if (post.deletedAt === null) {
-      return {
-        data: null,
-        message: "Forbidden",
-      };
-    }
+    
 
-    await prismadb.post.delete({
+    await prismadb.link.delete({
       where: {
         id: post.id,
       },
