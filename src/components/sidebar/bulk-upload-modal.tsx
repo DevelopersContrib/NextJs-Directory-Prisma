@@ -137,7 +137,7 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
           
           for(var x=0;x<newCSVData.length;x++){
 
-            if(newCSVData[x].title!=="" && newCSVData[x].category!=="" && newCSVData[x].url!=="" && newCSVData[x].company_name!=="" && newCSVData[x].company_logo!=="" && newCSVData[x].description!=="") {
+            if(newCSVData[x].title!=="" && newCSVData[x].category!=="" && newCSVData[x].url!=="") {
                 let res = await getIdByTitle({name:newCSVData[x].title});
                 let LinkId = null;
                 let categoryId = null;
@@ -198,9 +198,6 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
 
                         }
                     }
-                }else {
-                  const entry: number = x+1;
-                  errorArray.push('All columns should be populated on entry number '+entry+' - '+newCSVData[x].title);
                 }
 
                
