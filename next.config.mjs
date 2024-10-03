@@ -61,6 +61,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "manage.vnoc.com",
       },
+      {
+        protocol: "https",
+        hostname: "vnocimages.s3.amazonaws.com",
+      },
     ],
   },
 };
