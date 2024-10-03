@@ -199,7 +199,8 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
                         }
                     }
                 }else {
-                  errorArray.push('All columns should be populated on record '+x+1);
+                  const entry: number = x+1;
+                  errorArray.push('All columns should be populated on entry number '+entry+' - '+newCSVData[x].title);
                 }
 
                
