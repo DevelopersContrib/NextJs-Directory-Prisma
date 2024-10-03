@@ -134,12 +134,14 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
           const errorArray: string[] = [];
           let successArray: number = 0;
 
-         
+          
           for(var x=0;x<newCSVData.length;x++){
-            if(newCSVData[x].domain!=="") {
+
+            if(newCSVData[x].title!=="" && newCSVData[x].category!=="" && newCSVData[x].url!=="" && newCSVData[x].company_name!=="" && newCSVData[x].company_logo!=="" && newCSVData[x].description!=="") {
                 let res = await getIdByTitle({name:newCSVData[x].title});
                 let LinkId = null;
                 let categoryId = null;
+                let url = newCSVData[x].url.includes("https://") ? newCSVData[x].url : "https://"+newCSVData[x].url;
                 if (res.data !== null) LinkId = res.data;
                 
                 if(LinkId){
@@ -152,7 +154,7 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
                             userId,
                             title: newCSVData[x].title,
                             description: newCSVData[x].description,
-                            url: newCSVData[x].url,
+                            url: url,
                             company_name: newCSVData[x].company_name,
                             company_logo: newCSVData[x].company_logo,
                             screenshot: "",
@@ -180,7 +182,7 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
                                 userId,
                                 title: newCSVData[x].title,
                                 description: newCSVData[x].description,
-                                url: newCSVData[x].url,
+                                url: url,
                                 company_name: newCSVData[x].company_name,
                                 company_logo: newCSVData[x].company_logo,
                                 screenshot: "",
@@ -196,6 +198,8 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
 
                         }
                     }
+                }else {
+                  errorArray.push('All columns should be populated on record '+x+1);
                 }
 
                
@@ -277,6 +281,7 @@ const BulkUploadModal = ({ linkData, categories, userId }: Props) => {
       <h4 className="page-header mb-4">Upload a CSV</h4>
       <div className="mb-4">
       <input ref={inputRef} disabled={uploading} type="file" name="file-input" className="form-control" />
+      <Link href="https://cdn.vnoc.com/directory/sample.csv">[Download Sample CSV Here]</Link>
       </div>
       {/* Button Submit & Cancel */}
       <div className="flex flex-items-center gap-x-3">
