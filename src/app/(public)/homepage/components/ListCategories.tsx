@@ -5,6 +5,15 @@ import Image from "next/image";
 import { LinkType } from "@/types/link.type";
 import Likes from "./Likes";
 import Link from "next/link";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 type Props = {
   recents: LinkType[];
@@ -53,7 +62,9 @@ const ListCategories = ({ recents }: Props) => {
               <Likes id={recent.id} />
               <div>
                 <Button size={"lg"} className="w-full">
-                  <Link href={`/details/${recent.id}/${recent.title}`}>Details</Link>
+                  <Link href={`/details/${recent.id}/${recent.title}`}>
+                    Details
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -65,6 +76,33 @@ const ListCategories = ({ recents }: Props) => {
             </h3>
           </div>
         )}
+      </div>
+
+      <div className="container mb-14">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#" isActive>
+                2
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </>
   );
