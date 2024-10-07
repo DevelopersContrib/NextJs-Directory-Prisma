@@ -11,7 +11,7 @@ export async function generateMetadata() {
   const c = await getData();
 
   return {
-    title: (c.data.title) ? c.data.title : domain,
+    title: 'Your Curated Resource Directory',
     description: c.data.description,
   };
 }

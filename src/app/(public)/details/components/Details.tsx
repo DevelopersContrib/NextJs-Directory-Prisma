@@ -142,6 +142,7 @@ const Details = ({
       <main className="flex w-full flex-wrap">
         {/* Start:: Hero Section */}
         <div className="container text-center pt-14 pb-8">
+          {link.company_logo ? (
           <div className="inline-flex mx-auto">
             <a href="#" className="inline-flex">
               <Image
@@ -154,11 +155,13 @@ const Details = ({
               />
             </a>
           </div>
+           ) : (
           <h1 className="text-3xl mb-4 font-bold text-gray-800">
             <a href="#" target="_blank" className="text-black">
               {capitalizeFirstLetter(`${link.title}`)}
             </a>
           </h1>
+           )}
           <p className="text-base font-normal text-black/70 xl:max-w-[50%] xl:mx-auto mb-4">
             {link.description}
           </p>
