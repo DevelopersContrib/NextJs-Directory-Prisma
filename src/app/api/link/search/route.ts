@@ -7,6 +7,10 @@ const prisma = new PrismaClient();
 export const POST = async (req: Request) => {
   const data = await req.json();
     
+    const page = data.page;
+    const take = 12;
+    const skip = (Number(page) - 1) * take;
+
     let filter;
     if(data.category && data.search){
       filter = {
@@ -63,8 +67,14 @@ export const POST = async (req: Request) => {
       include:{
         category:true
       },
+      where: filter,
+      take,
+      skip,
+    });
+
+    const totalItems = await prisma.link.count({
       where: filter
     });
 
-    return new Response(JSON.stringify(items), { status: 200 });    
+    return new Response(JSON.stringify({items:items,total:totalItems}), { status: 200 });    
 };
