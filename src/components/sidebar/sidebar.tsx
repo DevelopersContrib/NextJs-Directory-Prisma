@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 
 import { FiSearch } from "react-icons/fi";
-import { FaPlus,FaUpload } from "react-icons/fa6";
+import { FaPlus, FaUpload } from "react-icons/fa6";
 import { FaRegFileAlt, FaRegStar } from "react-icons/fa";
 import { FiTrash, FiArchive } from "react-icons/fi";
 import { IoIosLogOut } from "react-icons/io";
@@ -19,6 +19,7 @@ import Folders from "./folders";
 import PostType from "@/types/post.type";
 import { useSearchParams, useRouter } from "next/navigation";
 import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
+import Link from "next/link";
 
 type Props = {
   userId: string;
@@ -42,7 +43,6 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
   const createNewListing = () => {
     router.push(`/dashboard?modal=open`);
   };
-
 
   const bulkImport = () => {
     router.push(`/dashboard?modal=bulk-upload`);
@@ -68,17 +68,24 @@ const Sidebar = ({ categories, recents, userId, domain, logo }: Props) => {
         <FiSearch className="w-5 h-5 text-white opacity-40 cursor-pointer" />
       </div>
       {/* New Note Button */}
-      <div className="px-5">
-        <button
-          className="rounded-1 bg-white/5 text-white w-full h-[40px] p-5 flex items-center justify-center gap-x-8 font-sans font-semibold text-base"
+      <div className="gap-y-2 flex w-full flex-col">
+        <a
+          href="/listing/create"
+          className="py-3 px-5 h-[40px] w-full flex items-center gap-x-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-white/5 transition text-white"
+        >
+          <FaPlus className="w-5 h-5" />
+          New Listing
+        </a>
+        {/* <button
+          className="py-3 px-5 h-[40px] w-full flex items-center gap-x-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-white/5 transition text-white"
           onClick={createNewListing}
         >
           <FaPlus className="w-5 h-5" />
           New Listing
-        </button>
+        </button> */}
 
         <button
-          className="rounded-1 bg-white/5 text-white w-full h-[40px] p-5 flex items-center justify-center gap-x-8 font-sans font-semibold text-base"
+          className="py-3 px-5 h-[40px] w-full flex items-center gap-x-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-white/5 transition text-white"
           onClick={bulkImport}
         >
           <FaUpload className="w-5 h-5" />
