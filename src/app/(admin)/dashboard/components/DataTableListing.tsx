@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table";
 import { debounce } from "lodash";
 import Image from "next/image";
-import axios from 'axios';
+import axios from "axios";
 import { imageLoader } from "@/helpers/image-helpers";
 import { LinkType } from "@/types/link.type";
 import { FaSearch } from "react-icons/fa";
@@ -42,8 +42,7 @@ type Props = {
   userId: string;
 };
 
-const DatatableListing = ({ recents, categories, userId }: Props) => { 
-
+const DatatableListing = ({ recents, categories, userId }: Props) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
@@ -53,54 +52,49 @@ const DatatableListing = ({ recents, categories, userId }: Props) => {
   });
   const [isMutation, setIsMutation] = useState<boolean>(false);
 
-
   const deleteAction = async (id: string) => {
     if (isMutation) return null;
     setIsMutation(true);
 
-    const isConfirmed = confirm("Are you sure you want to delete this listing ?")
+    const isConfirmed = confirm(
+      "Are you sure you want to delete this listing ?"
+    );
     if (isConfirmed) {
-        try {
-          const res = await deleteLinkPermanentAction({
-              linkId: id,
-              path: '/dashboard',
-          });
-          
-          if (res.message == "Post deleted permanently.") {
-              toast("Link deleted permanently.");
-          }
-          
-      } catch (error) {
-          console.info("[ERROR_CLIENT_ACTION]", error);
+      try {
+        const res = await deleteLinkPermanentAction({
+          linkId: id,
+          path: "/dashboard",
+        });
 
-          toast("Something went wrong");
+        if (res.message == "Post deleted permanently.") {
+          toast("Link deleted permanently.");
+        }
+      } catch (error) {
+        console.info("[ERROR_CLIENT_ACTION]", error);
+
+        toast("Something went wrong");
       } finally {
-          setIsMutation(false);
+        setIsMutation(false);
       }
     }
+  };
 
-    
-};
-
-const [linkData, setLinkData] = useState<LinkType>();
+  const [linkData, setLinkData] = useState<LinkType>();
 
   const router = useRouter();
   const handleEdit = (id: string) => {
-    const edit = async (id:string) => {    
+    const edit = async (id: string) => {
       try {
-        const { data } = await axios.post('/api/link', {
-            id: id,
+        const { data } = await axios.post("/api/link", {
+          id: id,
         });
-        
-        setLinkData(data)
-       
-          router.push(`/dashboard?modal=open&link=${id}`);
-       
-      
+
+        setLinkData(data);
+
+        router.push(`/dashboard?modal=open&link=${id}`);
       } catch (error) {
-        console.error('Error fetching items:', error);
+        console.error("Error fetching items:", error);
       } finally {
-        
       }
     };
     edit(id);
@@ -200,8 +194,16 @@ const [linkData, setLinkData] = useState<LinkType>();
         header: "Actions",
         cell: ({ row }) => (
           <div className="flex space-x-2">
-            <Button onClick={(e) => {handleEdit(row.original.id) }}  size="sm">Edit</Button>
-            <Button size="sm" variant="destructive" color="white" onClick={() => deleteAction(row.original.id)} disabled={isMutation}>
+            <Button asChild size="sm">
+              <a href={`listing/edit/${row.original.id}`}>Edit</a>
+            </Button>
+            <Button
+              size="sm"
+              variant="destructive"
+              color="white"
+              onClick={() => deleteAction(row.original.id)}
+              disabled={isMutation}
+            >
               Delete
             </Button>
           </div>
@@ -255,129 +257,136 @@ const [linkData, setLinkData] = useState<LinkType>();
 
   return (
     <>
-    <div className="w-full">
-      {filteredData.length === 0 ? (
-        <div className="flex items-center justify-center h-48 w-full border mt-8">
-          <div className="text-lg text-slate-400 flex items-center">
-            <span className="mr-4">
-              <FaSearch />
-            </span>
-            No listing found.
-          </div>
-        </div>
-      ) : (
-        <>
-          {/* Entries per page and Search */}
-          <div className="flex items-center flex-col lg:flex-row py-4 gap-y-4 lg:gap-0">
-            <div className="flex items-center space-x-2">
-              <span>Entries per page:</span>
-              <select
-                value={pagination.pageSize}
-                onChange={(e) =>
-                  setPagination({
-                    ...pagination,
-                    pageSize: Number(e.target.value),
-                  })
-                }
-                className="border rounded px-2 py-1"
-              >
-                {[10, 20, 50, 100].map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="inline-flex space-x-2 lg:ml-auto">
-              <Input
-                placeholder="Search..."
-                defaultValue={globalFilter}
-                onChange={handleFilterChange}
-                className="w-full lg:w-[350px]"
-              />
+      <div className="w-full">
+        {filteredData.length === 0 ? (
+          <div className="flex items-center justify-center h-48 w-full border mt-8">
+            <div className="text-lg text-slate-400 flex items-center">
+              <span className="mr-4">
+                <FaSearch />
+              </span>
+              No listing found.
             </div>
           </div>
-
-          {/* Table Data */}
-          <div className="rounded-md border">
-            <div className="table-no-scroller-x">
-              <Table className="table-responsive-custom">
-                <TableHeader>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      ))}
-                    </TableRow>
+        ) : (
+          <>
+            {/* Entries per page and Search */}
+            <div className="flex items-center flex-col lg:flex-row py-4 gap-y-4 lg:gap-0">
+              <div className="flex items-center space-x-2">
+                <span>Entries per page:</span>
+                <select
+                  value={pagination.pageSize}
+                  onChange={(e) =>
+                    setPagination({
+                      ...pagination,
+                      pageSize: Number(e.target.value),
+                    })
+                  }
+                  className="border rounded px-2 py-1"
+                >
+                  {[10, 20, 50, 100].map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
                   ))}
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows.length ? (
-                    table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </TableCell>
+                </select>
+              </div>
+              <div className="inline-flex space-x-2 lg:ml-auto">
+                <Input
+                  placeholder="Search..."
+                  defaultValue={globalFilter}
+                  onChange={handleFilterChange}
+                  className="w-full lg:w-[350px]"
+                />
+              </div>
+            </div>
+
+            {/* Table Data */}
+            <div className="rounded-md border">
+              <div className="table-no-scroller-x">
+                <Table className="table-responsive-custom">
+                  <TableHeader>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                          <TableHead key={header.id}>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                          </TableHead>
                         ))}
                       </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={columns.length}
-                        className="h-24 text-center"
-                      >
-                        No results.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                    ))}
+                  </TableHeader>
+                  <TableBody>
+                    {table.getRowModel().rows.length ? (
+                      table.getRowModel().rows.map((row) => (
+                        <TableRow key={row.id}>
+                          {row.getVisibleCells().map((cell) => (
+                            <TableCell key={cell.id}>
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell
+                          colSpan={columns.length}
+                          className="h-24 text-center"
+                        >
+                          No results.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
-          </div>
 
-          {/* Pagination and showing results */}
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="flex-1 text-sm text-muted-foreground">
-              Showing {table.getRowModel().rows.length} of{" "}
-              {table.getCoreRowModel().rows.length} results.
+            {/* Pagination and showing results */}
+            <div className="flex items-center justify-end space-x-2 py-4">
+              <div className="flex-1 text-sm text-muted-foreground">
+                Showing {table.getRowModel().rows.length} of{" "}
+                {table.getCoreRowModel().rows.length} results.
+              </div>
+              <div className="space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  Next
+                </Button>
+              </div>
             </div>
-            <div className="space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-    <CreateNewListingModal linkData={linkData} categories={categories} userId={userId} />
-    <BulkUploadModal linkData={linkData} categories={categories} userId={userId} />
-    
+          </>
+        )}
+      </div>
+      <CreateNewListingModal
+        linkData={linkData}
+        categories={categories}
+        userId={userId}
+      />
+      <BulkUploadModal
+        linkData={linkData}
+        categories={categories}
+        userId={userId}
+      />
     </>
   );
 };
