@@ -6,6 +6,7 @@ import { createLinkSchema } from "@/validations/link.validation";
 import { useSearchParams, useRouter } from "next/navigation";
 import { LinkType } from "@/types/link.type";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { CgSpinner } from "react-icons/cg";
 
 type Errors = {
   title?: string;
@@ -20,7 +21,7 @@ type Errors = {
 type Props = {
   categories: CategoryType[];
   userId: string;
-  // linkData: LinkType | undefined | null;
+  linkData: LinkType | undefined | null;
 };
 
 interface iFData {
@@ -34,8 +35,7 @@ interface iFData {
   screenshot: string;
 }
 
-// const EditListing = ({ linkData, categories, userId }: Props) => {
-const EditListing = ({ categories, userId }: Props) => {
+const EditListing = ({ linkData, categories, userId }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
@@ -59,18 +59,18 @@ const EditListing = ({ categories, userId }: Props) => {
     screenshot: "",
   });
 
-  // useEffect(() => {
-  //   setFData({
-  //     id: linkData?.id || "",
-  //     categoryId: linkData?.categoryId || "",
-  //     title: linkData?.title || "",
-  //     description: linkData?.description || "",
-  //     url: linkData?.url || "",
-  //     company_name: linkData?.company_name || "",
-  //     company_logo: linkData?.company_logo || "",
-  //     screenshot: linkData?.screenshot || "",
-  //   });
-  // }, [linkData]);
+  useEffect(() => {
+    setFData({
+      id: linkData?.id || "",
+      categoryId: linkData?.categoryId || "",
+      title: linkData?.title || "",
+      description: linkData?.description || "",
+      url: linkData?.url || "",
+      company_name: linkData?.company_name || "",
+      company_logo: linkData?.company_logo || "",
+      screenshot: linkData?.screenshot || "",
+    });
+  }, [linkData]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -119,7 +119,7 @@ const EditListing = ({ categories, userId }: Props) => {
 
         if (res.message === "Link updated successfully.") {
           router.push(
-            `/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
+            `/dashboard`
           );
           setFData({
             id: "",
@@ -131,13 +131,6 @@ const EditListing = ({ categories, userId }: Props) => {
             company_logo: "",
             screenshot: "",
           });
-        }
-      } else {
-        const res = await createLinkAction(data);
-        if (res.message === "Link created successfully.") {
-          router.push(
-            `/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
-          );
         }
       }
     } catch (error) {
@@ -309,7 +302,15 @@ const EditListing = ({ categories, userId }: Props) => {
               className="btn btn-primary"
               disabled={isMutation}
             >
-              Save
+              
+              {isMutation ? (
+                <>
+                  <CgSpinner className="animate-spin w-8 h-8" />
+                  Loading
+                </>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </form>

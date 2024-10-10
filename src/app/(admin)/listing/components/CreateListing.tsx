@@ -4,8 +4,9 @@ import { createLinkAction, updateLinkBodyAction } from "@/actions/link.action";
 import CategoryType from "@/types/category.type";
 import { createLinkSchema } from "@/validations/link.validation";
 import { useSearchParams, useRouter } from "next/navigation";
-import { LinkType } from "@/types/link.type";
+
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { CgSpinner } from "react-icons/cg";
 
 type Errors = {
   title?: string;
@@ -20,7 +21,6 @@ type Errors = {
 type Props = {
   categories: CategoryType[];
   userId: string;
-  // linkData: LinkType | undefined | null;
 };
 
 interface iFData {
@@ -34,7 +34,6 @@ interface iFData {
   screenshot: string;
 }
 
-// const CreateListing = ({ linkData, categories, userId }: Props) => {
 const CreateListing = ({ categories, userId }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,19 +57,6 @@ const CreateListing = ({ categories, userId }: Props) => {
     company_logo: "",
     screenshot: "",
   });
-
-  // useEffect(() => {
-  //   setFData({
-  //     id: linkData?.id || "",
-  //     categoryId: linkData?.categoryId || "",
-  //     title: linkData?.title || "",
-  //     description: linkData?.description || "",
-  //     url: linkData?.url || "",
-  //     company_name: linkData?.company_name || "",
-  //     company_logo: linkData?.company_logo || "",
-  //     screenshot: linkData?.screenshot || "",
-  //   });
-  // }, [linkData]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -114,32 +100,15 @@ const CreateListing = ({ categories, userId }: Props) => {
         setErrors(null);
       }
 
-      if (data.id) {
-        const res = await updateLinkBodyAction(data);
-
-        if (res.message === "Link updated successfully.") {
-          router.push(
-            `/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
-          );
-          setFData({
-            id: "",
-            categoryId: "",
-            title: "",
-            description: "",
-            url: "",
-            company_name: "",
-            company_logo: "",
-            screenshot: "",
-          });
-        }
-      } else {
+      
         const res = await createLinkAction(data);
         if (res.message === "Link created successfully.") {
           router.push(
-            `/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
+            //`/dashboard?categoryId=${res?.data?.categoryId}&linkId=${res?.data?.id}`
+            `/dashboard`
           );
         }
-      }
+      
     } catch (error) {
       console.info(["[ERROR_CLIENT_ACTION]"], error);
     } finally {
@@ -309,7 +278,14 @@ const CreateListing = ({ categories, userId }: Props) => {
               className="btn btn-primary"
               disabled={isMutation}
             >
-              Save
+              {isMutation ? (
+                <>
+                  <CgSpinner className="animate-spin w-8 h-8" />
+                  Loading
+                </>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </form>
