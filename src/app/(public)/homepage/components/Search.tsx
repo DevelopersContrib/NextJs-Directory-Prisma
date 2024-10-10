@@ -159,42 +159,30 @@ const Search = ({ categories, defaultrecents }: Props) => {
           <>
           <ListCategories recents={recents} />
           <div className="container mb-14">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious onClick={handlePrevious}
-                    isActive={page === 1} 
-                    href="#" />
-                  </PaginationItem>
-
-                  
-                  
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <>
-                    
-                    <PaginationItem>
-                      <PaginationLink href="#" 
-                        key={i}
-                        onClick={(e) => {e.preventDefault(); pageClick(i + 1)}}
-                        isActive={page === i + 1}
-                      >{i + 1}</PaginationLink>
-                    </PaginationItem>
-                    </>
-                  ))}
-
-
-                  {/* <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem> */}
-                  <PaginationItem>
-                    <PaginationNext 
-                    onClick={handleNext}
-                   
-                    isActive={page === totalPages}
-                    href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious onClick={handlePrevious} isActive={page === 1} href="#" />
+              </PaginationItem>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      pageClick(i + 1);
+                    }}
+                    isActive={page === i + 1}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext onClick={handleNext} isActive={page === totalPages} href="#" />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
             </div>
           </>
           
