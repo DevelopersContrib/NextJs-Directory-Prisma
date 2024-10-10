@@ -13,7 +13,7 @@ import CategoryType from "@/types/category.type";
 import { LinkType } from "@/types/link.type";
 import EditListing from "../../components/EditListing";
 
-const page = async () => {
+const page = async ({ params }: { params: { id: string} }) => {
   const session: SessionType = await getServerSession(authOptions);
   if (!session) redirect("/");
 
@@ -33,6 +33,16 @@ const page = async () => {
       category_name: "asc",
     },
   });
+
+  const linkData: LinkType | null = await prismadb.link.findUnique({
+    where: {
+      id:params.id
+    },
+    include:{
+      category:true
+    },
+  });
+
 
   const recents: LinkType[] = await prismadb.link.findMany({
     where: {
@@ -79,7 +89,7 @@ const page = async () => {
           logo={c.data.logo}
         />
 
-        <EditListing categories={categories} userId={session.user.userId} />
+        <EditListing linkData={linkData} categories={categories} userId={session.user.userId} />
       </main>
     </>
   );
