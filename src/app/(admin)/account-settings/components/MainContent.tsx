@@ -13,62 +13,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import Swal from "sweetalert2";
+import { Toast } from "@/components/ui/toast";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+const FormSchema = z.object({
+  marketing_emails: z.boolean().default(false).optional(),
+  security_emails: z.boolean(),
+});
 
 const MainContent = () => {
   const handleDeleteAccount = async () => {
@@ -100,6 +63,16 @@ const MainContent = () => {
       });
     }
   };
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      security_emails: true,
+    },
+  });
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(JSON.stringify(data, null, 2));
+  }
   return (
     <>
       <div className="p-[50px] flex flex-col gap-y-8 w-full">
@@ -142,35 +115,64 @@ const MainContent = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Notifications</CardTitle>
+                <CardDescription>
+                  Manage your email and notification preferences:
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <Table>
-                  <TableCaption>
-                    A list of your recent notifications.
-                  </TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[100px]">Invoice</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Method</TableHead>
-                      <TableHead className="text-right">Amount</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {invoices.map((invoice) => (
-                      <TableRow key={invoice.invoice}>
-                        <TableCell className="font-medium">
-                          {invoice.invoice}
-                        </TableCell>
-                        <TableCell>{invoice.paymentStatus}</TableCell>
-                        <TableCell>{invoice.paymentMethod}</TableCell>
-                        <TableCell className="text-right">
-                          {invoice.totalAmount}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <Form {...form}>
+                  <form>
+                    <div className="mb-4">
+                      <div className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="marketing_emails"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                              <div className="space-y-0.5">
+                                <FormLabel>Emails Alerts</FormLabel>
+                                <FormDescription>
+                                  Receive notifications when your links are
+                                  live, or when they receive upvotes.
+                                </FormDescription>
+                              </div>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="security_emails"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                              <div className="space-y-0.5">
+                                <FormLabel>Newsletter</FormLabel>
+                                <FormDescription>
+                                  Get updates about new features, tips, and
+                                  directory news.
+                                </FormDescription>
+                              </div>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  disabled
+                                  aria-readonly
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <Button>Save changes</Button>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
           </TabsContent>
