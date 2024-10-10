@@ -12,6 +12,7 @@ export const POST = async (req: Request) => {
                 },
                 data: {
                   name:data.name,
+                  email:data.email,
                   password:data.password,
                 },
               });
