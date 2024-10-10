@@ -17,6 +17,7 @@ type Errors = {
 const Form = () => {
   const [errors, setErrors] = useState<Errors>(null);
   const [isMutation, setIsMutation] = useState<boolean>(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState<boolean>(false); // New state
 
   const clientAction = async (formData: FormData) => {
     if (isMutation) return; // Prevent multiple submissions
@@ -57,7 +58,9 @@ const Form = () => {
         };
 
         await historyAction(historydata);
-        window.location.href = "/auth/login";
+        setRegistrationSuccess(true); // Set success state
+        // Optionally, you can reset the form here if desired
+        // e.g., e.target.reset(); if you pass the event to clientAction
       }
     } catch (error) {
       console.error("[ERROR_CLIENT_ACTION]", error);
@@ -76,6 +79,22 @@ const Form = () => {
       }}
       className="flex flex-col gap-y-5"
     >
+      {/* Success Message */}
+      {registrationSuccess && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+          <span className="block sm:inline">
+            Registration successful! You can now{" "}
+            <Link
+              href="/auth/login"
+              className="text-indigo-600 underline hover:text-indigo-600/90"
+            >
+              Login
+            </Link>
+            .
+          </span>
+        </div>
+      )}
+
       {/* Name */}
       <div className="flex flex-col gap-y-1">
         <label htmlFor="name" className="label">
@@ -128,16 +147,18 @@ const Form = () => {
         )}
       </div>
 
-      {/* Redirect To Login Page */}
-      <p className="text-primary font-sans">
-        Have you registered?{" "}
-        <Link
-          href="/auth/login"
-          className="text-indigo-600 underline hover:text-indigo-600/90"
-        >
-          Login now!
-        </Link>
-      </p>
+      {/* Redirect To Login Page (Optional: You can remove this if the success message serves the purpose) */}
+      {!registrationSuccess && (
+        <p className="text-primary font-sans">
+          Have you registered?{" "}
+          <Link
+            href="/auth/login"
+            className="text-indigo-600 underline hover:text-indigo-600/90"
+          >
+            Login now!
+          </Link>
+        </p>
+      )}
 
       {/* Button Submit */}
       <button
