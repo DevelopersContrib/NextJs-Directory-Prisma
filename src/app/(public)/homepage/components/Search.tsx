@@ -164,7 +164,6 @@ const Search = ({ categories, defaultrecents }: Props) => {
               <PaginationItem>
                 <PaginationPrevious onClick={handlePrevious} isActive={page === 1} href="#" />
               </PaginationItem>
-
               {Array.from({ length: totalPages }, (_, i) => (
                 <PaginationItem key={i}>
                   <PaginationLink
@@ -179,7 +178,6 @@ const Search = ({ categories, defaultrecents }: Props) => {
                   </PaginationLink>
                 </PaginationItem>
               ))}
-
               <PaginationItem>
                 <PaginationNext onClick={handleNext} isActive={page === totalPages} href="#" />
               </PaginationItem>
