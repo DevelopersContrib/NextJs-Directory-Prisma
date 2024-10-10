@@ -70,7 +70,7 @@ const App: React.FC<Checkout> = async ({ params }) => {
     name: "Lifetime Membership",
     start_limit: 1,
     end_limit: 10,
-    price: "900",
+    price: "9",
     userPlanId: 1,
   };
 

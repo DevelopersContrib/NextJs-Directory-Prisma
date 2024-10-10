@@ -38,7 +38,7 @@ export default async function Dashboard({
     },
   });
 
-  if (!paymentAlreadyExists) redirect("/checkout");
+ // if (!paymentAlreadyExists) redirect("/checkout");
 
   const categories: CategoryType[] = await prismadb.category.findMany({
     orderBy: {

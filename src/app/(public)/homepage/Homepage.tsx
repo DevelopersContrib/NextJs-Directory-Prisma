@@ -65,7 +65,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
             {domain ? capitalizeFirstLetter(domain) : ""}{" "}
             <span className="capitalize">
               {" "}
-              Resources <br /> In One Directory
+              <br /> Your Curated Resource Library
             </span>
           </h1>
           <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
