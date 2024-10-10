@@ -13,10 +13,6 @@ export default function Logo({ domain, logo }) {
       />
     );
   } else {
-    return (
-      <Navbar.Brand href="#home" className="text-white">
-        {domain}
-      </Navbar.Brand>
-    );
+    return <Navbar.Brand href="#home">{domain}</Navbar.Brand>;
   }
 }
