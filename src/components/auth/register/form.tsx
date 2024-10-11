@@ -19,6 +19,28 @@ const Form = () => {
   const [isMutation, setIsMutation] = useState<boolean>(false);
   const [registrationSuccess, setRegistrationSuccess] = useState<boolean>(false); // New state
 
+  // Function to send email via internal API
+  const sendEmail = async (name: string, email: string, domain: string) => {
+    try {
+      const response = await fetch(
+        `/api/send-email?name=${encodeURIComponent(name)}&domain=${encodeURIComponent(domain)}&email=${encodeURIComponent(email)}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to send email.");
+      }
+
+      console.log("Email sent successfully.");
+    } catch (error: any) {
+      console.error("[ERROR_SENDING_EMAIL]", error);
+      toast("Error sending confirmation email.");
+    }
+  };
+
   const clientAction = async (formData: FormData) => {
     if (isMutation) return; // Prevent multiple submissions
     setIsMutation(true);
@@ -59,8 +81,9 @@ const Form = () => {
 
         await historyAction(historydata);
         setRegistrationSuccess(true); // Set success state
-        // Optionally, you can reset the form here if desired
-        // e.g., e.target.reset(); if you pass the event to clientAction
+
+        // Send confirmation email after registration success
+        await sendEmail(data.name, data.email, data.domain);
       }
     } catch (error) {
       console.error("[ERROR_CLIENT_ACTION]", error);
@@ -83,7 +106,7 @@ const Form = () => {
       {registrationSuccess && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
           <span className="block sm:inline">
-            Registration successful! You can now{" "}
+            Registration successful! A confirmation email has been sent. You can now{" "}
             <Link
               href="/auth/login"
               className="text-indigo-600 underline hover:text-indigo-600/90"
@@ -147,7 +170,7 @@ const Form = () => {
         )}
       </div>
 
-      {/* Redirect To Login Page (Optional: You can remove this if the success message serves the purpose) */}
+      {/* Redirect To Login Page */}
       {!registrationSuccess && (
         <p className="text-primary font-sans">
           Have you registered?{" "}
@@ -160,7 +183,7 @@ const Form = () => {
         </p>
       )}
 
-      {/* Button Submit */}
+      {/* Submit Button */}
       <button
         type="submit"
         className={`btn btn-primary ${isMutation ? "opacity-50" : ""}`}

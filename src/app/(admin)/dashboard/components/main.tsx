@@ -20,40 +20,25 @@ const Main = ({ recents, categories, userId }: Props) => {
       <div>
         <div className="bg-[#cfe2ff] p-8 border border-[#9ec5fe] text-[#052c65]">
           <h1 className="text-3xl mb-4">
-            Welcome to [Directory Name]! We're excited to have you onboard.
+            Welcome to Your Dashboard!.
           </h1>
           <p className="mb-4">
-            <strong>Here's how you can get started right away:</strong>
+            <strong>Here’s how to get started:</strong>
           </p>
           <ol className="mb-4 ">
             <li className="list-disc list-inside">
-              Post a Link: Visit your dashboard to submit your first link. Share
-              your services, products, or website with our community in just a
-              few clicks.
+              Post Your First Link:
+              Share your product or service with our community. It only takes a minute to get listed. Post a Link.
             </li>
             <li className="list-disc list-inside">
-              Get Featured: Want extra visibility? Choose the “Featured Listing”
-              option when you post a link to get premium placement in the
-              directory.
+              Check Out the Categories:
+              Explore listings in your niche. You can upvote/downvote links and discover other businesses in your industry. Browse Categories.
             </li>
             <li className="list-disc list-inside">
-              Engage and Grow: Check out other listings, upvote, and engage with
-              our community!
+              Track Your Listings:
+              Once your links are live, visit our simple Analytics Dashboard to view your submission performance.
             </li>
           </ol>
-          <h2 className="text-xl mb-1">Post Your First Link Now</h2>
-          <p className="text-sm">
-            Need help? Feel free to reply to this email, and we'll be happy to
-            assist you.
-          </p>
-          <p className="text-sm mb-4">
-            Welcome to the future of directories! Let's build something great
-            together.
-          </p>
-          <p className="text-xs">
-            Best regards, <br />
-            The [Directory Name] Team
-          </p>
         </div>
       </div>
       <div>
