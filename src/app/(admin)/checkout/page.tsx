@@ -85,6 +85,61 @@ const App: React.FC<Checkout> = async ({ params }) => {
           logo={c.data.logo}
         />
         <div className="p-[50px] flex flex-col gap-y-8 w-full">
+          <div>
+            <div className="bg-[#cfe2ff] p-8 border border-[#9ec5fe] text-[#052c65]">
+              <h1 className="text-3xl mb-4">
+                Unlock Unlimited Link Posting for Just $9 – One-Time Payment!
+              </h1>
+              <p className="mb-4">
+                <strong>Why Go Unlimited?</strong>
+              </p>
+              <p className="mb-4">
+                For a one-time payment of just $9, you can unlock unlimited link submissions across our entire directory. Whether you're looking to promote multiple businesses, products, or services, this deal gives you lifetime access to our platform with no recurring fees.
+              </p>
+              <p className="mb-4">
+                <strong>What You Get for $9:</strong>
+              </p>
+              <ol className="mb-4 ">
+                <li className="list-disc list-inside">
+                Unlimited Link Submissions: Post as many links as you want without any restrictions. Whether you have one business or multiple projects, you're covered.
+                Lifetime Access: This is a one-time payment, and you’ll have access to post links forever. No hidden costs, no recurring fees.
+                </li>
+                <li className="list-disc list-inside">
+                  SEO-Optimized Listings: Your links will benefit from SEO best practices, helping to improve visibility on search engines like Google.
+                </li>
+                <li className="list-disc list-inside">
+                Community Engagement: Get your listings upvoted by our community, helping your business stand out.
+                Instant Approval: Once approved, your links will be live immediately and visible to everyone.
+                </li>
+              </ol>
+              <p className="mb-4">
+                <strong>How It Works:</strong>
+              </p>
+              <ol className="mb-4 ">
+                <li className="list-disc list-inside">
+                Pay $9 for lifetime access.
+                </li>
+                <li className="list-disc list-inside">
+                Start posting unlimited links immediately.
+                </li>
+                <li className="list-disc list-inside">
+                Watch your business grow with our SEO-friendly and community-driven directory.
+                </li>
+              </ol>
+              <p className="mb-4">
+                <strong>Secure Payment Options</strong>
+              </p>
+              <p className="mb-4">
+              We accept payments through Stripe.
+              </p>
+              <p className="mb-4">
+                <strong>Ready to Go Unlimited?</strong>
+              </p>
+              <p className="mb-4">
+              Take your business to the next level with this limited-time offer. For just $9, you’ll never have to worry about link limits again. Start posting and promoting your business now!
+              </p>
+            </div>
+          </div>
           <StripeWrapper
             id={params.id}
             pack={pack}
