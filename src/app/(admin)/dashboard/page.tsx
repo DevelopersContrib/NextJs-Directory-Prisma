@@ -1,5 +1,4 @@
 import ListPosts from "@/components/list-posts/list-posts";
-import Main from "@/components/main/main";
 import CreateNewNoteModal from "@/components/sidebar/create-new-note-modal";
 import CreateNewListingModal from "@/components/sidebar/create-new-listing-modal";
 import Sidebar from "@/components/sidebar/sidebar";
@@ -15,6 +14,7 @@ import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
 import CategoryType from "@/types/category.type";
 import { LinkType } from "@/types/link.type";
+import Main from "./components/main";
 
 type SearchParams = {
   linkId?: string;
@@ -38,7 +38,7 @@ export default async function Dashboard({
     },
   });
 
- // if (!paymentAlreadyExists) redirect("/checkout");
+  // if (!paymentAlreadyExists) redirect("/checkout");
 
   const categories: CategoryType[] = await prismadb.category.findMany({
     orderBy: {
@@ -94,8 +94,11 @@ export default async function Dashboard({
           logo={c.data.logo}
         />
 
-        
-        <Main recents={recentsWithCounts} categories={categories} userId={session.user.userId}  />
+        <Main
+          recents={recentsWithCounts}
+          categories={categories}
+          userId={session.user.userId}
+        />
         {/* components/sidebar/create-new-note-modal.tsx */}
         {/* <CreateNewListingModal
           categories={categories}
