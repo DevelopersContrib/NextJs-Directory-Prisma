@@ -9,8 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Form,
@@ -28,12 +27,19 @@ import { z } from "zod";
 import Swal from "sweetalert2";
 import { Toast } from "@/components/ui/toast";
 
+import AccountInfo from "@/app/(admin)/account-settings/components/AccountInfo"
+import { IAccountInfo } from "@/interfaces/auth.interface";
+
 const FormSchema = z.object({
   marketing_emails: z.boolean().default(false).optional(),
   security_emails: z.boolean(),
 });
 
-const MainContent = () => {
+type Props = {
+  accountInfo: IAccountInfo;
+};
+
+const MainContent = ({ accountInfo }: Props) => {
   const handleDeleteAccount = async () => {
     const isConfirmed = await Swal.fire({
       title: "Are you sure?",
@@ -88,28 +94,7 @@ const MainContent = () => {
             <TabsTrigger value="deleteAccount">Delete Account</TabsTrigger>
           </TabsList>
           <TabsContent value="accountInformation">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account</CardTitle>
-                <CardDescription>
-                  Make changes to your account here. Click save when you're
-                  done.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Save changes</Button>
-              </CardFooter>
-            </Card>
+            <AccountInfo accountInfo={accountInfo} />
           </TabsContent>
           <TabsContent value="notifications">
             <Card>

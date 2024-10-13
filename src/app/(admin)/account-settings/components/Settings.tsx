@@ -9,6 +9,8 @@ import { redirect } from "next/navigation";
 import { getDomain, getData } from "@/lib/data";
 import CategoryType from "@/types/category.type";
 import { LinkType } from "@/types/link.type";
+import { IAccountInfo } from "@/interfaces/auth.interface";
+import {getAccountInfo} from "@/actions/auth.action";
 
 const Settings = async () => {
   const session: SessionType = await getServerSession(authOptions);
@@ -16,7 +18,9 @@ const Settings = async () => {
 
   const c = await getData();
   const domain = getDomain();
-
+  
+  const accountInfo = await getAccountInfo(session?.user.userId);
+  const account = accountInfo as IAccountInfo;
   const paymentAlreadyExists = await prismadb.payment.findFirst({
     where: {
       userId: session.user.userId,
@@ -47,6 +51,7 @@ const Settings = async () => {
       createdAt: "desc",
     },
   });
+  
   return (
     <>
       <main className="flex">
@@ -58,7 +63,7 @@ const Settings = async () => {
           logo={c.data.logo}
         />
 
-        <MainContent />
+        <MainContent accountInfo={account} />
       </main>
     </>
   );

@@ -1,6 +1,6 @@
 'use server';
 
-import { IRegister } from '@/interfaces/auth.interface';
+import { IRegister, IAccountInfo } from '@/interfaces/auth.interface';
 import prismadb from '@/lib/prismaDb';
 import { hash } from 'bcrypt';
 import { revalidatePath } from 'next/cache';
@@ -69,3 +69,15 @@ export const authRegisterAction = async ({
 		revalidatePath(path);
 	}
 };
+
+export const getAccountInfo = async (id: string|'0'|undefined) => {
+
+	const account = await prismadb.user.findUnique({
+	  where: {
+		id: id,
+	  }
+	});
+  
+	return account;
+	
+  };
