@@ -39,6 +39,7 @@ const AccountInfo =  ({ accountInfo }: Props) => {
         email: "",
         name: "",
         password: "",
+        old_email:""
       });
 
     useEffect(() => {
@@ -47,6 +48,7 @@ const AccountInfo =  ({ accountInfo }: Props) => {
             email: accountInfo?.email || "",
             name: accountInfo?.name || "",
             password:  "",
+            old_email:accountInfo?.email || "",
         });
     }, [accountInfo]);
     
@@ -85,7 +87,7 @@ const AccountInfo =  ({ accountInfo }: Props) => {
           }
     
           setErrors(null); // Clear previous errors if any
-          console.log('data',data)
+          
           const res = await accountInfoAction(data);
           if (res.message === "Email already exists") {
             setErrors({ email: "Email already exists" });
