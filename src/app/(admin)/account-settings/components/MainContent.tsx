@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState} from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,12 +23,12 @@ import { Switch } from "@/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import Swal from "sweetalert2";
 import { Toast } from "@/components/ui/toast";
-
 import AccountInfo from "@/app/(admin)/account-settings/components/AccountInfo"
+import { deleteAction } from "@/actions/accountInfo.actions";
 import { IAccountInfo } from "@/interfaces/auth.interface";
+import { signOut } from "next-auth/react";
 
 const FormSchema = z.object({
   marketing_emails: z.boolean().default(false).optional(),
@@ -39,7 +39,19 @@ type Props = {
   accountInfo: IAccountInfo;
 };
 
+type Errors = {
+  [key: string]: string | undefined;
+} | null;
+
 const MainContent = ({ accountInfo }: Props) => {
+  const [errors, setErrors] = useState<Errors>(null);
+  const [isMutation, setIsMutation] = useState<boolean>(false);
+  const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false); // New state
+
+  const logoutHandler = () => {
+    signOut();
+  };
+
   const handleDeleteAccount = async () => {
     const isConfirmed = await Swal.fire({
       title: "Are you sure?",
@@ -52,13 +64,25 @@ const MainContent = ({ accountInfo }: Props) => {
     });
 
     if (isConfirmed.isConfirmed) {
+      const res = await deleteAction(accountInfo.id);
+      if (res.message === "Account not found.") {
+        setErrors({ account: "Account not found." });
+      } else if (res.message === "Account deleted successfully") {
+        
+        setDeleteSuccess(true); // Set success state
+        // Optionally, you can reset the form here if desired
+        // e.g., e.target.reset(); if you pass the event to clientAction
+      }
       Swal.fire({
         title: "Deleted!",
         text: "Your account has been deleted.",
         icon: "success",
         confirmButtonText: "Ok",
         confirmButtonColor: "#3085d6",
+      }).then((result) => {console.log('logout')
+        logoutHandler();
       });
+      
     } else {
       Swal.fire({
         title: "Cancelled",

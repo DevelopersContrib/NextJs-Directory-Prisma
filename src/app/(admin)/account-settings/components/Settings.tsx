@@ -20,7 +20,15 @@ const Settings = async () => {
   const domain = getDomain();
   
   const accountInfo = await getAccountInfo(session?.user.userId);
-  const account = accountInfo as IAccountInfo;
+
+  const account = {
+    id:accountInfo?.id,
+    name:accountInfo?.name,
+    email:accountInfo?.email,
+    password:accountInfo?.password,
+    old_email:accountInfo?.email
+  } as IAccountInfo;
+
   const paymentAlreadyExists = await prismadb.payment.findFirst({
     where: {
       userId: session.user.userId,
