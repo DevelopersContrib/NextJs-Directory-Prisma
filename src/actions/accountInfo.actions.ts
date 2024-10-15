@@ -56,3 +56,41 @@ export const accountInfoAction = async ({
 		
 	}
 };
+
+export const deleteAction = async (id: string) => {
+	try {
+		const user = await prismadb.user.findUnique({
+			where: {
+			  id: id,
+			},
+		  });
+	  
+		  if (!user) {
+			return {
+			  data: null,
+			  message: "Account not found.",
+			};
+		  }
+	  
+		  await prismadb.user.delete({
+			where: {
+			  id: id,
+			},
+		  });
+	  
+		  return {
+			data: null,
+			message: "Account deleted permanently.",
+		  };
+
+	} catch (error) {
+		console.info('[ERROR_AUTH_REGISTER]', error);
+
+		return {
+			data: null,
+			message: 'Something went wrong',
+		};
+	} finally {
+		
+	}
+};
