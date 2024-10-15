@@ -14,6 +14,8 @@ model User {
   password String   @default("")
   avatar String     @default("")
   domain String     @default("")
+  receive_email Boolean @default(false)
+  receive_newsletter Boolean @default(false)
   links    Link[]
   payment    Payment[]
   votes_up    LinkVotesUp[]
