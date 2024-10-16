@@ -11,6 +11,7 @@ import CategoryType from "@/types/category.type";
 import { LinkType } from "@/types/link.type";
 import { IAccountInfo } from "@/interfaces/auth.interface";
 import {getAccountInfo} from "@/actions/auth.action";
+import { INotification } from "@/interfaces/notification.interface";
 
 const Settings = async () => {
   const session: SessionType = await getServerSession(authOptions);
@@ -28,6 +29,12 @@ const Settings = async () => {
     password:accountInfo?.password,
     old_email:accountInfo?.email
   } as IAccountInfo;
+
+  const notification = {
+    id:accountInfo?.id,
+    receive_email:accountInfo?.receive_email,
+    receive_newsletter:accountInfo?.receive_newsletter
+  } as INotification;
 
   const paymentAlreadyExists = await prismadb.payment.findFirst({
     where: {
@@ -71,7 +78,7 @@ const Settings = async () => {
           logo={c.data.logo}
         />
 
-        <MainContent accountInfo={account} />
+        <MainContent accountInfo={account} notification={notification}/>
       </main>
     </>
   );
