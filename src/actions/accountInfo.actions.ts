@@ -1,6 +1,7 @@
 'use server';
 
 import { IAccountInfo } from '@/interfaces/auth.interface';
+import { INotification } from '@/interfaces/notification.interface';
 import prismadb from '@/lib/prismaDb';
 import { hash } from 'bcrypt';
 import { revalidatePath } from 'next/cache';
@@ -77,6 +78,54 @@ export const deleteAction = async (id: string) => {
 			  id: id,
 			},
 		  });
+	  
+		  return {
+			data: null,
+			message: "Account deleted permanently.",
+		  };
+
+	} catch (error) {
+		console.info('[ERROR_AUTH_REGISTER]', error);
+
+		return {
+			data: null,
+			message: 'Something went wrong',
+		};
+	} finally {
+		
+	}
+};
+
+
+export const notificationAction = async ({
+    id,
+	receive_email,
+	receive_newsletter
+}: INotification) => {
+
+	try {
+		const user = await prismadb.user.findUnique({
+			where: {
+			  id: id,
+			},
+		  });
+	  
+		  if (!user) {
+			return {
+			  data: null,
+			  message: "Account not found.",
+			};
+		  }
+	  
+		  await prismadb.user.update({
+            where: {
+                id: id,
+            },
+            data: {
+                receive_email,
+				receive_newsletter
+            },
+          });
 	  
 		  return {
 			data: null,

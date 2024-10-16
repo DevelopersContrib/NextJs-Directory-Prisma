@@ -26,27 +26,31 @@ import { z } from "zod";
 import Swal from "sweetalert2";
 import { Toast } from "@/components/ui/toast";
 import AccountInfo from "@/app/(admin)/account-settings/components/AccountInfo"
-import { deleteAction } from "@/actions/accountInfo.actions";
+import { deleteAction, notificationAction } from "@/actions/accountInfo.actions";
 import { IAccountInfo } from "@/interfaces/auth.interface";
+import { INotification } from "@/interfaces/notification.interface";
 import { signOut } from "next-auth/react";
 
 const FormSchema = z.object({
-  marketing_emails: z.boolean().default(false).optional(),
-  security_emails: z.boolean(),
+  receive_email: z.boolean().default(false).optional(),
+  receive_newsletter: z.boolean(),
 });
 
 type Props = {
   accountInfo: IAccountInfo;
+  notification: INotification;
 };
 
 type Errors = {
   [key: string]: string | undefined;
 } | null;
 
-const MainContent = ({ accountInfo }: Props) => {
+const MainContent = ({ accountInfo,notification }: Props) => {
   const [errors, setErrors] = useState<Errors>(null);
   const [isMutation, setIsMutation] = useState<boolean>(false);
-  const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false); // New state
+  const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false);
+
+  const [notificationSuccess, setNotificationSuccess] = useState<boolean>(false); 
 
   const logoutHandler = () => {
     signOut();
@@ -79,7 +83,7 @@ const MainContent = ({ accountInfo }: Props) => {
         icon: "success",
         confirmButtonText: "Ok",
         confirmButtonColor: "#3085d6",
-      }).then((result) => {console.log('logout')
+      }).then((result) => {
         logoutHandler();
       });
       
@@ -96,13 +100,36 @@ const MainContent = ({ accountInfo }: Props) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      security_emails: true,
+      receive_email: notification.receive_email,
+      receive_newsletter: notification.receive_newsletter,
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(JSON.stringify(data, null, 2));
+    const noti = {
+      id:accountInfo.id,
+      receive_email:data.receive_email,
+      receive_newsletter:data.receive_newsletter
+    } as INotification;
+    const res = await notificationAction(noti);
+    if (res.message === "Account not found.") {
+      setErrors({ account: "Account not found." });
+    } else if (res.message === "Notification successfully") {
+      setNotificationSuccess(true);
+    }
+    Swal.fire({
+      title: "Notification",
+      text: "Notification successfully saved.",
+      icon: "success",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      
+    });
   }
+
+  
   return (
     <>
       <div className="p-[50px] flex flex-col gap-y-8 w-full">
@@ -130,12 +157,12 @@ const MainContent = ({ accountInfo }: Props) => {
               </CardHeader>
               <CardContent className="space-y-2">
                 <Form {...form}>
-                  <form>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="mb-4">
                       <div className="space-y-4">
                         <FormField
                           control={form.control}
-                          name="marketing_emails"
+                          name="receive_email"
                           render={({ field }) => (
                             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                               <div className="space-y-0.5">
@@ -156,7 +183,7 @@ const MainContent = ({ accountInfo }: Props) => {
                         />
                         <FormField
                           control={form.control}
-                          name="security_emails"
+                          name="receive_newsletter"
                           render={({ field }) => (
                             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                               <div className="space-y-0.5">
@@ -170,8 +197,6 @@ const MainContent = ({ accountInfo }: Props) => {
                                 <Switch
                                   checked={field.value}
                                   onCheckedChange={field.onChange}
-                                  disabled
-                                  aria-readonly
                                 />
                               </FormControl>
                             </FormItem>
