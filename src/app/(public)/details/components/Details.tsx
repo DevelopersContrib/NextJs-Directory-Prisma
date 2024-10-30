@@ -173,7 +173,7 @@ const Details = ({
                   target="_blank"
                   className="inline-flex py-2 px-3 rounded bg-blue-500 text-white text-sm"
                 >
-                  Visit Site
+                  Visit Link
                 </Link>
               </li>
               <li className="inline-flex">
@@ -201,14 +201,14 @@ const Details = ({
           </div>
         </div>
         <div className="container mb-8 text-center">
-          <a href="#" target="_blank" className="inline-block w-full">
+          <a href={link.url} target="_blank" className="inline-block w-full">
             <img
               src={link.screenshot ?? ""}
               alt=""
               width={0}
               height={0}
               sizes="100vw"
-              className="w-full h-auto object-contain inline-block mx-auto"
+              className="w-2/3 h-auto object-contain inline-block mx-auto"
             />
           </a>
         </div>
