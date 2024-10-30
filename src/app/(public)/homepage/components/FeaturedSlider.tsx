@@ -65,7 +65,7 @@ const FeaturedSlider = ({ featured }: Props) => {
                 </div>
                 <div>
                   <h3 className="font-bold text-[#333] text-xl mb-0">
-                    <div className="inline-flex">{feature.title}</div>
+                    <div className="inline-flex capitalize">{feature.title}</div>
                   </h3>
                 </div>
               </a>

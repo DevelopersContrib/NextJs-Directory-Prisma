@@ -37,7 +37,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
                   sizes="100vw"
                 />
               ) : (
-                <h3 className="font-bold text-xl">
+                <h3 className="font-bold text-xl uppercase">
                   {domain && capitalizeFirstLetter(domain)}
                 </h3>
               )}
