@@ -37,7 +37,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
                   sizes="100vw"
                 />
               ) : (
-                <h3 className="font-bold text-xl uppercase">
+                <h3 id="logo" className="font-bold text-xl uppercase">
                   {domain && capitalizeFirstLetter(domain)}
                 </h3>
               )}
@@ -58,14 +58,14 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
           </div>
         </div>
       </header>
-      <main className="flex w-full flex-wrap">
+      <main className="flex w-full flex-wrap bg-gradient-to-r from-blue-200 via-purple-100 to-pink-50">
         {/* Start:: Hero Section */}
-        <div className="container text-center py-14">
-          <h1 className="text-6xl mb-4 font-bold text-gray-800">
+        <div className="container text-center py-14 ">
+          <h1 className="text-6xl mb-4 font-bold text-black">
             
             <span className="capitalize">
               {" "}
-              <br /> Your Ultimate Directory <br />For All Things
+              <br /> Your Online Directory <br />For All Things
               <span className="pl-2">{process.env.SITE_CATEGORY}</span>
             </span>
           </h1>
