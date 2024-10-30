@@ -52,16 +52,23 @@ const FeaturedSlider = ({ featured }: Props) => {
                 target="_blank"
                 className="w-full flex flex-col space-y-4"
               >
+                <div className="absolute right-5 flex justify-start">
+                    <span className="block rounded bg-red-400 px-2 py-1 text-white text-sm mt-2">
+                      Featured
+                    </span>
+                  </div>
                 <div className="h-[300px] lg:h-[200px]">
+                  
                   <Image
                     src={feature.screenshot ?? ""}
                     width={0}
                     height={0}
-                    alt=""
-                    className="w-full h-auto object-cover object-top shadow-[rgb(23_43_99/24%)_0_3px_8px]"
+                    alt={feature.description}
+                    className="rounded-lg w-full h-auto object-cover object-top shadow-[rgb(23_43_99/24%)_0_3px_8px] transition-transform duration-300 ease-in-out transform hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority
                   />
+                  
                 </div>
                 <div>
                   <h3 className="font-bold text-[#333] text-xl mb-0">
