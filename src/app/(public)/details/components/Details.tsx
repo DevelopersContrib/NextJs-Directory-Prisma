@@ -144,10 +144,10 @@ const Details = ({
         <div className="container text-center pt-14 pb-8">
           {link.company_logo ? (
           <div className="inline-flex mx-auto">
-            <a href="#" className="inline-flex">
+            <a href={link.url} className="inline-flex">
               <Image
                 src={link.company_logo ?? ""}
-                alt=""
+                alt={link.title}
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -157,7 +157,7 @@ const Details = ({
           </div>
            ) : (
           <h1 className="text-3xl mb-4 font-bold text-gray-800">
-            <a href="#" target="_blank" className="text-black">
+            <a href={link.url} target="_blank" className="text-black">
               {capitalizeFirstLetter(`${link.title}`)}
             </a>
           </h1>
@@ -204,7 +204,7 @@ const Details = ({
           <a href={link.url} target="_blank" className="inline-block w-full">
             <img
               src={link.screenshot ?? ""}
-              alt=""
+              alt={link.title}
               width={0}
               height={0}
               sizes="100vw"
