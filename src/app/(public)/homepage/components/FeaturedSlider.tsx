@@ -52,12 +52,12 @@ const FeaturedSlider = ({ featured }: Props) => {
                 target="_blank"
                 className="w-full flex flex-col space-y-4"
               >
-                <div className="absolute right-5 flex justify-start">
+                <div className="absolute right-5 flex justify-start z-10">
                     <span className="block rounded bg-red-400 px-2 py-1 text-white text-sm mt-2">
                       Featured
                     </span>
                   </div>
-                <div className="h-[300px] lg:h-[200px]">
+                <div className="h-[300px] lg:h-[200px] z-0">
                   
                   <Image
                     src={feature.screenshot ?? ""}
