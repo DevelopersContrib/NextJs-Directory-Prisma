@@ -66,7 +66,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
             <span className="capitalize">
               {" "}
               <br /> Your Ultimate Directory <br />For All Things
-              {process.env.SITE_CATEGORY}
+              <span className="pl-2">{process.env.SITE_CATEGORY}</span>
             </span>
           </h1>
           <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
