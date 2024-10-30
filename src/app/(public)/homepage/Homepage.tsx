@@ -62,15 +62,20 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
         {/* Start:: Hero Section */}
         <div className="container text-center py-14">
           <h1 className="text-6xl mb-4 font-bold text-gray-800">
-            {domain ? capitalizeFirstLetter(domain) : ""}{" "}
+            
             <span className="capitalize">
               {" "}
-              <br /> Your Curated Resource Directory
+              <br /> Your Ultimate Directory <br />For All Things
+              {process.env.SITE_CATEGORY}
             </span>
           </h1>
           <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
-            {data.description}
+          {process.env.SITE_DESCRIPTION}. 
+          <span> <button className="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">
+            <a href="/auth/register">Add your site today</a>
+          </button></span>
           </p>
+         
         </div>
         <div className="container mb-14">
           <FeaturedSlider featured={featured} />
