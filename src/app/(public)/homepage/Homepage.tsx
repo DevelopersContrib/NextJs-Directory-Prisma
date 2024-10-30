@@ -23,7 +23,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
   const currentYear = new Date().getFullYear();
   return (
     <>
-      <header className="flex w-full ">
+      <header className="flex w-full">
         <div className="container items-center justify-between flex py-4">
           <div>
             <Link href="/">
@@ -58,7 +58,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
           </div>
         </div>
       </header>
-      <main className="flex w-full flex-wrap bg-gradient-to-r from-blue-200 via-purple-100 to-pink-50">
+      <main className="flex w-full flex-wrap">
         {/* Start:: Hero Section */}
         <div className="container text-center py-14 ">
           <h1 className="text-6xl mb-4 font-bold text-black">

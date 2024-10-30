@@ -61,7 +61,11 @@ export default async function RootLayout({
          <Script id="test-script" src="https://tools.contrib.com/js/test.js"></Script>
          */}
        </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+      <div className="hidden md:block absolute top-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-pink-400 blur-3xl opacity-25 -z-10"></div>
+      <div className="hidden md:block absolute top-0 right-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-violet-400 blur-3xl opacity-25 -z-10"></div>
+        {children}
+      </body>
     </html>
   );
 }
