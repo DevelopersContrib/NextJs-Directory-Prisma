@@ -35,13 +35,13 @@ const ListCategories = ({ recents }: Props) => {
               </a>
               <div>
                 <h3 className="font-bold text-[#333] text-xl mb-0">
-                  <a href="#" className="inline-flex">
+                  <a href={`/details/${recent.id}/${recent.title}`} className="inline-flex capitalize">
                     {recent.title}
                   </a>
                 </h3>
               </div>
               <div>
-                <hr className="border-gray-200/95 mt-4 mb-6" />
+                <hr className="border-gray-200/95 mt-2 mb-2" />
               </div>
               <div className="mb-4">
                 <div className="inline-flex py-2 px-3 rounded bg-[#50e66754] text-black text-sm">
