@@ -32,8 +32,8 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
                   src={data.logo}
                   width={0}
                   height={0}
-                  alt={domain}
-                  className="w-[200px] h-[34px] object-contain"
+                  alt={data.title}
+                  className="w-[250px] h-[70px] object-contain"
                   sizes="100vw"
                 />
               ) : (
@@ -65,15 +65,14 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
             
             <span className="capitalize">
               {" "}
-              <br /> Your Online Directory <br />For All Things
-              <span className="pl-2">{process.env.SITE_CATEGORY}</span>
+             {data.title || "Your Online Directory for All Things SAAS"} 
             </span>
           </h1>
           <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
-          {process.env.SITE_DESCRIPTION}. 
+          {data.description}
           <span> <button className="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">
-            <a href="/auth/register">Add your site today</a>
-          </button></span>
+            <a href="/auth/register">Add your site to <span className="Capitalize">{domain}</span> today</a>
+          </button></span> 
           </p>
          
         </div>
