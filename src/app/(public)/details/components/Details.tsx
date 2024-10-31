@@ -7,7 +7,7 @@ import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 import { BiDislike, BiLike } from "react-icons/bi";
-import FeaturedSlider from "./FeaturedSlider";
+import FeaturedSlider from "../../homepage/components/FeaturedSlider";
 import { LinkType } from "@/types/link.type";
 import { likeAction, countLikesAction } from "@/actions/like.action";
 import { unlikeAction, countUnlikesAction } from "@/actions/unlike.action";
