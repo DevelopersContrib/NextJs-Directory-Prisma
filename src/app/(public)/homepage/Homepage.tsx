@@ -45,7 +45,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
           </div>
           <div className="flex space-x-4">
             <Button asChild variant={"link"}>
-              <Link href="#">
+              <Link href="#search">
                 <FaSearch className="text-xl" />
               </Link>
             </Button>

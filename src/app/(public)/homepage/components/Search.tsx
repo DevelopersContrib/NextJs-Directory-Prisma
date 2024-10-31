@@ -94,6 +94,7 @@ const Search = ({ categories, defaultrecents }: Props) => {
         <div className="mb-4 flex">
           <div className="flex border rounded-xl border-[#ddd] text-base w-full lg:w-[50%] lg:mx-auto">
             <input
+              id="search"
               type="search"
               className="bg-transparent h-[50px] lg:mx-auto w-full px-4 py-1 focus:outline-none focus:ring-0 focus:border-none"
               placeholder="Search"
