@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.scss";
+import "./custom.css";
 import { getDomain, getData } from "@/lib/data";
-import Script from 'next/script';
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +12,7 @@ export async function generateMetadata() {
   const c = await getData();
 
   return {
-    title: 'Your Curated Resource Directory',
+    title: "Your Curated Resource Directory",
     description: c.data.description,
   };
 }
@@ -26,20 +27,32 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-         
-         { c.data.adsenseClientId!==''?(<Script id="g-ads" async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${c.data.adsenseClientId}`}  data-checked-head="true"></Script>):'' }
-         <Script id="g-manager" async src={`https://www.googletagmanager.com/gtag/js?id=${c.data.accountGA}`}></Script>
-         <Script id="g-tag">
-           {`
+        {c.data.adsenseClientId !== "" ? (
+          <Script
+            id="g-ads"
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${c.data.adsenseClientId}`}
+            data-checked-head="true"
+          ></Script>
+        ) : (
+          ""
+        )}
+        <Script
+          id="g-manager"
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${c.data.accountGA}`}
+        ></Script>
+        <Script id="g-tag">
+          {`
              window.dataLayer = window.dataLayer || [];
              function gtag(){dataLayer.push(arguments);}
              gtag('js', new Date());
            
              gtag('config', '${c.data.accountGA}');
            `}
-         </Script>
-         <Script id="g-matomo" type="text/javascript">
-           {`
+        </Script>
+        <Script id="g-matomo" type="text/javascript">
+          {`
              var _paq = window._paq || [];
              _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
              _paq.push(["setCookieDomain", "*.${domain}"]);
@@ -54,16 +67,16 @@ export default async function RootLayout({
                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
              })();
            `}
-         </Script>
-      {/*
+        </Script>
+        {/*
          <noscript>{`<p><img src="${"//stats.numberchallenge.com/matomo.php?idsite="+c.data.piwikId}" alt="" /></p>`}</noscript>
           
          <Script id="test-script" src="https://tools.contrib.com/js/test.js"></Script>
          */}
-       </head>
+      </head>
       <body className={inter.className}>
-      <div className="hidden md:block absolute top-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-pink-400 blur-3xl opacity-25 -z-10"></div>
-      <div className="hidden md:block absolute top-0 right-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-violet-400 blur-3xl opacity-25 -z-10"></div>
+        <div className="hidden md:block absolute top-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-pink-400 blur-3xl opacity-25 -z-10"></div>
+        <div className="hidden md:block absolute top-0 right-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-violet-400 blur-3xl opacity-25 -z-10"></div>
         {children}
       </body>
     </html>

@@ -6,9 +6,6 @@ import { FaSearch } from "react-icons/fa";
 import Search from "./components/Search";
 import { LinkType } from "@/types/link.type";
 
-
-
-
 type Props = {
   recents: LinkType[];
   categories: LinkType[];
@@ -23,6 +20,17 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
   const currentYear = new Date().getFullYear();
   return (
     <>
+      <div className="flash-news">
+        <div className="container">
+          <a href="https://adao.ai" target="_blank" rel="noopener noreferrer">
+            <span>
+              <b>Flash News!</b>
+            </span>
+            &nbsp;ADAO token is dropping to your Base chain soon! Get ADAO today
+            while it's on sale!
+          </a>
+        </div>
+      </div>
       <header className="flex w-full">
         <div className="container items-center justify-between flex py-4">
           <div>
@@ -62,19 +70,22 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
         {/* Start:: Hero Section */}
         <div className="container text-center py-14 ">
           <h1 className="text-6xl mb-4 font-bold text-black">
-            
             <span className="capitalize">
               {" "}
-             {data.title || "Your Online Directory for All Things SAAS"} 
+              {data.title || "Your Online Directory for All Things SAAS"}
             </span>
           </h1>
           <p className="text-base text-gray-400 xl:max-w-[50%] xl:mx-auto">
-          {data.description}
-          <span> <button className="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">
-            <a href="/auth/register">Add your site to <span className="Capitalize">{domain}</span> today</a>
-          </button></span> 
+            {data.description}
+            <div className="mt-5">
+              <button className="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">
+                <a href="/auth/register">
+                  Add your site to <span className="Capitalize">{domain}</span>{" "}
+                  today
+                </a>
+              </button>
+            </div>
           </p>
-         
         </div>
         <div className="container mb-14">
           <FeaturedSlider featured={featured} />
