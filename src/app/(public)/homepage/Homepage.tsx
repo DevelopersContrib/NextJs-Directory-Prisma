@@ -27,7 +27,7 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
               <b>Flash News!</b>
             </span>
             &nbsp;ADAO token is dropping to your Base chain soon! Get ADAO today
-            while it's on sale!
+            while it&nbsp;s on sale!
           </a>
         </div>
       </div>
