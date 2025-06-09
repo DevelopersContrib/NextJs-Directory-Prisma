@@ -1,84 +1,114 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// app/layout.tsx
+
 import "./globals.scss";
 import "./custom.css";
-import { getDomain, getData } from "@/lib/data";
 import Script from "next/script";
+import { getData } from "@/lib/data";
+import type { Metadata } from "next";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export async function generateMetadata() {
-  const domain = getDomain();
+export async function generateMetadata(): Promise<Metadata> {
   const c = await getData();
 
+  const title = c.data.title || `Welcome to ${c.data.domainName}`;
+  const description = c.data.description;
+
   return {
-    title: "Your Curated Resource Directory",
-    description: c.data.description,
+    title,
+    description,
+    keywords: c.data.keywords?.split(","),
+    authors: [{ name: c.data.author }],
+    openGraph: {
+      title,
+      description,
+      siteName: c.data.domainName,
+      type: "website",
+      locale: "en_US",
+      url: `https://${c.data.domainName}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+    metadataBase: new URL(`https://${c.data.domainName}`),
+    alternates: {
+      canonical: `https://${c.data.domainName}`,
+    },
   };
 }
 
 export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const c = await getData();
-  const domain = getDomain();
+
   return (
     <html lang="en">
       <head>
-        {c.data.adsenseClientId !== "" ? (
+        {/* Google AdSense */}
+        {c.data.adsenseClientId && (
           <Script
             id="g-ads"
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${c.data.adsenseClientId}`}
             data-checked-head="true"
-          ></Script>
-        ) : (
-          ""
+          />
         )}
-        <Script
-          id="g-manager"
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${c.data.accountGA}`}
-        ></Script>
-        <Script id="g-tag">
-          {`
-             window.dataLayer = window.dataLayer || [];
-             function gtag(){dataLayer.push(arguments);}
-             gtag('js', new Date());
-           
-             gtag('config', '${c.data.accountGA}');
-           `}
-        </Script>
-        <Script id="g-matomo" type="text/javascript">
-          {`
-             var _paq = window._paq || [];
-             _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-             _paq.push(["setCookieDomain", "*.${domain}"]);
-             _paq.push(["setDomains", ["*.${domain}"]]);
-             _paq.push(['trackPageView']);
-             _paq.push(['enableLinkTracking']);
-             (function() {
-               var u="//stats.numberchallenge.com/";
-               _paq.push(['setTrackerUrl', u+'matomo.php']);
-               _paq.push(['setSiteId', ${c.data.piwikId}]);
-               var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-               g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-             })();
-           `}
-        </Script>
-        {/*
-         <noscript>{`<p><img src="${"//stats.numberchallenge.com/matomo.php?idsite="+c.data.piwikId}" alt="" /></p>`}</noscript>
-          
-         <Script id="test-script" src="https://tools.contrib.com/js/test.js"></Script>
-         */}
+
+        {/* Google Analytics */}
+        {c.data.accountGA && (
+          <>
+            <Script
+              id="g-manager"
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${c.data.accountGA}`}
+            />
+            <Script id="g-tag">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${c.data.accountGA}');
+              `}
+            </Script>
+          </>
+        )}
+
+        {/* Matomo Analytics */}
+        {c.data.piwikId && (
+          <>
+            <Script id="matomo" type="text/javascript">
+              {`
+                var _paq = window._paq || [];
+                _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+                _paq.push(["setCookieDomain", "*.${c.data.domainName}"]);
+                _paq.push(["setDomains", ["*.${c.data.domainName}"]]);
+                _paq.push(['trackPageView']);
+                _paq.push(['enableLinkTracking']);
+                (function() {
+                  var u="//stats.numberchallenge.com/";
+                  _paq.push(['setTrackerUrl', u+'matomo.php']);
+                  _paq.push(['setSiteId', ${c.data.piwikId}]);
+                  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                  g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+                })();
+              `}
+            </Script>
+            <noscript>
+              <p>
+                <img
+                  src={`//stats.numberchallenge.com/matomo.php?idsite=${c.data.piwikId}`}
+                  alt=""
+                  style={{ border: 0 }}
+                />
+              </p>
+            </noscript>
+          </>
+        )}
       </head>
-      <body className={inter.className}>
-        <div className="hidden md:block absolute top-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-pink-400 blur-3xl opacity-25 -z-10"></div>
-        <div className="hidden md:block absolute top-0 right-0 -mt-[93px] -mr-[176px] w-[500px] h-[500px] rounded-full bg-gradient-to-b from-violet-400 blur-3xl opacity-25 -z-10"></div>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
