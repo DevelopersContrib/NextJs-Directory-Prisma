@@ -7,32 +7,38 @@ import { getData } from "@/lib/data";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const c = await getData();
+  let c;
+  try {
+    c = await getData();
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    c = { data: { title: 'Welcome', domainName: 'localhost', description: '', author: '', keywords: '' } };
+  }
 
   const title = c.data.title || `Welcome to ${c.data.domainName}`;
-  const description = c.data.description;
+  const description = c.data.description || '';
 
   return {
     title,
     description,
-    keywords: c.data.keywords?.split(","),
-    authors: [{ name: c.data.author }],
+    keywords: c.data.keywords?.split(",") || [],
+    authors: [{ name: c.data.author || 'Unknown' }],
     openGraph: {
       title,
       description,
-      siteName: c.data.domainName,
+      siteName: c.data.domainName || 'localhost',
       type: "website",
       locale: "en_US",
-      url: `https://${c.data.domainName}`,
+      url: `https://${c.data.domainName || 'localhost'}`,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
     },
-    metadataBase: new URL(`https://${c.data.domainName}`),
+    metadataBase: new URL(`https://${c.data.domainName || 'localhost'}`),
     alternates: {
-      canonical: `https://${c.data.domainName}`,
+      canonical: `https://${c.data.domainName || 'localhost'}`,
     },
   };
 }
@@ -42,13 +48,19 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const c = await getData();
+  let c;
+  try {
+    c = await getData();
+  } catch (error) {
+    console.error('Error fetching data in layout:', error);
+    c = { data: {} };
+  }
 
   return (
     <html lang="en">
       <head>
         {/* Google AdSense */}
-        {c.data.adsenseClientId && (
+        {c?.data?.adsenseClientId && (
           <Script
             id="g-ads"
             async
@@ -58,7 +70,7 @@ export default async function RootLayout({
         )}
 
         {/* Google Analytics */}
-        {c.data.accountGA && (
+        {c?.data?.accountGA && (
           <>
             <Script
               id="g-manager"
@@ -77,7 +89,7 @@ export default async function RootLayout({
         )}
 
         {/* Matomo Analytics */}
-        {c.data.piwikId && (
+        {c?.data?.piwikId && (
           <>
             <Script id="matomo" type="text/javascript">
               {`

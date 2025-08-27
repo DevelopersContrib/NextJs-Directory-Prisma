@@ -33,29 +33,36 @@ const Details = ({
   domain,
 }: Props) => {
 
-  const [likes, setLikes] = useState<number>(0);
-    const [unlikes, setUnlikes] = useState<number>(0);
-    const [isMutation, setIsMutation] = useState<boolean>(false);
-    const [isUnlikeMutation, setUnlikeMutation] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(countLikes || 0);
+  const [unlikes, setUnlikes] = useState<number>(countDislikes || 0);
+  const [isMutation, setIsMutation] = useState<boolean>(false);
+  const [isUnlikeMutation, setUnlikeMutation] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        const fetchLikes = async () => {
-            const res = await countLikesAction(link.id,'/');
-            if (res.data !=null) {
-                setLikes(res.data);
-            }
-        };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const [likesRes, unlikesRes] = await Promise.all([
+          countLikesAction(link.id, '/'),
+          countUnlikesAction(link.id, '/')
+        ]);
+        
+        if (likesRes.data !== null) {
+          setLikes(likesRes.data);
+        }
+        if (unlikesRes.data !== null) {
+          setUnlikes(unlikesRes.data);
+        }
+      } catch (error) {
+        console.error('Error fetching likes/unlikes:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-        const fetchUnlikes = async () => {
-            const res = await countUnlikesAction(link.id,'/');
-            if (res.data !=null) {
-                setUnlikes(res.data);
-            }
-        };
-
-        fetchLikes();
-        fetchUnlikes();
-    }, []);
+    fetchData();
+  }, [link.id]);
 
     const clientAction = async () => {
         if (isMutation) return null;

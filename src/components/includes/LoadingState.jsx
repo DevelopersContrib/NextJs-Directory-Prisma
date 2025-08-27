@@ -1,15 +1,18 @@
-import Image from "next/image"
+"use client";
+import { useState, useEffect } from "react";
 
-export default function LoadingState() {
-    return (
-        <>
-            <div className="col-xl-12 tw-flex tw-items-center tw-justify-center tw-min-h-[350px] text-secondary tw-flex-col">
-                <Image src="http://cdn.vnoc.com/loader/Preloader_3.gif" 
-                 width={150}
-                 height={150}
-                 alt=""
-                />
-            </div>
-        </>
-    )
-}
+const LoadingState = ({ children, fallback = null }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return fallback;
+  }
+
+  return children;
+};
+
+export default LoadingState;

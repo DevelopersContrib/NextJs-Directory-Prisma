@@ -21,63 +21,73 @@ export default async function page({
 }: {
   searchParams: SearchParams;
 }) {
-  const session: SessionType = await getServerSession(authOptions);
-  if (session) redirect("/dashboard");
+  try {
+    const session: SessionType = await getServerSession(authOptions);
+    if (session) redirect("/dashboard");
 
-  const c = await getData();
-  const domain = getDomain();
+    const c = await getData();
+    const domain = getDomain();
 
-  const categories: LinkType[] = await prismadb.link.findMany({
-    distinct: ["categoryId"],
-    include: {
-      category: true,
-    },
-    orderBy: {
-      title: "asc",
-    },
-  });
-  const recents: LinkType[] = await prismadb.link.findMany({
-    where: {
-      approved: true,
-    },
-    include: {
-      category: {
-        select: {
-          category_name: true,
+    const categories: LinkType[] = await prismadb.link.findMany({
+      distinct: ["categoryId"],
+      include: {
+        category: true,
+      },
+      orderBy: {
+        title: "asc",
+      },
+    });
+    const recents: LinkType[] = await prismadb.link.findMany({
+      where: {
+        approved: true,
+      },
+      include: {
+        category: {
+          select: {
+            category_name: true,
+          },
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-  const featured: LinkType[] = await prismadb.link.findMany({
-    where: {
-      approved: true,
-      featured: true,
-    },
-    include: {
-      category: {
-        select: {
-          category_name: true,
+    const featured: LinkType[] = await prismadb.link.findMany({
+      where: {
+        approved: true,
+        featured: true,
+      },
+      include: {
+        category: {
+          select: {
+            category_name: true,
+          },
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-  return (
-    <>
-      <Homepage
-        categories={categories}
-        recents={recents}
-        featured={featured}
-        data={c.data}
-        domain={domain}
-      />
-    </>
-  );
+    return (
+      <>
+        <Homepage
+          categories={categories}
+          recents={recents}
+          featured={featured}
+          data={c.data}
+          domain={domain}
+        />
+      </>
+    );
+  } catch (error) {
+    console.error('Error loading homepage:', error);
+    return (
+      <div className="container py-20 text-center">
+        <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+        <p className="text-gray-600">Unable to load the homepage. Please try again later.</p>
+      </div>
+    );
+  }
 }

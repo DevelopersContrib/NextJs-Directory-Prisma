@@ -4,31 +4,49 @@ import axios from "axios";
 let DOMAIN = process.env.NEXT_PUBLIC_VERCEL_URL;
 
 export function getDomain() {
-  const headersList = headers();
-  const referrer = headersList.get("host");
-  
-  // Check if referrer is null
-  if (!referrer) {
-    throw new Error("Host header is missing.");
-  }
-
-  const domainName = referrer.includes("localhost")
-    ? DOMAIN
-    : referrer.replace("www.", "");
+  try {
+    const headersList = headers();
+    const referrer = headersList.get("host");
     
-  return domainName;
+    // Check if referrer is null
+    if (!referrer) {
+      console.warn("Host header is missing, using fallback domain");
+      return DOMAIN || "localhost";
+    }
+
+    const domainName = referrer.includes("localhost")
+      ? DOMAIN || "localhost"
+      : referrer.replace("www.", "");
+      
+    return domainName;
+  } catch (error) {
+    console.error("Error getting domain:", error);
+    return DOMAIN || "localhost";
+  }
 }
 
 export async function getData() {
-  const domain = getDomain();
-  const url = process.env.CONTRIB_API1 + `&domain=${domain}`;
-  const res = await fetch(url, { next: { revalidate: 3600 } });
-  
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
+  try {
+    const domain = getDomain();
+    const url = process.env.CONTRIB_API1 + `&domain=${domain}`;
+    
+    if (!process.env.CONTRIB_API1) {
+      console.warn("CONTRIB_API1 environment variable not set");
+      return { data: { title: 'Welcome', domainName: domain, description: '', author: '', keywords: '' } };
+    }
+    
+    const res = await fetch(url, { next: { revalidate: 3600 } });
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data: ${res.status}`);
+    }
 
-  return res.json();
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    const domain = getDomain();
+    return { data: { title: 'Welcome', domainName: domain, description: '', author: '', keywords: '' } };
+  }
 }
 
 export async function getCategories() {
