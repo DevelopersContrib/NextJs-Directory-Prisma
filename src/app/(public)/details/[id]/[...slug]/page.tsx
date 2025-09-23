@@ -4,8 +4,10 @@ import { LinkType } from "@/types/link.type";
 import { getLink,getFeatured,getDislikeCount,getLikeCount } from "@/actions/link.action";
 import { getDomain, getData } from "@/lib/data";
 import { clickAction, countClicksAction } from "@/actions/click.action";
+import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
+import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   try {
     const domain = getDomain();
     const c = await getData();
@@ -13,15 +15,73 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     const linkType = await getLink({ id: params.id });
     const link = linkType as LinkType;
 
+    // Process domain name for better SEO
+    const processedDomain = link.title ? link.title.replace(/\.(com|org|net|io|co|app|dev)$/i, '') : 'tool';
+    const capitalizedDomain = capitalizeFirstLetter(processedDomain);
+    
+    const title = `${capitalizedDomain} - ${link.title || 'Tool'} | ${c.data.title || 'Directory'}`;
+    const description = link.description || `Discover ${capitalizedDomain} - ${link.title || 'this amazing tool'} on our directory.`;
+    const url = `https://${domain || 'localhost'}/details/${params.id}/${link.title || 'tool'}`;
+
     return {
-      title: `${link.title} - ${link.title}.com`,
-      description: link.description,
+      title,
+      description,
+      keywords: [
+        capitalizedDomain,
+        link.title || 'tool',
+        link.category?.category_name || 'tool',
+        'directory',
+        'tools',
+        'software',
+        'SaaS'
+      ],
+      authors: [{ name: c.data.author || 'Directory Team' }],
+      openGraph: {
+        title,
+        description,
+        url,
+        siteName: c.data.title || 'Directory',
+        type: 'website',
+        locale: 'en_US',
+        images: [
+          {
+            url: link.screenshot || link.company_logo || '',
+            width: 1200,
+            height: 630,
+            alt: `${capitalizedDomain} - ${link.title || 'Tool'}`,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [link.screenshot || link.company_logo || ''],
+      },
+      alternates: {
+        canonical: url,
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },
     };
   } catch (error) {
     console.error('Error generating metadata:', error);
     return {
-      title: 'Details - Page Not Found',
-      description: 'The requested page could not be found.',
+      title: 'Tool Details - Page Not Found',
+      description: 'The requested tool page could not be found.',
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 }

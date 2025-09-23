@@ -4,6 +4,8 @@ import "./globals.scss";
 import "./custom.css";
 import Script from "next/script";
 import { getData } from "@/lib/data";
+import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
+import Providers from "@/components/providers";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,7 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
     c = { data: { title: 'Welcome', domainName: 'localhost', description: '', author: '', keywords: '' } };
   }
 
-  const title = c.data.title || `Welcome to ${c.data.domainName}`;
+  const domainName = c.data.domainName ? c.data.domainName.replace(/\.(com|org|net|io|co|app|dev)$/i, '') : 'localhost';
+  const title = c.data.title || `Welcome to ${capitalizeFirstLetter(domainName)}`;
   const description = c.data.description || '';
 
   return {
@@ -120,7 +123,9 @@ export default async function RootLayout({
           </>
         )}
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

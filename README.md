@@ -1,6 +1,7 @@
 # Fullstack Nowted Apps: Nextjs 14, Reactjs, Typescript, Prisma, NextAuth v4, Tailwind CSS, MySQL, Railway
 
 ## Demo: Nowted App
+
 <a href="https://nextjs14-nowted.vercel.app/" target="_blank">Nowted Apps</a><br />
 Adapted from: <a href="https://codedesign.dev/challenge/nowted-app">Nauval - Nowted App</a>
 
@@ -69,4 +70,4 @@ npx prisma db push
 | `npm run build`        | Builds the app for production            |
 | `npm run start`        | Starts the app in production mode        |
 
-## 
+##

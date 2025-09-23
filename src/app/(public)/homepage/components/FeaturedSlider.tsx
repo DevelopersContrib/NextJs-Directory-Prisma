@@ -13,12 +13,20 @@ import Image from "next/image";
 import { LinkType } from "@/types/link.type";
 import Link from "next/link";
 import { FaStar, FaExternalLinkAlt } from "react-icons/fa";
+import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 
 type Props = {
   featured: LinkType[];
 };
 
 const FeaturedSlider = ({ featured }: Props) => {
+  // Function to process domain titles
+  const processTitle = (title: string) => {
+    // Remove domain extensions and capitalize
+    const processedTitle = title.replace(/\.(com|org|net|io|co|app|dev)$/i, '');
+    return capitalizeFirstLetter(processedTitle);
+  };
+
   return (
     <>
       <Swiper
@@ -92,7 +100,7 @@ const FeaturedSlider = ({ featured }: Props) => {
                   {/* Title */}
                   <h3 className="font-bold text-gray-900 text-lg mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
                     <Link href={`/details/${feature.id}/${feature.title}`} className="hover:underline">
-                      {feature.title}
+                      {processTitle(feature.title)}
                     </Link>
                   </h3>
                   
@@ -144,23 +152,25 @@ const FeaturedSlider = ({ featured }: Props) => {
       </Swiper>
       
       {/* Custom Swiper Styles */}
-      <style jsx global>{`
-        .featured-slider .swiper-pagination-bullet {
-          background: #cbd5e1;
-          opacity: 0.5;
-          transition: all 0.3s ease;
-        }
-        
-        .featured-slider .swiper-pagination-bullet-active {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          opacity: 1;
-          transform: scale(1.2);
-        }
-        
-        .featured-slider .swiper-pagination {
-          bottom: 0;
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .featured-slider .swiper-pagination-bullet {
+            background: #cbd5e1;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+          }
+          
+          .featured-slider .swiper-pagination-bullet-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 1;
+            transform: scale(1.2);
+          }
+          
+          .featured-slider .swiper-pagination {
+            bottom: 0;
+          }
+        `
+      }} />
     </>
   );
 };

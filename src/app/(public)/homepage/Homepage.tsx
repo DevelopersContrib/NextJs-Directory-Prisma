@@ -18,19 +18,36 @@ import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 
 const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
   const currentYear = new Date().getFullYear();
+  
+  // Process domain name to remove extensions and capitalize
+  const processedDomain = domain ? domain.replace(/\.(com|org|net|io|co|app|dev)$/i, '') : 'localhost';
+  const capitalizedDomain = capitalizeFirstLetter(processedDomain);
+  
+  // Process title - if it contains the domain, replace it with processed version
+  let title = data.title || `Welcome to ${capitalizedDomain}`;
+  if (data.title && domain) {
+    // Replace domain in title with processed version
+    const domainRegex = new RegExp(domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    title = data.title.replace(domainRegex, capitalizedDomain);
+  }
   return (
     <>
       {/* Enhanced Flash News Banner */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white py-3 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="container relative z-10">
-          <div className="flex items-center justify-center space-x-2">
+          <a 
+            href="https://adao.ai" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center justify-center space-x-2 hover:opacity-90 transition-opacity cursor-pointer"
+          >
             <FaRocket className="animate-bounce text-yellow-300" />
             <span className="font-semibold">Flash News!</span>
             <span className="text-sm opacity-90">
               ADAO token is dropping to your Base chain soon! Get ADAO today while it's on sale!
             </span>
-          </div>
+          </a>
         </div>
       </div>
 
@@ -57,7 +74,9 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
                     <h3 className="font-bold text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                       {domain && capitalizeFirstLetter(domain)}
                     </h3>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">Graph, Sheets & SaaS Tools</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wider">
+                      Powered by <a href="https://ventureos.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors">VENTUREOS</a>
+                    </p>
                   </div>
                 </div>
               )}
@@ -88,13 +107,13 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
               {/* Badge */}
               <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full mb-8">
                 <FaStar className="text-yellow-500" />
-                <span className="text-sm font-medium">Discover Amazing Tools</span>
+                <span className="text-sm font-medium">Discover Amazing Apps and Sites</span>
               </div>
               
               {/* Main Heading */}
               <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
                 <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-                  {data.title || "Your Resource For Graph Tools, Frameworks, And SaaS Solutions"}
+                  {title}
                 </span>
               </h1>
               

@@ -6,6 +6,7 @@ import { LinkType } from "@/types/link.type";
 import Likes from "./Likes";
 import Link from "next/link";
 import { FaExternalLinkAlt, FaStar } from "react-icons/fa";
+import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 
 type Props = {
   recents: LinkType[];
@@ -14,6 +15,13 @@ type Props = {
 const ListCategories = ({ recents }: Props) => {
   // Ensure recents is always an array to prevent hydration issues
   const safeRecents = Array.isArray(recents) ? recents : [];
+  
+  // Function to process domain titles
+  const processTitle = (title: string) => {
+    // Remove domain extensions and capitalize
+    const processedTitle = title.replace(/\.(com|org|net|io|co|app|dev)$/i, '');
+    return capitalizeFirstLetter(processedTitle);
+  };
   
   return (
     <>
@@ -56,7 +64,7 @@ const ListCategories = ({ recents }: Props) => {
                   {/* Title */}
                   <h3 className="font-bold text-gray-900 text-xl mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
                     <Link href={`/details/${recent.id}/${recent.title}`} className="hover:underline">
-                      {recent.title || "Untitled"}
+                      {processTitle(recent.title || "Untitled")}
                     </Link>
                   </h3>
                   
