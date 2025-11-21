@@ -7,6 +7,7 @@ import { getData } from "@/lib/data";
 import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 import Providers from "@/components/providers";
 import type { Metadata } from "next";
+import First100FoundersModalWrapper from "@/components/First100FoundersModalWrapper";
 
 export async function generateMetadata(): Promise<Metadata> {
   let c;
@@ -124,6 +125,7 @@ export default async function RootLayout({
         )}
       </head>
       <body>
+        <First100FoundersModalWrapper />
         <Providers>{children}</Providers>
       </body>
     </html>
