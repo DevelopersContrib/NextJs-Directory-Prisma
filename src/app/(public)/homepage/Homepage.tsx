@@ -2,7 +2,15 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaSearch, FaRocket, FaStar, FaUsers, FaChartLine } from "react-icons/fa";
+import {
+  FaSearch,
+  FaRocket,
+  FaStar,
+  FaChartLine,
+  FaArrowRight,
+  FaUserPlus,
+  FaSignInAlt,
+} from "react-icons/fa";
 import Search from "./components/Search";
 import { LinkType } from "@/types/link.type";
 
@@ -52,8 +60,8 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
       </div>
 
       {/* Enhanced Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-        <div className="container items-center justify-between flex py-6">
+      <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/85 shadow-sm shadow-zinc-900/5 backdrop-blur-md">
+        <div className="container flex items-center justify-between py-2 md:py-3">
           <div className="flex items-center space-x-3">
             <Link href="/" className="group">
               {data.logo && domain ? (
@@ -62,19 +70,19 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
                   width={0}
                   height={0}
                   alt={data.title}
-                  className="w-[280px] h-[80px] object-contain transition-transform group-hover:scale-105"
+                  className="h-10 md:h-12 w-auto max-w-[200px] md:max-w-[240px] object-contain object-left transition-transform group-hover:scale-105"
                   sizes="100vw"
                 />
               ) : (
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <FaChartLine className="text-white text-xl" />
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shrink-0">
+                    <FaChartLine className="text-white text-base" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <h3 className="font-bold text-lg md:text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
                       {domain && capitalizeFirstLetter(domain)}
                     </h3>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">
+                    <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider leading-tight">
                       Powered by <a href="https://ventureos.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors">VENTUREOS</a>
                     </p>
                   </div>
@@ -82,17 +90,28 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
               )}
             </Link>
           </div>
-          <div className="flex items-center space-x-6">
-            <Button asChild variant="ghost" size="lg" className="hover:bg-gray-100 rounded-full">
-              <Link href="#search" className="flex items-center space-x-2">
-                <FaSearch className="text-lg text-gray-600" />
-                <span className="hidden md:block">Search</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+            <Button
+              asChild
+              variant="ghost"
+              className="h-9 rounded-full px-3 text-zinc-700 hover:bg-zinc-100/90 md:px-4"
+            >
+              <Link href="#search" className="flex items-center gap-2">
+                <FaSearch className="h-[1em] w-[1em] shrink-0 text-zinc-500" aria-hidden />
+                <span className="hidden md:inline text-sm font-medium">Search</span>
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full border-2 hover:border-blue-500 hover:text-blue-600 transition-all">
+            <Button
+              asChild
+              variant="outline"
+              className="h-9 rounded-full border border-zinc-200 bg-white/90 px-4 text-sm font-medium text-zinc-800 shadow-sm backdrop-blur-sm transition-colors hover:border-zinc-300 hover:bg-zinc-50"
+            >
               <Link href="/auth/login">Login</Link>
             </Button>
-            <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+            <Button
+              asChild
+              className="h-9 rounded-full bg-zinc-900 px-4 text-sm font-medium text-white shadow-sm shadow-zinc-900/20 transition-colors hover:bg-zinc-800"
+            >
               <Link href="/auth/register">Register</Link>
             </Button>
           </div>
@@ -100,132 +119,218 @@ const Homepage = ({ categories, recents, featured, data, domain }: Props) => {
       </header>
 
       <main className="flex w-full flex-wrap">
-        {/* Enhanced Hero Section */}
-        <div className="w-full bg-gradient-to-br from-gray-50 via-white to-blue-50 py-20">
-          <div className="container text-center">
-            <div className="max-w-4xl mx-auto">
-              {/* Badge */}
-              <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full mb-8">
-                <FaStar className="text-yellow-500" />
-                <span className="text-sm font-medium">Discover Amazing Apps and Sites</span>
+        {/* Hero — layered background, refined type, glass stats */}
+        <section className="relative w-full overflow-hidden bg-zinc-50">
+          <div className="pointer-events-none absolute inset-0 -z-10">
+            <div className="absolute -left-32 top-0 h-[min(520px,70vw)] w-[min(520px,70vw)] rounded-full bg-violet-400/25 blur-3xl" />
+            <div className="absolute -right-24 top-24 h-[min(440px,60vw)] w-[min(440px,60vw)] rounded-full bg-sky-400/20 blur-3xl" />
+            <div className="absolute bottom-0 left-1/2 h-[min(360px,50vw)] w-[min(360px,50vw)] -translate-x-1/2 rounded-full bg-indigo-300/20 blur-3xl" />
+            <div
+              className="absolute inset-0 opacity-[0.45]"
+              style={{
+                backgroundImage: `linear-gradient(to right, rgb(24 24 27 / 0.06) 1px, transparent 1px), linear-gradient(to bottom, rgb(24 24 27 / 0.06) 1px, transparent 1px)`,
+                backgroundSize: "48px 48px",
+                maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+              }}
+            />
+          </div>
+
+          <div className="container relative px-4 pb-16 pt-14 md:pb-24 md:pt-20">
+            <div className="mx-auto w-full max-w-5xl text-center xl:max-w-6xl">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white/70 px-3 py-1.5 text-sm font-medium text-zinc-700 shadow-sm shadow-zinc-900/5 backdrop-blur-md">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-sm">
+                  <FaStar className="h-3 w-3" aria-hidden />
+                </span>
+                <span>Curated apps &amp; sites</span>
               </div>
-              
-              {/* Main Heading */}
-              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-                <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+
+              <h1 className="text-balance text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl md:text-6xl lg:text-[3.5rem] lg:leading-[1.08]">
+                <span className="bg-gradient-to-br from-zinc-950 via-blue-900 to-violet-800 bg-clip-text text-transparent">
                   {title}
                 </span>
               </h1>
-              
-              {/* Description */}
-              <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
+
+              <p className="mx-auto mt-6 max-w-3xl text-pretty text-base leading-relaxed text-zinc-600 md:max-w-4xl md:text-lg">
                 {data.description || "DirectoryGraph is a comprehensive directory for discovering tools, frameworks, and SaaS platforms tailored to graph visualization and network mapping."}
               </p>
-              
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                  <Link href="/auth/register">
-                    Add your site to &nbsp;<span className="capitalize">{domain}</span>&nbsp; today
+
+              <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
+                <Button
+                  asChild
+                  className="h-11 rounded-full bg-zinc-900 px-6 text-sm font-medium text-white shadow-lg shadow-zinc-900/15 transition-all hover:bg-zinc-800 sm:h-12 sm:px-8 sm:text-base"
+                >
+                  <Link href="/auth/register" className="inline-flex items-center justify-center gap-2">
+                    List your site on <span className="capitalize">{domain}</span>
+                    <FaArrowRight className="h-3.5 w-3.5 opacity-80" aria-hidden />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 px-8 py-4 rounded-full text-lg font-semibold transition-all">
-                  <Link href="#search">Explore Tools</Link>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-11 rounded-full border-zinc-200 bg-white/80 px-6 text-sm font-medium text-zinc-800 shadow-sm backdrop-blur-sm transition-all hover:border-zinc-300 hover:bg-white sm:h-12 sm:px-8 sm:text-base"
+                >
+                  <Link href="#search">Browse directory</Link>
                 </Button>
               </div>
-              
-              {/* Stats */}
-              <div className="flex items-center justify-center space-x-12 mt-16 pt-16 border-t border-gray-200">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
-                  <div className="text-gray-600">Tools Listed</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600 mb-2">50+</div>
-                  <div className="text-gray-600">Categories</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600 mb-2">10K+</div>
-                  <div className="text-gray-600">Users</div>
-                </div>
+
+              <div className="mx-auto mt-14 w-full rounded-2xl border border-zinc-200/60 bg-white/60 p-6 shadow-sm shadow-zinc-900/5 backdrop-blur-md sm:p-8">
+                <dl className="grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-4 sm:divide-x sm:divide-zinc-200/80">
+                  <div className="text-center sm:px-4">
+                    <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Listed</dt>
+                    <dd className="mt-1 text-2xl font-semibold tracking-tight text-blue-600 md:text-3xl">500+</dd>
+                    <dd className="text-sm text-zinc-500">tools</dd>
+                  </div>
+                  <div className="text-center sm:px-4">
+                    <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Topics</dt>
+                    <dd className="mt-1 text-2xl font-semibold tracking-tight text-violet-600 md:text-3xl">50+</dd>
+                    <dd className="text-sm text-zinc-500">categories</dd>
+                  </div>
+                  <div className="text-center sm:px-4">
+                    <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Community</dt>
+                    <dd className="mt-1 text-2xl font-semibold tracking-tight text-emerald-600 md:text-3xl">10K+</dd>
+                    <dd className="text-sm text-zinc-500">visitors</dd>
+                  </div>
+                </dl>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Enhanced Featured Section */}
-        <div className="w-full py-20 bg-white">
+        {/* Featured picks — matches hero zinc / refined UI */}
+        <section className="w-full border-t border-zinc-100 bg-white py-16 md:py-24">
           <div className="container">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Tools</h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Discover the most popular and innovative tools in our directory
+            <div className="mx-auto mb-12 max-w-5xl text-center xl:mb-14 xl:max-w-6xl">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                Hand-picked
+              </p>
+              <h2 className="text-balance text-3xl font-semibold tracking-tight text-zinc-950 md:text-4xl">
+                Featured tools
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-pretty text-base text-zinc-600 md:text-lg">
+                Popular listings from the directory—updated as we add standout products.
               </p>
             </div>
             <FeaturedSlider featured={featured} />
           </div>
-        </div>
+        </section>
 
-        {/* Search Section */}
-        <div className="w-full py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="w-full border-t border-zinc-100 bg-zinc-50/90 py-16 md:py-24">
           <Search categories={categories} defaultrecents={recents} />
         </div>
 
-        {/* Enhanced Footer */}
-        <footer className="w-full bg-gray-900 text-white py-16">
-          <div className="container">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-              <div>
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <FaChartLine className="text-white text-xl" />
+        <footer className="w-full border-t border-zinc-800 bg-zinc-950 text-zinc-100">
+          <div className="container py-14 md:py-16">
+            <div className="mb-12 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-4">
+              <div className="lg:col-span-1">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-zinc-700/80 bg-zinc-900 shadow-sm">
+                    <FaChartLine className="text-lg text-zinc-200" aria-hidden />
                   </div>
                   <div>
-                    <h3 className="font-bold text-xl">{domain && capitalizeFirstLetter(domain)}</h3>
-                    <p className="text-sm text-gray-400">Graph, Sheets & SaaS Tools</p>
+                    <p className="font-semibold text-zinc-50">
+                      {domain && capitalizeFirstLetter(domain)}
+                    </p>
+                    <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+                      Directory
+                    </p>
                   </div>
                 </div>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  Your comprehensive directory for discovering the best tools, frameworks, and SaaS solutions.
+                <p className="max-w-sm text-sm leading-relaxed text-zinc-400">
+                  Discover and list tools in one place—search, filter, and explore the collection.
                 </p>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
-                <ul className="space-y-2">
-                  <li><a href="/about" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
-                  <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
-                  <li><a href="/terms" className="text-gray-400 hover:text-white transition-colors">Terms</a></li>
-                  <li><a href="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy</a></li>
+                <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Quick links
+                </h4>
+                <ul className="space-y-2.5 text-sm">
+                  <li>
+                    <a href="/about" className="text-zinc-400 transition hover:text-zinc-100">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/contact" className="text-zinc-400 transition hover:text-zinc-100">
+                      Contact
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/terms" className="text-zinc-400 transition hover:text-zinc-100">
+                      Terms
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/privacy" className="text-zinc-400 transition hover:text-zinc-100">
+                      Privacy
+                    </a>
+                  </li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold text-lg mb-4">Categories</h4>
-                <ul className="space-y-2">
-                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Technology</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Business</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Finance</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Development</a></li>
+                <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Categories
+                </h4>
+                <ul className="space-y-2.5 text-sm">
+                  {categories.length ? (
+                    categories.slice(0, 6).map((cat, idx) => (
+                      <li key={`${cat.categoryId}-${idx}`}>
+                        <a href="#search" className="text-zinc-400 transition hover:text-zinc-100">
+                          {cat.category?.category_name ?? "Category"}
+                        </a>
+                      </li>
+                    ))
+                  ) : (
+                    <>
+                      <li>
+                        <a href="#search" className="text-zinc-400 transition hover:text-zinc-100">
+                          Browse directory
+                        </a>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold text-lg mb-4">Connect</h4>
-                <div className="flex space-x-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors cursor-pointer">
-                    <FaUsers className="text-white" />
-                  </div>
-                  <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors cursor-pointer">
-                    <FaStar className="text-white" />
-                  </div>
+                <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Get started
+                </h4>
+                <p className="mb-4 text-sm text-zinc-400">
+                  List your product or jump into search.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    href="#search"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-600 bg-zinc-900 text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-800 hover:text-white"
+                    aria-label="Open search"
+                  >
+                    <FaSearch className="text-sm" aria-hidden />
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-600 bg-zinc-900 text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-800 hover:text-white"
+                    aria-label="Create an account"
+                  >
+                    <FaUserPlus className="text-sm" aria-hidden />
+                  </Link>
+                  <Link
+                    href="/auth/login"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-600 bg-zinc-900 text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-800 hover:text-white"
+                    aria-label="Log in"
+                  >
+                    <FaSignInAlt className="text-sm" aria-hidden />
+                  </Link>
                 </div>
               </div>
             </div>
-            
-            <div className="border-t border-gray-800 pt-8 text-center">
-              <p className="text-gray-400">
-                &copy; {currentYear} {domain && capitalizeFirstLetter(domain)}. All rights reserved.
+
+            <div className="border-t border-zinc-800/80 pt-8 text-center">
+              <p className="text-sm text-zinc-500">
+                &copy; {currentYear}{" "}
+                {domain && capitalizeFirstLetter(domain)}. All rights reserved.
               </p>
             </div>
           </div>

@@ -14,6 +14,10 @@ const nextConfig = {
         hostname: "cdn.vnoc.com",
       },
       {
+        protocol: "http",
+        hostname: "cdn.vnoc.com",
+      },
+      {
         protocol: "https",
         hostname: "d2qcctj8epnr7y.cloudfront.net",
       },
@@ -64,6 +68,14 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "vnocimages.s3.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "davaonews.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.davaonews.com",
       },
     ],
   },

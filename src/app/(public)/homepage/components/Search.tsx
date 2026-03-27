@@ -1,14 +1,14 @@
 "use client";
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { FaSearch, FaFilter, FaTimes } from "react-icons/fa";
+import { FaSearch, FaFilter } from "react-icons/fa";
 import { CgSpinner } from "react-icons/cg";
 import { LinkType } from "@/types/link.type";
 import ListCategories from "../components/ListCategories";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -25,7 +25,7 @@ const Search = ({ categories, defaultrecents }: Props) => {
   const [recents, setRecents] = useState<LinkType[]>(defaultrecents);
   const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState<number[]>([]);
-  
+
   const [total, setTotal] = useState(defaultrecents.length);
   const [page, setPage] = useState(1);
   const itemsPerPage = 12;
@@ -36,24 +36,24 @@ const Search = ({ categories, defaultrecents }: Props) => {
       : [...activeCategory, index];
 
     setActiveCategory(updatedActiveCategory);
-    handleSearch(updatedActiveCategory.join(),1);
+    handleSearch(updatedActiveCategory.join(), 1);
   };
 
   const pageClick = (index: number): void => {
     setPage(index);
-    handleSearch(activeCategory.join(),index);
+    handleSearch(activeCategory.join(), index);
   };
 
   const resetActiveCategory = (): void => {
     setActiveCategory([]);
-    handleSearch("",1);
+    handleSearch("", 1);
   };
 
-  const handleSearch = async (category: string, p:number) => {
+  const handleSearch = async (category: string, p: number) => {
     setLoading(true);
     try {
       const { data } = await axios.post("/api/link/search", {
-        page:p,
+        page: p,
         search,
         category,
       });
@@ -68,7 +68,7 @@ const Search = ({ categories, defaultrecents }: Props) => {
   };
 
   const totalPages = Math.ceil(total / itemsPerPage);
-  
+
   const handlePrevious = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (page > 1) setPage(page - 1);
@@ -80,82 +80,100 @@ const Search = ({ categories, defaultrecents }: Props) => {
   };
 
   useEffect(() => {
-    handleSearch(activeCategory.join(),page);
+    handleSearch(activeCategory.join(), page);
   }, [page]);
 
   return (
-    <>
+    <section
+      id="search"
+      className="scroll-mt-[5.5rem] md:scroll-mt-24"
+      aria-labelledby="directory-search-heading"
+    >
       <div className="container">
-        {/* Enhanced Search Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Discover Amazing Tools</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Search through our comprehensive collection of tools, frameworks, and SaaS solutions
+        <div className="mx-auto mb-12 max-w-5xl text-center xl:mb-14 xl:max-w-6xl">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+            Search &amp; filter
+          </p>
+          <h2
+            id="directory-search-heading"
+            className="text-balance text-3xl font-semibold tracking-tight text-zinc-950 md:text-4xl"
+          >
+            Browse the directory
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-pretty text-base text-zinc-600 md:text-lg">
+            Find tools and listings by keyword, or narrow results with categories.
           </p>
         </div>
 
-        {/* Enhanced Search Bar */}
-        <div className="mb-12 flex justify-center">
-          <div className="relative w-full max-w-2xl">
-            <div className="relative">
+        <div className="mb-12 flex justify-center px-1">
+          <div className="relative w-full max-w-3xl">
+            <label htmlFor="directory-search-query" className="sr-only">
+              Search directory
+            </label>
+            <div className="relative flex items-center">
               <input
-                id="search"
+                id="directory-search-query"
                 type="search"
-                className="w-full h-16 px-6 py-4 text-lg bg-white border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl"
-                placeholder="Search for tools, frameworks, or solutions..."
+                className="h-14 w-full rounded-2xl border border-zinc-200/90 bg-white py-3 pl-5 pr-[3.75rem] text-base text-zinc-900 shadow-sm shadow-zinc-900/5 outline-none ring-zinc-900/10 transition placeholder:text-zinc-400 focus:border-zinc-300 focus:ring-4 sm:h-16 sm:pl-6 sm:text-lg"
+                placeholder="Search tools, frameworks, products…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) =>
-                  e.key === "Enter" && handleSearch(activeCategory.join(),1)
+                  e.key === "Enter" && handleSearch(activeCategory.join(), 1)
                 }
               />
               <button
-                onClick={() => handleSearch(activeCategory.join(),1)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                type="button"
+                onClick={() => handleSearch(activeCategory.join(), 1)}
+                className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-zinc-900 text-white transition-colors hover:bg-zinc-800 sm:right-2.5 sm:h-11 sm:w-11"
+                aria-label="Run search"
               >
                 {loading ? (
-                  <CgSpinner className="animate-spin w-5 h-5" />
+                  <CgSpinner className="h-5 w-5 shrink-0 animate-spin text-white" />
                 ) : (
-                  <FaSearch className="w-5 h-5" />
+                  <FaSearch className="h-4 w-4 shrink-0 text-white sm:h-[1.125rem] sm:w-[1.125rem]" />
                 )}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Enhanced Category Filters */}
         <div className="mb-12">
-          <div className="flex items-center justify-center mb-6">
-            <FaFilter className="text-gray-600 mr-3" />
-            <h3 className="text-lg font-semibold text-gray-700">Filter by Category</h3>
+          <div className="mb-5 flex items-center justify-center gap-2 text-zinc-700">
+            <FaFilter className="h-3.5 w-3.5 text-zinc-500" aria-hidden />
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-600">
+              Categories
+            </h3>
           </div>
-          
-          <div className="flex flex-wrap justify-center gap-3">
+
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5">
             <button
+              type="button"
               onClick={(e) => {
                 e.preventDefault();
                 resetActiveCategory();
               }}
-              className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
                 activeCategory.length === 0
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md"
+                  ? "bg-zinc-900 text-white shadow-sm shadow-zinc-900/25"
+                  : "border border-zinc-200 bg-white text-zinc-700 shadow-sm hover:border-zinc-300 hover:bg-zinc-50"
               }`}
             >
-              All Categories
+              All
             </button>
-            
+
             {categories.map((cat, index) => (
               <button
+                type="button"
                 key={index}
                 onClick={(e) => {
                   e.preventDefault();
                   handleClick(parseInt(cat.categoryId));
                 }}
-                className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
                   activeCategory.includes(parseInt(cat.categoryId))
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transform scale-105"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md hover:scale-105"
+                    ? "bg-zinc-900 text-white shadow-sm shadow-zinc-900/25"
+                    : "border border-zinc-200 bg-white text-zinc-700 shadow-sm hover:border-zinc-300 hover:bg-zinc-50"
                 }`}
               >
                 {cat.category.category_name}
@@ -164,40 +182,43 @@ const Search = ({ categories, defaultrecents }: Props) => {
           </div>
         </div>
 
-        {/* Results Section */}
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="text-center">
-              <CgSpinner className="animate-spin w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <p className="text-gray-600 text-lg">Searching for amazing tools...</p>
-            </div>
+          <div className="flex flex-col items-center justify-center py-20">
+            <CgSpinner
+              className="mb-4 h-10 w-10 shrink-0 animate-spin text-zinc-500"
+              aria-hidden
+            />
+            <p className="text-sm font-medium text-zinc-600 sm:text-base">
+              Loading results…
+            </p>
           </div>
         ) : (
           <>
-            {/* Results Count */}
-            <div className="text-center mb-8">
-              <p className="text-gray-600">
-                Found <span className="font-semibold text-blue-600">{total}</span> amazing tools
+            <div className="mb-8 text-center">
+              <p className="text-sm text-zinc-600 sm:text-base">
+                <span className="font-semibold tabular-nums text-zinc-900">
+                  {total}
+                </span>{" "}
+                {total === 1 ? "listing" : "listings"} found
               </p>
             </div>
-            
+
             <ListCategories recents={recents} />
-            
-            {/* Enhanced Pagination */}
+
             {totalPages > 1 && (
-              <div className="flex justify-center mt-16 mb-8">
-                <div className="bg-white rounded-2xl shadow-lg p-4">
+              <div className="mb-8 mt-14 flex justify-center">
+                <div className="rounded-2xl border border-zinc-200/80 bg-white/90 p-3 shadow-sm shadow-zinc-900/5 backdrop-blur-sm sm:p-4">
                   <Pagination>
-                    <PaginationContent className="gap-2">
+                    <PaginationContent className="gap-1 sm:gap-2">
                       <PaginationItem>
-                        <PaginationPrevious 
-                          onClick={handlePrevious} 
-                          isActive={page === 1} 
-                          href="#" 
-                          className="px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                        <PaginationPrevious
+                          onClick={handlePrevious}
+                          isActive={page === 1}
+                          href="#"
+                          className="rounded-xl border border-transparent px-3 py-2 hover:bg-zinc-100 sm:px-4"
                         />
                       </PaginationItem>
-                      
+
                       {Array.from({ length: totalPages }, (_, i) => (
                         <PaginationItem key={i}>
                           <PaginationLink
@@ -207,23 +228,23 @@ const Search = ({ categories, defaultrecents }: Props) => {
                               pageClick(i + 1);
                             }}
                             isActive={page === i + 1}
-                            className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                            className={`rounded-xl px-3 py-2 transition-colors sm:px-4 ${
                               page === i + 1
-                                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                                : "hover:bg-gray-100"
+                                ? "bg-zinc-900 text-white shadow-sm"
+                                : "hover:bg-zinc-100"
                             }`}
                           >
                             {i + 1}
                           </PaginationLink>
                         </PaginationItem>
                       ))}
-                      
+
                       <PaginationItem>
-                        <PaginationNext 
-                          onClick={handleNext} 
-                          isActive={page === totalPages} 
-                          href="#" 
-                          className="px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                        <PaginationNext
+                          onClick={handleNext}
+                          isActive={page === totalPages}
+                          href="#"
+                          className="rounded-xl border border-transparent px-3 py-2 hover:bg-zinc-100 sm:px-4"
                         />
                       </PaginationItem>
                     </PaginationContent>
@@ -234,7 +255,7 @@ const Search = ({ categories, defaultrecents }: Props) => {
           </>
         )}
       </div>
-    </>
+    </section>
   );
 };
 

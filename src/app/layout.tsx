@@ -2,12 +2,19 @@
 
 import "./globals.scss";
 import "./custom.css";
+import { Inter } from "next/font/google";
 import Script from "next/script";
 import { getData } from "@/lib/data";
 import { capitalizeFirstLetter } from "@/helpers/capitalize-first-letter";
 import Providers from "@/components/providers";
 import type { Metadata } from "next";
 import First100FoundersModalWrapper from "@/components/First100FoundersModalWrapper";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   let c;
@@ -61,7 +68,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <head>
         {/* Google AdSense */}
         {c?.data?.adsenseClientId && (

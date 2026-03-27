@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { LinkType } from "@/types/link.type";
 import Likes from "./Likes";
@@ -13,113 +12,118 @@ type Props = {
 };
 
 const ListCategories = ({ recents }: Props) => {
-  // Ensure recents is always an array to prevent hydration issues
   const safeRecents = Array.isArray(recents) ? recents : [];
-  
-  // Function to process domain titles
+
   const processTitle = (title: string) => {
-    // Remove domain extensions and capitalize
-    const processedTitle = title.replace(/\.(com|org|net|io|co|app|dev)$/i, '');
+    const processedTitle = title.replace(/\.(com|org|net|io|co|app|dev)$/i, "");
     return capitalizeFirstLetter(processedTitle);
   };
-  
+
   return (
-    <>
-      <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
-          {safeRecents.length ? (
-            safeRecents.map((recent, index) => (
-              <div key={recent.id || index} className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
-                {/* Image Container */}
-                <div className="relative overflow-hidden">
-                  <Link href={`/details/${recent.id}/${recent.title}`}>
-                    <Image
-                      src={recent.screenshot ?? ""}
-                      width={0}
-                      height={0}
-                      alt={recent.title || "Image"}
-                      className="w-full h-48 object-cover object-top transition-transform duration-500 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority
-                    />
-                  </Link>
-                  
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg">
-                      {recent.category?.category_name || "Uncategorized"}
-                    </div>
-                  </div>
-                  
-                  {/* External Link Icon */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg">
-                      <FaExternalLinkAlt className="text-gray-600 text-sm" />
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Content */}
-                <div className="p-6">
-                  {/* Title */}
-                  <h3 className="font-bold text-gray-900 text-xl mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
-                    <Link href={`/details/${recent.id}/${recent.title}`} className="hover:underline">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
+      {safeRecents.length ? (
+        safeRecents.map((recent, index) => (
+          <article
+            key={recent.id || index}
+            className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm shadow-zinc-900/5 ring-1 ring-transparent transition duration-300 hover:border-zinc-300/90 hover:shadow-md hover:ring-zinc-200/60"
+          >
+            <div className="relative aspect-[5/4] w-full shrink-0 overflow-hidden bg-zinc-100">
+              <Link
+                href={`/details/${recent.id}/${recent.title}`}
+                className="relative block h-full w-full outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-zinc-900"
+              >
+                <Image
+                  src={recent.screenshot ?? ""}
+                  width={0}
+                  height={0}
+                  alt={recent.title || "Listing screenshot"}
+                  className="h-full w-full object-cover object-top transition duration-500 ease-out group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  priority={index < 8}
+                />
+              </Link>
+
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950/40 via-transparent to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+
+              <div className="pointer-events-none absolute left-3 top-3 z-[5] max-w-[calc(100%-4rem)] truncate rounded-full border border-white/20 bg-white/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-zinc-800 shadow-sm backdrop-blur-md">
+                {recent.category?.category_name || "Uncategorized"}
+              </div>
+
+              <a
+                href={recent.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-white/90 text-zinc-700 shadow-md backdrop-blur-md transition hover:bg-white hover:text-zinc-900"
+                aria-label={`Visit ${processTitle(recent.title || "")} (opens in new tab)`}
+              >
+                <FaExternalLinkAlt className="text-xs" />
+              </a>
+            </div>
+
+            <div className="flex flex-1 flex-col gap-4 px-6 py-6 sm:px-7 sm:py-7">
+              <div className="flex gap-3">
+                {recent.company_logo ? (
+                  <Image
+                    src={recent.company_logo}
+                    width={40}
+                    height={40}
+                    alt=""
+                    className="h-10 w-10 shrink-0 rounded-lg border border-zinc-100 bg-white object-contain p-1"
+                  />
+                ) : null}
+                <div className="min-w-0 flex-1 pt-0.5">
+                  <h3 className="text-base font-semibold leading-snug tracking-tight text-zinc-900">
+                    <Link
+                      href={`/details/${recent.id}/${recent.title}`}
+                      className="line-clamp-2 transition hover:text-violet-700"
+                    >
                       {processTitle(recent.title || "Untitled")}
                     </Link>
                   </h3>
-                  
-                  {/* Description */}
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                    {recent.description || "No description available"}
-                  </p>
-                  
-                  {/* Likes Section */}
-                  <div className="mb-6">
-                    <Likes id={recent.id} />
-                  </div>
-                  
-                  {/* Action Button */}
-                  <div className="flex space-x-3">
-                    <Button 
-                      asChild 
-                      size="lg" 
-                      className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                    >
-                      <Link href={`/details/${recent.id}/${recent.title}`}>
-                        View Details
-                      </Link>
-                    </Button>
-                    
-                    <Button 
-                      asChild 
-                      variant="outline" 
-                      size="lg" 
-                      className="px-4 border-2 border-gray-200 hover:border-blue-500 text-gray-700 hover:text-blue-600 rounded-xl transition-all duration-300"
-                    >
-                      <Link href={recent.url} target="_blank" rel="noopener noreferrer">
-                        Visit Site
-                      </Link>
-                    </Button>
-                  </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="md:col-span-2 lg:col-span-3 xl:col-span-4">
-              <div className="text-center py-20">
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <FaStar className="text-blue-600 text-3xl" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-700 mb-3">No Tools Found</h3>
-                <p className="text-gray-600 max-w-md mx-auto">
-                  We couldn't find any tools matching your criteria. Try adjusting your search or browse all categories.
-                </p>
+
+              <p className="line-clamp-3 text-sm leading-relaxed text-zinc-600">
+                {recent.description || "No description available"}
+              </p>
+
+              <div className="min-h-[2.5rem]">
+                <Likes id={recent.id} />
+              </div>
+
+              <div className="mt-auto flex gap-3 border-t border-zinc-100 pt-5">
+                <Link
+                  href={`/details/${recent.id}/${recent.title}`}
+                  className="flex flex-1 items-center justify-center rounded-full bg-zinc-900 px-5 py-3 text-center text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  Details
+                </Link>
+                <a
+                  href={recent.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-50"
+                >
+                  Visit
+                </a>
               </div>
             </div>
-          )}
+          </article>
+        ))
+      ) : (
+        <div className="md:col-span-2 lg:col-span-3 xl:col-span-4">
+          <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50/80 py-16 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200/80">
+              <FaStar className="text-lg text-amber-500" aria-hidden />
+            </div>
+            <h3 className="text-lg font-semibold text-zinc-900">No listings found</h3>
+            <p className="mx-auto mt-2 max-w-md text-sm text-zinc-600">
+              Try another search or clear filters to see more results.
+            </p>
+          </div>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 
