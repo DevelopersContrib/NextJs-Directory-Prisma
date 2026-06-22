@@ -99,6 +99,15 @@ export default async function RootLayout({
           </>
         )}
 
+        {/* VNOC Analytics */}
+        <Script
+          id="vnoc-analytics"
+          src="https://analytics.vnoc.com/tracker.js"
+          data-endpoint="https://analytics.vnoc.com/"
+          data-domain={c?.data?.domainName || "localhost"}
+          defer
+        />
+
         {/* Matomo Analytics */}
         {c?.data?.piwikId && (
           <>
